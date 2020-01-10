@@ -3,6 +3,8 @@ function cfg = bst_postprocess_lf(cfg)
 % meg : apply the wight oc sensor (gradiometre, magnetometre)
 % eeg : apply the desired reference/ reference == > TODO
 
+% Takfarinas MEDANI, December 2019
+
 if strcmp(cfg.modality,'eeg')
     cfg = bst_postprocess_eeg_lf(cfg);
 end

@@ -3,7 +3,7 @@ function varargout = bst_selectVolumeTissu(varargin)
 % cfg = bst_selectVolumeTissu(cfg)
 % cfg = bst_selectVolumeTissu(cfg,layerToKeep)
 % [node, elem] = bst_selectVolumeTissu(node,elem,layerToKeep)
-% Function that keep the desired tissus index specified on the boolean vector layerToKeep or cfg.layerToKeep.
+% Function that keep the desired tissus index specified on the booleqn vector layerToKeep or cfg.layerToKeep.
 % Important ... the tissu have to be labled in ascendant manner, from the
 % most inner layer to the most outer layer.
 % example : layerToKeep = [0 1 0 1]; will keep the 2nd and the fourth layer.

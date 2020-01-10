@@ -10,11 +10,13 @@ if ~isfield(cfg,'runFromBst'); cfg.runFromBst = 0; end
 
 %% Write the files
 
+% Write the EEG electrode file in the case of EEG and MEEG
 if strcmp(cfg.modality,'eeg') || strcmp(cfg.modality,'meeg')
     cfg.electrode_filename = 'electrode_model.txt';
     write_duneuro_electrode_file(cfg.channelLoc, cfg.electrode_filename);
 end
 
+% Write the MEG sensors file in the case of MEG and MEEG
 if strcmp(cfg.modality,'meg')  || strcmp(cfg.modality,'meeg')
     if cfg.runFromBst == 1 % otherwise, read the files autrement
         %MegChannel =  [iChan, sChan.Loc(:,iInteg)', sChan.Orient(:,iInteg)', sChan.Weight(iInteg)];
