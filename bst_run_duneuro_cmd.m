@@ -43,7 +43,7 @@ if status ~= 0
     fprintf(fid, '%st', ' Load the file duneuro_configuration for manual debuging');
     fclose(fid);
     save('duneuro_configuration', 'cfg');
-    error('Something was wrong during duneuro computation, please check %s', duneuro_logfile);
+    error('Something was wrong during duneuro computation.\nPlease check %s', duneuro_logfile);
 else
     disp('DuNeuro FEM computation completed without error ');
 end

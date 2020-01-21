@@ -46,7 +46,7 @@ cfg.BstDuneuroVersion = 2;
 % Copy the binaries output directory
 if cfg.runFromBst == 1; bst_progress('text', ['Duneuro: copying the binaries to the  ' fullfile(cfg.pathOfTempOutPut)]); end
 if cfg.displayComment ==1; disp(['duneruo >>0 - Changing path from ' cfg.currentPath ' to ' (fullfile(cfg.pathOfTempOutPut))]);end
-copyfile(fullfile(cfg.pathOfDuneuroToolbox,'bin','*'),(fullfile(cfg.pathOfTempOutPut)),'f')
+copyfile(fullfile(cfg.pathOfDuneuroToolbox,'bst-duneuro','bin','*'),(fullfile(cfg.pathOfTempOutPut)),'f')
 cd(fullfile(cfg.pathOfTempOutPut));
 
 %% 1- The head model : 
