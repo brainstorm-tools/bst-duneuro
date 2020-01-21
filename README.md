@@ -27,15 +27,14 @@ Duneuro is based on Dune project, developed in C++ for linux based OS. Thus, the
  ```
  sudo apt-get install git pkg-config cmake mingw-w64 g++-mingw-w64 libc6-dev-i386 python3-pip libeigen3-dev
  ```
-   
 2. Update the system
   ```
   sudo apt-get install update
   ```
 3. clone this repository
-   ```
-   git clone [THIS REPO'S URL]
-   ```
+  ```
+  git clone [THIS REPO'S URL]
+  ```
 4. navigate to the repository's directory ```cd bst-duneuro``` and execute compilation tool 
 
 ```
