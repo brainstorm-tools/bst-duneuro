@@ -23,16 +23,29 @@ Distribution within Brainstorm:
 Duneuro is based on Dune project, developed in C++ for linux based OS. Thus, there is no windows version directly available. Windows binary application is built by cross-compiling with cygwin. In order to re-compile the application you will need a linux OS and follow these steps:
 
 1. Update needed tools
-   in a new 18.04 lts ubuntu we need the following packages:
-   ```
-   sudo apt-get install git pkg-config cmake mingw-w64 g++-mingw-w64 libc6-dev-i386 python3-pip libeigen3-dev
-   ```
+ In a new 18.04 lts ubuntu we need the following packages:
+ ```
+ sudo apt-get install git pkg-config cmake mingw-w64 g++-mingw-w64 libc6-dev-i386 python3-pip libeigen3-dev
+ ```
    
 2. Update the system
   ```
   sudo apt-get install update
   ```
 3. clone this repository
+   ```
+   git clone [THIS REPO'S URL]
+   ```
+4. navigate to the repository's directory ```cd bst-duneuro``` and execute compilation tool 
+
 ```
-git clone [THIS REPO'S URL]
+chmod +x config/setup_bst_duneuro.sh
+config/setup_bst_duneuro.sh
 ```
+
+The setup script ```setup_bst_duneuro.sh``` is designed to help through the compilation process even if the user's experience with C++, linux and development in general is low. Basically you can execute ```config/setup_bst_duneuro.sh all``` and it will download, configure, compile and serve the binary files. This whole chain has proven to work on a freshly downloaded Ubuntu instance.
+
+In case further development has to be made, you can ```clean``` previous builds and ```download``` the source code before compiling anything. You can also compile only one operating system by calling ```config/setup_bst_duneuro.sh build windows``` or ```linux```. And if you want to test small modifications to your application and you don't want to compile the whole duneuro project in every iteration you can use ```config/setup_bst_duneuro.sh rebuild windows duneuro-matlab```.
+
+See ```config/setup_bst_duneuro.sh``` with no input to read see more examples.
+
