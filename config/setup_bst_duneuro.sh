@@ -46,13 +46,20 @@ doConfigure () {
   echo -e "\n\n#####################################################\n\n               Patching fortran issue!!\n\n#####################################################\n"
   sed -i 's/workaround_9220(Fortran Fortran_Works)/if(ENABLE_Fortran)\n    workaround_9220(Fortran Fortran_Works)\n  endif()/g' src/dune-common/cmake/modules/DuneMacros.cmake 
 
+  # Copy C++ files to duneuro-matlab
   echo -e "\nCopying toto folder to duneuro-matlab.\n"
   cp -r config/toto src/duneuro-matlab
 
-  
+  # Modify CMakeLists file
   if ! grep -Fxq "toto" src/duneuro-matlab/CMakeLists.txt ; then
     echo -e "\nAdding subdirectory toto to cmake lists file.\n"
     sed -i 's#add_subdirectory("cmake/modules")#add_subdirectory("cmake/modules")\nadd_subdirectory("toto")#g' src/duneuro-matlab/CMakeLists.txt
+  fi
+
+  # Modify full path to toolchain file in windows opts file.
+  if ! grep -Fxq "<<fullpath>>" config/config_release_windows.opts; then
+    echo -e "\nAdding full path to toolchain file.\n"
+    sed -i "s~<<fullpath>>~${BASE_DIR}~g" config/config_release_windows.opts
   fi
 }
 
@@ -154,6 +161,7 @@ setVariables () {
 #start script
 CURRENT_DIR=`pwd`
 cd $(dirname "$0")/..
+BASE_DIR=`pwd`
 
 if [[ -z "$1" ]]; then
   doPrintHelp
