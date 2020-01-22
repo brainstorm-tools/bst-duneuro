@@ -4,7 +4,7 @@ CMAKE_FLAGS="\
   -DCMAKE_BUILD_TYPE=Release\
   -DCMAKE_DISABLE_FIND_PACKAGE_MPI=TRUE\
   -DMatlab_ROOT_DIR=/usr/local/MATLAB/R2019a\
-  -DCMAKE_TOOLCHAIN_FILE=/home/j/bst-duneuro/config/Toolchain-Ubuntu-mingw32.cmake\
+  -DCMAKE_TOOLCHAIN_FILE=<<fullpath>>/config/Toolchain-Ubuntu-mingw32.cmake\
   -DDUNE_PYTHON_VIRTUALENV_SETUP=True\
   -DDUNE_PYTHON_ALLOW_GET_PIP=True\
 "
