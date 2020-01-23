@@ -94,11 +94,7 @@ if isSeeg; cfg.modality = 'seeg'; goodChannel = OPTIONS.iSeeg; end
 
 %% ===== DUNEURO PREPARE GEOMETRY =====
 %% 1 - Head Model
-ProtocolInfo = bst_get('ProtocolInfo');
-% FemHeadFile = fullfile(ProtocolInfo.SUBJECTS,OPTIONS.FemHeadFile.FileName);
-FemHeadFile = fullfile(OPTIONS.FemHeadFile);
-
-femhead = load(FemHeadFile);
+femhead = load(OPTIONS.FemHeadFile);
 % femhead : contains the bst FEM mesh format
 cfg.node = femhead.Vertices;cfg.elem = [femhead.Elements femhead.Tissue];
 cfg.tissuLabel = femhead.TissueLabels;
