@@ -32,7 +32,7 @@ December 2019
 #include <duneuro/meeg/meeg_driver_factory.hh>
 #include <duneuro/io/projections_reader.hh>
 
-#include <toto/bst_helper_fcns.h>
+#include <brainstorm_app/bst_helper_fcns.h>
 
 void runEEG(const Dune::ParameterTree &config)
 {
