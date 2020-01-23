@@ -72,7 +72,7 @@ fid_log = fopen(logFile, 'w');
 %% 0 - Initialisation for duneuro computation (configuration used by the duneuro interface)
 %  find the bst_duneuro_toolbox path
 str = which('bst_duneuro','-all'); % <== May be not needed if we include the main function
-[filepath,~,~] = fileparts(str{1});                      % < == //                       //                   //                    //
+filepath = fileparts(str{1});                      % < == //                       //                   //                    //
 
 % TODO : some of these parameters and other should be tuned from outside
 bst_progress('text', 'Duneuro: prepare the input ...');
