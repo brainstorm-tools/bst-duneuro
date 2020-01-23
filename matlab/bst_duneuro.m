@@ -38,8 +38,6 @@ function [Gain, errMsg] = bst_duneuro(OPTIONS)
 %
 % Authors: Takfarinas MEDANI, December 2019;     
 
-% tic;
-
 % ===== DOWNLOAD DUNEURO  =====
 % TODO :  TO DECIDE & integrate on bst disribution or download ?
 
