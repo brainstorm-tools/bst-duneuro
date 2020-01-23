@@ -162,6 +162,9 @@ setVariables () {
 CURRENT_DIR=`pwd`
 cd $(dirname "$0")/..
 BASE_DIR=`pwd`
+#echo Running from ${BASE_DIR} ...
+
+
 
 if [[ -z "$1" ]]; then
   doPrintHelp
