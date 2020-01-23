@@ -38,8 +38,6 @@ function [Gain, errMsg] = bst_duneuro(OPTIONS)
 %
 % Authors: Takfarinas MEDANI, December 2019;     
 
-% tic;
-
 % ===== DOWNLOAD DUNEURO  =====
 % TODO :  TO DECIDE & integrate on bst disribution or download ?
 
@@ -72,7 +70,7 @@ fid_log = fopen(logFile, 'w');
 %% 0 - Initialisation for duneuro computation (configuration used by the duneuro interface)
 %  find the bst_duneuro_toolbox path
 str = which('bst_duneuro','-all'); % <== May be not needed if we include the main function
-[filepath,~,~] = fileparts(str{1});                      % < == //                       //                   //                    //
+filepath = fileparts(str{1});                      % < == //                       //                   //                    //
 
 % TODO : some of these parameters and other should be tuned from outside
 bst_progress('text', 'Duneuro: prepare the input ...');
@@ -94,11 +92,7 @@ if isSeeg; cfg.modality = 'seeg'; goodChannel = OPTIONS.iSeeg; end
 
 %% ===== DUNEURO PREPARE GEOMETRY =====
 %% 1 - Head Model
-ProtocolInfo = bst_get('ProtocolInfo');
-% FemHeadFile = fullfile(ProtocolInfo.SUBJECTS,OPTIONS.FemHeadFile.FileName);
-FemHeadFile = fullfile(OPTIONS.FemHeadFile);
-
-femhead = load(FemHeadFile);
+femhead = load(OPTIONS.FemHeadFile);
 % femhead : contains the bst FEM mesh format
 cfg.node = femhead.Vertices;cfg.elem = [femhead.Elements femhead.Tissue];
 cfg.tissuLabel = femhead.TissueLabels;
