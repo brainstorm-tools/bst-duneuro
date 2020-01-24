@@ -80,7 +80,7 @@ doReBuild () {
 
 doHandleFiles () {
   
-  if test -f "${BUILD_DIR}/duneuro-matlab/brainstorm_app/bst_duneuro${EXTENSION}"; then
+  if test -f "${BUILD_DIR}/duneuro-matlab/brainstorm_app/bst_duneuro_meeg${EXTENSION}"; then
     echo -e "\n Everything went fine!\n"
     mv ${BUILD_DIR}/duneuro-matlab/brainstorm_app/bst_duneuro_meeg${EXTENSION} bin/bst_duneuro_meeg_$(date +"%d_%m_%Y")${EXTENSION}
     echo -e "\n Brainstorm - Duneuro application should be in /bin\n"
@@ -146,7 +146,7 @@ doPrintHelp () {
   print_style "\n\n\n" ;
 }
 
-setVariables () {
+doSetVariables () {
   BUILD_DIR="build_release_${OS}"
   CONFIG_FILE=config_release_${OS}.opts
   if [[ $OS == windows ]]; then
@@ -178,7 +178,7 @@ elif [[ $1 == build ]]; then
     exit 1
   elif [[ $2 == windows || $2 == linux ]]; then
     OS=$2
-    setVariables
+    doSetVariables
     doBuild
     doHandleFiles
   elif [[ $2 == all ]]; then
@@ -203,7 +203,7 @@ elif [[ $1 = rebuild ]]; then
       exit 1
     else
       MODU=$3
-      setVariables
+      doSetVariables
       doReBuild
       doHandleFiles
     fi
