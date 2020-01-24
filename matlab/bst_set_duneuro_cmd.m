@@ -6,7 +6,7 @@ function cfg = bst_set_duneuro_cmd(cfg)
 
 % Author : Takfarinas MEDANI, November, 2019,
 %               Update : change the version 2 from bst_duneuro to
-%               bst_duneuro_meeg (all in one 'eeg','meg','meeg'), 
+%               bst_duneuro_meeg (all in one 'eeg','meg','meeg'),
 
 if ~isfield(cfg,'BstDuneuroVersion');  cfg.BstDuneuroVersion = 2; end
 
@@ -36,7 +36,11 @@ if cfg.BstDuneuroVersion == 1
 end
 
 if cfg.BstDuneuroVersion == 2 % refers to the new version all in one
-    cmd = 'bst_duneuro_meeg';
+    %     cmd = 'bst_duneuro_meeg';
+    % Use new version of name generated from juan shell file, from
+    % 1/24/2020
+    str = dir('*.exe');
+    [filepath,cmd,ext] =  fileparts(str(1).name);
 end
 
 cfg.cmd = cmd;
