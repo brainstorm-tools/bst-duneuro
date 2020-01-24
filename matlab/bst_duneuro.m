@@ -15,9 +15,9 @@ function [Gain, errMsg] = bst_duneuro(OPTIONS)
 %        |- iMeg         : Indices of MEG sensors in the Channel structure
 %        |- iEeg         : Indices of EEG sensors in the Channel structure
 %        |- GridLoc      : Dipoles locations
-%        |- FemHeadFile         : structure with the name of the fem head model
-%        |- GridLoc      : Dipoles locations
-%        |- conductivity      : The values of the conductivity %% < === conductivity and no Conductivity <== TODO : shoud to fixe it  
+%        |- FemHeadFile  : Structure with the name of the fem head model
+%        |- FemCond      : Conductivity for each tissue in the head model
+
 % @=============================================================================
 % This function is part of the Brainstorm software:
 % https://neuroimage.usc.edu/brainstorm
@@ -159,7 +159,7 @@ end
 %% 4- Conductivity/tensor
 % TODO : Adapt this for anisotrpy // maybe could be done from outside and
 % put the tensor on OPTIONS.Conductivity or create new field OPTIONS.ConductivityTensor
-cfg.conductivity = OPTIONS.conductivity;
+cfg.conductivity = OPTIONS.FemCond;
 
 %% 5- Duneuro-Brainstorm interface
 %% ===== DUNEURO LEADFIELD COMPUTATION   =====
@@ -173,7 +173,6 @@ cfg = bst_duneuro_interface(cfg);
 % fil the bad channel with nan (not possible within the duneuro)
 if isMeg;     Gain(OPTIONS.iMeg, :) = cfg.fem_meg_lf; end % the final value ==>  cfg.fem_meg_lf = B = Bp + Bs ? check if the case for bst
 if isEeg;     Gain(OPTIONS.iEeg, :) = cfg.fem_eeg_lf; end 
-% if isEeg; Gain(goodChannel,:) = cfg.fem_eeg_lf; end
 
 %% ===== CLEANUP =====
 % TODO : adapt it to bst
