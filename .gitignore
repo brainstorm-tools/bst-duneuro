@@ -1,1 +1,6 @@
 *.asv
+
+build*
+src/
+
+*.ini
