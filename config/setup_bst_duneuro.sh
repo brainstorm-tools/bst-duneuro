@@ -82,7 +82,7 @@ doHandleFiles () {
   
   if test -f "${BUILD_DIR}/duneuro-matlab/brainstorm_app/bst_duneuro${EXTENSION}"; then
     echo -e "\n Everything went fine!\n"
-    mv ${BUILD_DIR}/duneuro-matlab/brainstorm_app/bst_duneuro${EXTENSION} bin/bst_duneuro_$(date +"%d_%m_%Y")${EXTENSION}
+    mv ${BUILD_DIR}/duneuro-matlab/brainstorm_app/bst_duneuro_meeg${EXTENSION} bin/bst_duneuro_meeg_$(date +"%d_%m_%Y")${EXTENSION}
     echo -e "\n Brainstorm - Duneuro application should be in /bin\n"
     else
     echo -e "\n Something went wrong. Check ${BUILD_DIR}_log.txt or ${BUILD_DIR}_rebuild_log.txt .\n"
