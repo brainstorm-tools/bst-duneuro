@@ -47,20 +47,18 @@ doConfigure () {
   sed -i 's/workaround_9220(Fortran Fortran_Works)/if(ENABLE_Fortran)\n    workaround_9220(Fortran Fortran_Works)\n  endif()/g' src/dune-common/cmake/modules/DuneMacros.cmake 
 
   # Copy C++ files to duneuro-matlab
-  echo -e "\nCopying toto folder to duneuro-matlab.\n"
-  cp -r config/toto src/duneuro-matlab
+  echo -e "\nCopying brainstorm_app folder to duneuro-matlab.\n"
+  cp -r config/brainstorm_app src/duneuro-matlab
 
   # Modify CMakeLists file
-  if ! grep -Fxq "toto" src/duneuro-matlab/CMakeLists.txt ; then
-    echo -e "\nAdding subdirectory toto to cmake lists file.\n"
-    sed -i 's#add_subdirectory("cmake/modules")#add_subdirectory("cmake/modules")\nadd_subdirectory("toto")#g' src/duneuro-matlab/CMakeLists.txt
+  if ! grep -Fxq "brainstorm_app" src/duneuro-matlab/CMakeLists.txt ; then
+    echo -e "\nAdding subdirectory brainstorm_app to cmake lists file.\n"
+    sed -i 's#add_subdirectory("cmake/modules")#add_subdirectory("cmake/modules")\nadd_subdirectory("brainstorm_app")#g' src/duneuro-matlab/CMakeLists.txt
   fi
 
   # Modify full path to toolchain file in windows opts file.
-  if ! grep -Fxq "<<fullpath>>" config/config_release_windows.opts; then
-    echo -e "\nAdding full path to toolchain file.\n"
-    sed -i "s~<<fullpath>>~${BASE_DIR}~g" config/config_release_windows.opts
-  fi
+  echo -e "\nAdding full path to toolchain file.\n"
+  sed "s~<<fullpath>>~${BASE_DIR}~g" config/config_release_windows.opts.template > config/config_release_windows.opts
 }
 
 doBuild () {
@@ -82,9 +80,9 @@ doReBuild () {
 
 doHandleFiles () {
   
-  if test -f "${BUILD_DIR}/duneuro-matlab/toto/bst_duneuro${EXTENSION}"; then
+  if test -f "${BUILD_DIR}/duneuro-matlab/brainstorm_app/bst_duneuro${EXTENSION}"; then
     echo -e "\n Everything went fine!\n"
-    mv ${BUILD_DIR}/duneuro-matlab/toto/bst_duneuro${EXTENSION} bin/bst_duneuro_$(date +"%d_%m_%Y")${EXTENSION}
+    mv ${BUILD_DIR}/duneuro-matlab/brainstorm_app/bst_duneuro${EXTENSION} bin/bst_duneuro_$(date +"%d_%m_%Y")${EXTENSION}
     echo -e "\n Brainstorm - Duneuro application should be in /bin\n"
     else
     echo -e "\n Something went wrong. Check ${BUILD_DIR}_log.txt or ${BUILD_DIR}_rebuild_log.txt .\n"
@@ -162,8 +160,8 @@ setVariables () {
 CURRENT_DIR=`pwd`
 cd $(dirname "$0")/..
 BASE_DIR=`pwd`
+SCRIPT_NAME=$(basename "$0")
 #echo Running from ${BASE_DIR} ...
-
 
 
 if [[ -z "$1" ]]; then
@@ -184,16 +182,16 @@ elif [[ $1 == build ]]; then
     doBuild
     doHandleFiles
   elif [[ $2 == all ]]; then
-    ./$0 build windows
-    ./$0 build linux
+    config/${SCRIPT_NAME} build windows
+    config/${SCRIPT_NAME} build linux
   else
     doPrintHelp
     exit 1
   fi
 elif [[ $1 = all ]]; then
-  ./$0 clean
-  ./$0 download
-  ./$0 build all
+  config/${SCRIPT_NAME} clean
+  config/${SCRIPT_NAME} download
+  config/${SCRIPT_NAME} build all
 elif [[ $1 = rebuild ]]; then
   if [[ -z "$2" ]]; then
     doPrintHelp
@@ -209,7 +207,10 @@ elif [[ $1 = rebuild ]]; then
       doReBuild
       doHandleFiles
     fi
-  else 
+  elif [[ $2 == all ]]; then
+    config/${SCRIPT_NAME} rebuild windows $3
+    config/${SCRIPT_NAME} rebuild linux $3
+  else
     doPrintHelp
     exit 1
   fi
