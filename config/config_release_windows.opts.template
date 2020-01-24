@@ -1,0 +1,13 @@
+CMAKE_FLAGS="\
+  -G \"Unix Makefiles\"\
+  -DCMAKE_CXX_FLAGS=\"-fPIC -O3 -Wall -Wextra -Wno-unused-parameter -Wno-unused-local-typedefs -std=c++14 -pthread -fpermissive -Wdelete-non-virtual-dtor\"\
+  -DCMAKE_BUILD_TYPE=Release\
+  -DCMAKE_DISABLE_FIND_PACKAGE_MPI=TRUE\
+  -DMatlab_ROOT_DIR=/usr/local/MATLAB/R2019a\
+  -DCMAKE_TOOLCHAIN_FILE=<<fullpath>>/config/Toolchain-Ubuntu-mingw32.cmake\
+  -DDUNE_PYTHON_VIRTUALENV_SETUP=True\
+  -DDUNE_PYTHON_ALLOW_GET_PIP=True\
+"
+MAKE_FLAGS="-j2"
+
+
