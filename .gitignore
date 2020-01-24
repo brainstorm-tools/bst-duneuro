@@ -1,6 +1,15 @@
 *.asv
 
+#build directories
 build*
+
+#source file is stored in Duneuro's gitlab
 src/
 
+#windwos/ google drive files
 *.ini
+
+#config_release_windows.opts file is updated during installation
+#with the full path of the toolchain file no need to update that.
+config/config_release_windows.opts
+
