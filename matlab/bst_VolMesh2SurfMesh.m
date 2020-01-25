@@ -10,9 +10,6 @@ data = GlobalData.DataBase.ProtocolInfo(GlobalData.DataBase.iProtocol);
 femheadfile = fullfile(data.SUBJECTS ,TessFiles);
 femhead  = load(fullfile(data.SUBJECTS ,TessFiles));
 
-
-
-
 % Open progress bar
 bst_progress('start', 'FEM mesh', 'Surface Extraction From Mesh mesh (iso2mesh)...');
 
