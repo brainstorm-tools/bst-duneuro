@@ -55,7 +55,7 @@ or
 ```
 setup_bst_duneuro.sh rebuild all duneuro-matlab
 ```
-to rebuld both linux and window's applications.
+to rebuild both linux and window's applications.
 
 #### Comments on Matlab and mex file implementation. 
 If you have Matlab installed in your linux version and you plan to use Brainstorm in this system, you can take advantage of the possibility of building the application as a mex file which will decrease execution times and allow for more interaction between Matlab and duneuro.
