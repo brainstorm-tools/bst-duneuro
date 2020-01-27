@@ -38,6 +38,15 @@ doDownload () {
   #git clone --branch releases/2.6 https://gitlab.dune-project.org/quality/dune-testtools.git
   
   cd ..
+
+  if [[ -f "src/dune-common/bin/dunecontrol" ]]; then
+      echo -e "\nSource download OK."
+  else
+      tar -xzf config/src_vault.tar.gz
+      echo -e "\nThere was a problem downloading the code."
+      echo -e "\nUnpacking source vault -> src/"
+  fi
+
 }
 
 doConfigure () {
