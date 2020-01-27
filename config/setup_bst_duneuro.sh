@@ -3,8 +3,8 @@
 doClean () {
   echo -e "\nDeleting previous builds.\n"
   rm -rf build*
-  echo -e "\nDeleting previously downloaded code.\n"
-  rm -rf src
+  # echo -e "\nDeleting previously downloaded code.\n"
+  # rm -rf src
 }
 
 doDownload () {
@@ -56,8 +56,10 @@ doConfigure () {
   sed -i 's/workaround_9220(Fortran Fortran_Works)/if(ENABLE_Fortran)\n    workaround_9220(Fortran Fortran_Works)\n  endif()/g' src/dune-common/cmake/modules/DuneMacros.cmake 
 
   # Copy C++ files to duneuro-matlab
-  echo -e "\nCopying brainstorm_app folder to duneuro-matlab.\n"
-  cp -r config/brainstorm_app src/duneuro-matlab
+  echo -e "\nSetting links between brainstorm_app source files and duneuro-matlab source files.\n"
+  #cp -r config/brainstorm_app src/duneuro-matlab
+  mkdir src/duneuro-matlab/brainstorm_app
+  ln config/brainstorm_app/* src/duneuro-matlab/brainstorm_app/
 
   # Modify CMakeLists file
   if ! grep -Fxq "brainstorm_app" src/duneuro-matlab/CMakeLists.txt ; then
