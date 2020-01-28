@@ -1,0 +1,57 @@
+__name = meg_transfer_cg
+
+type = fitted
+solver_type = cg
+element_type = tetrahedron, hexahedron | expand etype
+geometry_adapted = false
+tolerance = 1e-8
+[coils]
+filename = test_sphere_coils.txt
+[projections]
+filename = test_sphere_projections.txt
+[dipoles]
+filename = test_sphere_dipoles.txt
+[volume_conductor.grid]
+filename = test_sphere_tet.msh, test_sphere_hex.dgf | expand etype
+[volume_conductor.tensors]
+filename = test_sphere_tet.cond, test_sphere_hex.cond | expand etype
+[meg]
+intorderadd = 0
+type = physical
+[solver]
+solver_type = cg
+preconditioner_type = amg
+cg_smoother_type = ssor
+intorderadd = 0
+[solution]
+post_process = false
+subtract_mean = false
+[solution.solver]
+reduction = 1e-10
+intorderadd = 0
+[solution.source_model]
+type = partial_integration, venant, subtraction | expand smtype
+intorderadd = 2
+intorderadd_lb = 2
+numberOfMoments = 3
+referenceLength = 20
+weightingExponent = 1
+relaxationFactor = 1e-6
+mixedMoments = false
+restrict = true
+initialization = closest_vertex
+[analytic_solution]
+radii = 92 86 80 78
+center = 127 127 127
+conductivities = 0.00043 0.00001 0.00179 0.00033
+[output]
+filename = out_meg_transfer_{solver_type}_{element_type}_{solution.source_model.type}
+extension = txt
+
+[wrapper.outputtreecompare]
+name = {output.filename}
+extension = {output.extension}
+reference = ref_{output.filename}
+type = fuzzy
+absolute = 1e-7
+relative = inf

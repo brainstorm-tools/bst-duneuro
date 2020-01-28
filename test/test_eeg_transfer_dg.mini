@@ -1,0 +1,50 @@
+__name = eeg_transfer_dg
+
+type = fitted
+solver_type = dg
+element_type = tetrahedron, hexahedron | expand etype
+geometry_adapted = false
+tolerance = 1e-6
+[electrodes]
+filename = test_sphere_electrodes_transfer.txt
+type = normal
+[dipoles]
+filename = test_sphere_dipoles.txt
+[volume_conductor.grid]
+filename = test_sphere_tet.msh, test_sphere_hex.dgf | expand etype
+[volume_conductor.tensors]
+filename = test_sphere_tet.cond, test_sphere_hex.cond | expand etype
+[solver]
+solver_type = cg
+preconditioner_type = amg
+dg_smoother_type = ssor
+intorderadd = 0
+scheme = sipg
+penalty = 20
+edge_norm_type = houston
+weights = true
+reduction = 1e-10
+[solution]
+post_process = false
+subtract_mean = true
+[solution.solver]
+reduction = 1e-10
+[solution.source_model]
+type = partial_integration, subtraction | expand stype
+intorderadd = 2
+intorderadd_lb = 2
+[analytic_solution]
+radii = 92 86 80 78
+center = 127 127 127
+conductivities = 0.00043 0.00001 0.00179 0.00033
+[output]
+filename = out_eeg_transfer_{solver_type}_{element_type}_{solution.source_model.type}
+extension = txt
+
+[wrapper.outputtreecompare]
+name = {output.filename}
+extension = {output.extension}
+reference = ref_{output.filename}
+type = fuzzy
+absolute = 1e-7
+relative = inf

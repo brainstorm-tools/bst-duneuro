@@ -1,0 +1,81 @@
+__name = eeg_transfer_udg
+
+type = unfitted
+solver_type = udg
+compartments = 4
+tolerance = 1e-8
+[electrodes]
+filename = test_sphere_electrodes_transfer.txt
+[dipoles]
+filename = test_sphere_dipoles.txt
+[volume_conductor.grid]
+cells = 10 10 10
+refinements = 1
+lower_left = 30 30 30
+upper_right = 224 224 224
+[udg]
+force_refinement = false
+[domain]
+domains = skin skull csf brain
+level_sets = outer_skin skin_skull skull_csf csf_brain
+[domain.outer_skin]
+type = sphere
+center = 127 127 127
+radius = 92
+[domain.skin_skull]
+type = sphere
+center = 127 127 127
+radius = 86
+[domain.skull_csf]
+type = sphere
+center = 127 127 127
+radius = 80
+[domain.csf_brain]
+type = sphere
+center = 127 127 127
+radius = 78
+[domain.skin]
+positions = ieee
+[domain.skull]
+positions = iiee
+[domain.csf]
+positions = iiie
+[domain.brain]
+positions = iiii
+[solver]
+solver_type = cg
+preconditioner_type = amg
+udg_smoother_type = ssor
+conductivities = 0.00043 0.00001 0.00179 0.00033
+intorderadd = 0
+penalty = 20
+scheme = sipg
+edge_norm_type = houston
+max_iterations = 5000
+reduction = 1e-10
+weights = true
+smoother=default
+[solution]
+post_process = true
+subtract_mean = true
+[solution.solver]
+reduction = 1e-10
+compartment = 0
+[solution.source_model]
+type = partial_integration
+compartment = 3
+[analytic_solution]
+radii = 92 86 80 78
+center = 127 127 127
+conductivities = {solver.conductivities}
+[output]
+filename = out_eeg_transfer_{solver_type}_{compartments}_{solution.source_model.type}
+extension = txt
+
+[wrapper.outputtreecompare]
+name = {output.filename}
+extension = {output.extension}
+reference = ref_{output.filename}
+type = fuzzy
+absolute = 1e-7
+relative = inf
