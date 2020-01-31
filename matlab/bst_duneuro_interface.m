@@ -43,12 +43,13 @@ if cfg.runFromBst == 1;  cfg.lfAvrgRef = 0; end  % It seems that brainstorm has 
 cfg.displayComment = 1;
 cfg.BstDuneuroVersion = 2;
 
-% Copy the binaries output directory
-if cfg.runFromBst == 1; bst_progress('text', ['Duneuro: copying the binaries to the  ' fullfile(cfg.pathOfTempOutPut)]); end
-if cfg.displayComment ==1; disp(['duneruo >>0 - Changing path from ' cfg.currentPath ' to ' (fullfile(cfg.pathOfTempOutPut))]);end
-copyfile(fullfile(cfg.pathOfDuneuroToolbox,'bin','*'),(fullfile(cfg.pathOfTempOutPut)),'f')
-cd(fullfile(cfg.pathOfTempOutPut));
+% % Copy the binaries output directory
+% if cfg.runFromBst == 1; bst_progress('text', ['Duneuro: copying the binaries to the  ' fullfile(cfg.pathOfTempOutPut)]); end
+% if cfg.displayComment ==1; disp(['duneruo >>0 - Changing path from ' cfg.currentPath ' to ' (fullfile(cfg.pathOfTempOutPut))]);end
+% copyfile(fullfile(cfg.pathOfDuneuroToolbox,'bin','*'),(fullfile(cfg.pathOfTempOutPut)),'f') % may be not needed ... 
+% 
 
+cd(fullfile(cfg.pathOfTempOutPut));
 %% 1- The head model : 
 % Write the head file according to the configuration cfg
 if cfg.runFromBst == 1; bst_progress('text', 'Duneuro:  write the head geometry file ... '); end
@@ -80,12 +81,14 @@ if cfg.displayComment ==1;disp(['duneruo >>5 - Writing the duneuro configuration
 cfg = bst_prepare_minifile(cfg);
 
 %% 6- Run the duneuro
+cd(fullfile(cfg.pathOfDuneuroToolbox,'bin'));
+
 if cfg.runFromBst == 1; bst_progress('text', 'Duneuro:  run fem computation ... '); end
 if cfg.displayComment ==1;disp(['duneruo >>6 - Run duneuro binaries from ' (fullfile(cfg.pathOfTempOutPut))]);end
 % define the command line
 cfg = bst_set_duneuro_cmd(cfg);
 
-% @@ Run Duneuro @@
+%%%% @@ Run Duneuro @@ %%%%%%
 tic; cfg = bst_run_duneuro_cmd(cfg); cfg.time_fem = toc;
 if cfg.displayComment ==1;disp(['duneruo >>6 - FEM computation :  ' num2str(cfg.time_fem) ' s']);end
 

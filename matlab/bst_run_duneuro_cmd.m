@@ -9,7 +9,11 @@ function cfg = bst_run_duneuro_cmd(cfg)
 if ~isfield(cfg,'BstDuneuroVersion');  cfg.BstDuneuroVersion = 2; end 
 
 % the configuration file.
-arg1 = cfg.mini_filename; 
+if cfg.runFromBst
+    arg1 = fullfile(cfg.pathOfTempOutPut, cfg.mini_filename); 
+else
+    arg1 = cfg.mini_filename;
+end
 arg2 = [' '  '--' cfg.modality];
 
 % run the command

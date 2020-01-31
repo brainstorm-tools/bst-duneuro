@@ -10,7 +10,8 @@ function cfg = bst_set_duneuro_cmd(cfg)
 
 if ~isfield(cfg,'BstDuneuroVersion');  cfg.BstDuneuroVersion = 2; end
 
-if cfg.BstDuneuroVersion == 1
+% We keep this version for testing 
+if cfg.BstDuneuroVersion == 1 
     if strcmp(cfg.modality,'eeg')
         if cfg.useTransferMatrix  == 1 % faster
             cmd = 'bst_eeg_transfer';

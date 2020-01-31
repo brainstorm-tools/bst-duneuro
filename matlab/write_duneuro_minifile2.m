@@ -1,6 +1,6 @@
 function write_duneuro_minifile2(cfg, minifile_name)
 %  write_duneuro_minifile2(cfg, minifile_name)
-%  
+%
 % This funcition write in a text file with all the confuguration (initialisation) parameters
 % that will be used by the Duneuro application to compute the FEM solution
 % The input is a structure that contains the parameters and the output is a
@@ -34,7 +34,7 @@ if strcmp(cfg.minifile.solver_type,'udg')
     error (['solver_type : %s is not suppored for now ... we work on it', minifile.solver_type ])
 end
 
-% check if the extention is included 
+% check if the extention is included
 [~,~,ext] = fileparts(minifile_name);
 if isempty(ext)
     minifile_name = [minifile_name '.mini'];
@@ -44,7 +44,13 @@ end
 fid = fopen(minifile_name, 'wt+');
 
 %% 0 - Subpart general setting
-fprintf(fid, '__name = %s\n\n',cfg.minifile.name);
+
+if cfg.runFromBst
+    fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.name));
+else
+    fprintf(fid, '__name = %s\n\n', cfg.minifile.name);
+end
+
 if strcmp(cfg.minifile.solver_type,'cg')
     fprintf(fid, 'type = %s\n',cfg.minifile.type);
 end
@@ -56,53 +62,75 @@ fprintf(fid, 'tolerance = %d\n',cfg.minifile.tolerance);
 
 
 %% 1 - Subpart sensors
-if strcmp(cfg.modality,'eeg') || strcmp(cfg.modality,'meeg') 
-% subpart electrode : [electrodes]
-fprintf(fid, '[electrodes]\n');
-fprintf(fid, 'filename  = %s\n',cfg.minifile.electrode.filename);
-fprintf(fid, 'type = %s\n',cfg.minifile.electrode.type);
+if strcmp(cfg.modality,'eeg') || strcmp(cfg.modality,'meeg')
+    % subpart electrode : [electrodes]
+    fprintf(fid, '[electrodes]\n');
+    if cfg.runFromBst
+        fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.electrode.filename));
+    else
+        fprintf(fid, 'filename  = %s\n',cfg.minifile.electrode.filename);
+    end
+    fprintf(fid, 'type = %s\n',cfg.minifile.electrode.type);
 end
 
-if strcmp(cfg.modality,'meg') || strcmp(cfg.modality,'meeg') 
-% subpart electrode : [meg]
-fprintf(fid, '[meg]\n');
-fprintf(fid, 'intorderadd  = %d\n', cfg.minifile.meg.intorderadd); % =0
-fprintf(fid, 'type  = %s\n', cfg.minifile.meg.type); % = physical
-% subpart coils : [coils]
-fprintf(fid, '[coils]\n');
-fprintf(fid, 'filename  = %s\n',cfg.coil_filename);
-% subpart [projections]
-fprintf(fid, '[projections]\n');
-fprintf(fid, 'filename  = %s\n',cfg.minifile.projection_filename); % = text file
+if strcmp(cfg.modality,'meg') || strcmp(cfg.modality,'meeg')
+    % subpart electrode : [meg]
+    fprintf(fid, '[meg]\n');
+    fprintf(fid, 'intorderadd  = %d\n', cfg.minifile.meg.intorderadd); % =0
+    fprintf(fid, 'type  = %s\n', cfg.minifile.meg.type); % = physical
+    % subpart coils : [coils]
+    fprintf(fid, '[coils]\n');
+    if cfg.runFromBst
+        fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.coil_filename));
+    else
+        fprintf(fid, 'filename  = %s\n',cfg.coil_filename);
+    end
+    % subpart [projections]
+    fprintf(fid, '[projections]\n');
+    if cfg.runFromBst
+        fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.projection_filename));
+    else
+        fprintf(fid, 'filename  = %s\n',cfg.minifile.projection_filename); % = text file
+    end
 end
 
 %% 2 -  subpart dipoles : [dipoles]
 fprintf(fid, '[dipoles]\n');
-fprintf(fid, 'filename  = %s\n',cfg.minifile.dipole.filename);
-
+if cfg.runFromBst
+    fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.dipole.filename));
+else
+    fprintf(fid, 'filename  = %s\n',cfg.minifile.dipole.filename);
+end
 %% 3 - Subpart [volume_conductor.grid]
 fprintf(fid, '[volume_conductor.grid]\n');
-fprintf(fid, 'filename  = %s\n',cfg.minifile.volume_conductor_grid.filename);
+if cfg.runFromBst
+    fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.volume_conductor_grid.filename));
+else
+    fprintf(fid, 'filename  = %s\n',cfg.minifile.volume_conductor_grid.filename);
+end
 % subpart  [volume_conductor.tensors]
 fprintf(fid, '[volume_conductor.tensors]\n');
-fprintf(fid, 'filename  = %s\n',cfg.minifile.volume_conductor_tensors.filename);
-
+if cfg.runFromBst
+    fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.volume_conductor_tensors.filename));
+else
+    fprintf(fid, 'filename  = %s\n',cfg.minifile.volume_conductor_tensors.filename);
+end
 %% 4 - Subpart  [solver]
 fprintf(fid, '[solver]\n');
 fprintf(fid, 'solver_type  = %s\n',cfg.minifile.solver.solver_type); % cg pour conjugate gradient et pas continious galerkin
 fprintf(fid, 'preconditioner_type  = %s\n',cfg.minifile.solver.preconditioner_type);
 if strcmp(cfg.minifile.solver_type,'cg')
-fprintf(fid, 'cg_smoother_type  = %s\n',cfg.minifile.solver.cg_smoother_type);
+    fprintf(fid, 'cg_smoother_type  = %s\n',cfg.minifile.solver.cg_smoother_type);
 end
 fprintf(fid, 'intorderadd  = %d\n',cfg.minifile.solver.intorderadd);
 % case of the dg discontinious galerkin
 if strcmp(cfg.minifile.solver_type,'dg')
-fprintf(fid, 'dg_smoother_type  = %s\n',cfg.minifile.solver.dg_smoother_type);
-fprintf(fid, 'scheme  = %s\n',cfg.minifile.solver.scheme);%/sipg
-fprintf(fid, 'penalty  = %d\n',cfg.minifile.solver.penalty);%20
-fprintf(fid, 'edge_norm_type  = %s\n',cfg.minifile.solver.penalty);%houston
-fprintf(fid, 'weights  = %s\n',cfg.minifile.solver.penalty);%true
-fprintf(fid, 'reduction  = %s\n',cfg.minifile.solver.reduction);%true
+    fprintf(fid, 'dg_smoother_type  = %s\n',cfg.minifile.solver.dg_smoother_type);
+    fprintf(fid, 'scheme  = %s\n',cfg.minifile.solver.scheme);%/sipg
+    fprintf(fid, 'penalty  = %d\n',cfg.minifile.solver.penalty);%20
+    fprintf(fid, 'edge_norm_type  = %s\n',cfg.minifile.solver.penalty);%houston
+    fprintf(fid, 'weights  = %s\n',cfg.minifile.solver.penalty);%true
+    fprintf(fid, 'reduction  = %s\n',cfg.minifile.solver.reduction);%true
 end
 
 %% 5 - Subpart  [solution]

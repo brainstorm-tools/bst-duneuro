@@ -11,7 +11,7 @@ femheadfile = fullfile(data.SUBJECTS ,TessFiles);
 femhead  = load(fullfile(data.SUBJECTS ,TessFiles));
 
 % Open progress bar
-bst_progress('start', 'FEM mesh', 'Surface Extraction From Mesh mesh (iso2mesh)...');
+bst_progress('start', 'FEM mesh', 'Surface Extraction From Mesh (iso2mesh)...');
 
 % load the data
 % femhead = load(femheadfile);
@@ -24,8 +24,13 @@ for ind = 1 : length(elemID)
     
     % extract the surface enclosed the combined tissu
     [openface,~]=volface(femhead.Elements(find(combined), :));
-    figure; plotmesh(femhead.Vertices,openface,'z>0'), title(femhead.TissueLabels{ind})
-    [Vertices,Faces]=removeisolatednode(femhead.Vertices,openface);
+%     figure; plotmesh(femhead.Vertices,openface,'z>0'), title(femhead.TissueLabels{ind})
+%     [Vertices,Faces]=removeisolatednode(femhead.Vertices,openface);
+    % [Vertices,Faces]=meshcheckrepair(Vertices,Faces,'dup');
+    % [Vertices,Faces]=meshcheckrepair(Vertices,Faces,'isolated');
+    [Vertices,Faces]=meshcheckrepair(femhead.Vertices,openface,'meshfix');
+%         figure; plotmesh(Vertices,Faces,'z>0'), title(femhead.TissueLabels{ind})
+
     VertConn = []; VertNormals = []; Curvature = []; SulciMap = []; Atlas = []; iAtlas =[]; tess2mri_interp = []; Reg = [];
     History = ['surface initially generated from file "' femheadfile '"'];
     Comment = femhead.TissueLabels{ind};

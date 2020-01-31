@@ -13,5 +13,4 @@ cfg = bst_set_minifile(cfg);
 % Write the file
 cfg.mini_filename = [ cfg.filename '_minifile.mini' ];
 write_duneuro_minifile2(cfg);
-
 end

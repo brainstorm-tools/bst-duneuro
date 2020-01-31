@@ -46,7 +46,7 @@ function [Gain, errMsg] = bst_duneuro(OPTIONS)
 
 % ===== Set number of cores  =====
 % TODO : check whith Duneuro team if it's possibel
-bst_progress('setimage', 'logo-duneuro.png');
+bst_progress('setimage', 'logo-duneuro.png'); % TODO : Francois : need to add the image of duneuro to folder : https://www.dropbox.com/s/9ocje2p7lqzlmmj/duneuro.png?dl=0
 bst_progress('start', 'Head modeler', 'Initialization...');
 % Intialize variables
 Dims = 3;
@@ -69,18 +69,19 @@ fid_log = fopen(logFile, 'w');
 %% ===== PREPARE THE INTERFACE TO DUNEURO =====
 %% 0 - Initialisation for duneuro computation (configuration used by the duneuro interface)
 %  find the bst_duneuro_toolbox path
-str = which('bst_unique_readme.txt','-all'); % <== May be not needed if we include the main function
+str = which('bst_unique_readme.txt','-all'); % <== May be not needed if we include the main function : USE : bst_fullfile(bst_get('BrainstormUserDir'), 'bst_duneuro');
 filepath = fileparts(str{1});                      % < == //                       //                   //                    //
 
 % TODO : some of these parameters and other should be tuned from outside
 bst_progress('text', 'Duneuro: prepare the input ...');
 cfg = [];
 cfg.pathOfTempOutPut = TmpDir;
-cfg.pathOfDuneuroToolbox = filepath;
+cfg.pathOfDuneuroToolbox = filepath; % USE : bst_fullfile(bst_get('BrainstormUserDir'), 'bst_duneuro');
 cfg.currentPath = curdir;
 cfg.runFromBst  = 1; % update the bst_progress text
 cfg.displayComment  = 0; % update the bst_progress text
 cfg.femSourceModel = OPTIONS.FemSourceModel;% TODO : from outside :  partial_integration, venant, subtraction ==> check set_minifile
+                                                                                    % % TODO : we can do it from here instead to modify the bst file    
 cfg.deleteOutputFolder = 0; % brainstorm will manage the rest
 %%%
 if isEeg; cfg.modality = 'eeg'; goodChannel = OPTIONS.iEeg; end
@@ -107,7 +108,7 @@ if isEeg; cfg.layerToKeep = ones(length(unique(femhead.Tissue))); end % < == sit
 if isMeg; cfg.layerToKeep = OPTIONS.layerToKeep; end 
 
 %% 2- Source space
-cfg.sourceSpace = OPTIONS.GridLoc;
+cfg.sourceSpace = OPTIONS.GridLoc; % TODO : Chrink the FEM cortex by 1mm and then subtiture it here ...
 
 % %%% TODO adapt it for duneuro fem
 % %Center all the points on the center of the envelope
@@ -159,7 +160,7 @@ end
 %% 4- Conductivity/tensor
 % TODO : Adapt this for anisotrpy // maybe could be done from outside and
 % put the tensor on OPTIONS.Conductivity or create new field OPTIONS.ConductivityTensor
-cfg.conductivity = OPTIONS.FemCond;
+cfg.conductivity = OPTIONS.FemCond; % TODO : we can do it from here instead to modify the bst file
 
 %% 5- Duneuro-Brainstorm interface
 %% ===== DUNEURO LEADFIELD COMPUTATION   =====
