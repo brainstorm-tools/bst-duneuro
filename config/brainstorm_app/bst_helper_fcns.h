@@ -146,12 +146,12 @@ std::shared_ptr<duneuro::DenseMatrix<double>> readTransferMatrix(const std::stri
     return matrixTransfer;
 }
 
-void saveLFfiles(const std::string &fname,
+void saveLFfile(const std::string &fname,
             std::vector<std::vector<double>> &num_transfer,
             const int numDipoles, const int numElectrodes)
 {
     //save leadfields as binary and text files
-    std::ofstream fidBin(fname + ".dat", std::ios::binary);
+    std::ofstream fidBin(fname, std::ios::binary);
     fidBin << "::" << numDipoles << "::" << numElectrodes << "::";
     for (int i = 0; i < numDipoles; ++i)
     {
@@ -159,12 +159,12 @@ void saveLFfiles(const std::string &fname,
     }
     fidBin.close();
 
-    std::ofstream fidTxt{fname + ".txt"};
-    for (unsigned int i = 0; i < numDipoles; ++i)
-    {
-        for (unsigned int j = 0; j < numElectrodes; ++j)
-            fidTxt << num_transfer[i][j] << " ";
-        fidTxt << "\n";
-    }
-    fidTxt.close();
+    // std::ofstream fidTxt{fname + ".txt"};
+    // for (unsigned int i = 0; i < numDipoles; ++i)
+    // {
+    //     for (unsigned int j = 0; j < numElectrodes; ++j)
+    //         fidTxt << num_transfer[i][j] << " ";
+    //     fidTxt << "\n";
+    // }
+    // fidTxt.close();
 }

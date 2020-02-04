@@ -1,5 +1,5 @@
-__name = eeg_forward_cg
-
+name = eeg_forward_cg
+pepe = eeg_baby
 type = fitted
 solver_type = cg
 element_type = tetrahedron, hexahedron | expand etype
