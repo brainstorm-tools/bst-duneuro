@@ -6,7 +6,7 @@ function cfg = bst_default_duneuroConfiguration(varargin)
 
 % Takfarinas MEDANI
 %             updates : add the MEG configurations, december 209,
-
+%                             add the  7 - subpart  [brainstorm] fileds, February 2020 
 % TODO : add the unfitted method and its options
 % refer to this : https://docs.google.com/spreadsheets/d/1MqURQsszn8Qj3-XRX_Z8qFFnz6Yl2-uYALkV-8pJVaM/edit#gid=0
 
@@ -60,7 +60,7 @@ if ~isfield(cfg,'dnWeights'); cfg.dnWeights = 'true'; end %  what are the others
 if ~isfield(cfg,'dnReduction'); cfg.dnWeights = 'true'; end %  what are the others 
 
 %% 5 - Subpart  [solution]
-if ~isfield(cfg,'dnSolutionPostProcess'); cfg.dnSolutionPostProcess ='true'; end %  what are the others 
+if ~isfield(cfg,'dnSolutionPostProcess'); cfg.dnSolutionPostProcess = 'true'; end %  what are the others 
 if ~isfield(cfg,'dnSolutionSubstractMean'); cfg.dnSolutionSubstractMean ='false'; end %  what are the others 
 % subpart  [solution.solver]
 if ~isfield(cfg,'dnSolutionSolverReduction'); cfg.dnSolutionSolverReduction = 1e-10; end %  what are the others 
@@ -76,5 +76,16 @@ if ~isfield(cfg,'femSourceModelRelaxationFactor'); cfg.femSourceModelRelaxationF
 if ~isfield(cfg,'femSourceModelMixedMoments'); cfg.femSourceModelMixedMoments = 'true'; end % 
 if ~isfield(cfg,'femSourceModelRestrict'); cfg.femSourceModelRestrict = 'true'; end % 
 if ~isfield(cfg,'femSourceModelInitialization'); cfg.femSourceModelInitialization = 'closest_vertex'; end % 
+
+%% 7 - subpart  [brainstorm]
+if ~isfield(cfg,'brainstormModality'); cfg.brainstormModality = cfg.modality; end % should be done from the bst as tmp folder 
+if ~isfield(cfg,'brainstormOutputFolder'); cfg.brainstormOutputFolder = pwd; end % should be done from the bst as tmp folder 
+if ~isfield(cfg,'brainstormEegSaveTransfer'); cfg.brainstormEegSaveTransfer = 'false'; end % 
+if ~isfield(cfg,'brainstormMegSaveTransfer'); cfg.brainstormEegSaveTransfer = 'false'; end % 
+if ~isfield(cfg,'brainstormMEegSaveTransfer'); cfg.brainstormMEegSaveTransfer = 'false'; end % implicite if meg and eeg ==1 , will be set from matlab
+if ~isfield(cfg,'brainstormEegTransferFilename'); cfg.brainstormEegTransferFilename = 'eeg_transfer.dat'; end % i
+if ~isfield(cfg,'brainstormMegTransferFilename'); cfg.brainstormMegTransferFilename = 'meg_transfer.dat'; end % 
+if ~isfield(cfg,'brainstormEegLeadfieldFilename'); cfg.brainstormEegLeadfieldFilename = 'eeg_lf.dat'; end %
+if ~isfield(cfg,'brainstormMegLeadfieldFilename'); cfg.brainstormMegLeadfieldFilename = 'meg_lf.dat'; end % 
 
 end

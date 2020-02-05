@@ -31,7 +31,7 @@ end
 
 % Check the solver type :
 if strcmp(cfg.minifile.solver_type,'udg')
-    error (['solver_type : %s is not suppored for now ... we work on it', minifile.solver_type ])
+    error (['solver_type : %s is not suppored for now ... we will work on it soon', minifile.solver_type ])
 end
 
 % check if the extention is included
@@ -141,7 +141,7 @@ fprintf(fid, 'subtract_mean  = %s\n',cfg.minifile.solution.subtract_mean); % boo
 fprintf(fid, '[solution.solver]\n');
 fprintf(fid, 'reduction  = %d\n',cfg.minifile.solution.solver.reduction);
 
-%% subpart  [solution.source_model]
+%% 6-  subpart  [solution.source_model]
 fprintf(fid, '[solution.source_model]\n');
 fprintf(fid, 'type  = %s\n',cfg.minifile.solution.source_model.type );
 fprintf(fid, 'intorderadd  = %d\n',cfg.minifile.solution.source_model.intorderadd);
@@ -153,6 +153,19 @@ fprintf(fid, 'relaxationFactor  = %d\n',cfg.minifile.solution.source_model.relax
 fprintf(fid, 'mixedMoments  = %s\n',cfg.minifile.solution.source_model.mixedMoments);
 fprintf(fid, 'restrict  = %s\n',cfg.minifile.solution.source_model.restrict );
 fprintf(fid, 'initialization  = %s\n',cfg.minifile.solution.source_model.initialization);
+
+%% 7 - subpart  [brainstorm]
+fprintf(fid, '[brainstorm]\n');
+fprintf(fid, 'modality  = %s\n', cfg.minifile.brainstorm.modality ); % default is : eeg
+fprintf(fid, 'outputfolder  = %s\n', cfg.minifile.brainstorm.outputfolder  );
+fprintf(fid, 'eeg_save_transfer  = %s\n',cfg.minifile.brainstorm.eeg_save_transfer ); % true or false 
+fprintf(fid, 'meg_save_transfer  = %s\n',cfg.minifile.brainstorm.meg_save_transfer ); % true or false 
+fprintf(fid, 'meeg_save_transfer  = %s\n',cfg.minifile.brainstorm.meeg_save_transfer ); % imlicite from previous value : true or false 
+fprintf(fid, 'eeg_transfer_filename  = %s\n',cfg.minifile.brainstorm.eeg_transfer_filename ); %   default is : 'eeg_transfer.dat'
+fprintf(fid, 'meg_transfer_filename  = %s\n',cfg.minifile.brainstorm.meg_transfer_filename ); %  default is : 'meg_transfer.dat'
+fprintf(fid, 'eeg_leadfiled_filename  = %s\n',cfg.minifile.brainstorm.eeg_leadfiled_filename ); %  default is : 'eeg_lf.dat'
+fprintf(fid, 'meg_leadfiled_filename  = %s\n',cfg.minifile.brainstorm.meg_leadfiled_filename ); %   default is : 'meg_lf.dat'
+
 
 % The reste is not needed... just in case for further use
 % subpart [analytic_solution]

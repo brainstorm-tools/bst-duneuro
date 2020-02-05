@@ -36,18 +36,35 @@ if ~isfield(cfg,'useTransferMatrix'); cfg.useTransferMatrix = 1; end % use the t
 if ~isfield(cfg,'BstDuneuroVersion'); cfg.BstDuneuroVersion = 2; end                 % 1 previous with separate files, 2the new version combined eeg and meg and binary + txt output,   
 if ~isfield(cfg,'isotrop'); cfg.isotrop =1; end                                       % important to specify in order to write the correct file format (1 will use MSH, 0 will use Cauchy)
 if ~isfield(cfg,'lfAvrgRef'); cfg.lfAvrgRef = 0; end                              %  compute average reference 1, otherwise the electrode 1 is the reference and set to 0
+                                                                                                          %   in that case the for duneuro the electrod 1 is the reference and set to 0                              
 if ~isfield(cfg,'displayComment'); cfg.displayComment  = 0; end
 
-if cfg.runFromBst == 1;  cfg.lfAvrgRef = 0; end  % It seems that brainstorm has its own procedure, 
-                                                                             %   in that case the for duneuro the electrod 1 is the reference and set to 0                              
+if cfg.runFromBst == 1 
+    cfg.lfAvrgRef = 0; 
+    cfg.brainstormModality = cfg.modality; % 
+    if ~isfield(cfg,'brainstormOutputFolder') % ==> the output folder could be different from the temporary folder in the case where we want to save the transfer for example  
+        cfg.brainstormOutputFolder = cfg.pathOfTempOutPut; 
+    end % should be done from the bst
+
+end                                                                              
+                                                                            
+%%%%% UPDATES these values from here : 
+% subpart  [brainstorm]
+% if ~isfield(cfg,'brainstormEegSaveTransfer'); cfg.brainstormEegSaveTransfer = 'false'; end % 
+% if ~isfield(cfg,'brainstormMegSaveTransfer'); cfg.brainstormEegSaveTransfer = 'false'; end % 
+% if ~isfield(cfg,'brainstormMEegSaveTransfer'); cfg.brainstormMEegSaveTransfer = 'false'; end % implicite if meg and eeg ==1 , will be set from matlab
+                                                                       
+
 cfg.displayComment = 1;
 cfg.BstDuneuroVersion = 2;
+
+
+%% ------------- DUNEURO INTERFACE ------------- %%
 
 % % Copy the binaries output directory
 % if cfg.runFromBst == 1; bst_progress('text', ['Duneuro: copying the binaries to the  ' fullfile(cfg.pathOfTempOutPut)]); end
 % if cfg.displayComment ==1; disp(['duneruo >>0 - Changing path from ' cfg.currentPath ' to ' (fullfile(cfg.pathOfTempOutPut))]);end
 % copyfile(fullfile(cfg.pathOfDuneuroToolbox,'bin','*'),(fullfile(cfg.pathOfTempOutPut)),'f') % may be not needed ... 
-% 
 
 cd(fullfile(cfg.pathOfTempOutPut));
 %% 1- The head model : 
