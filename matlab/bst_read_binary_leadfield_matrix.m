@@ -13,10 +13,10 @@ function cfg = bst_read_binary_leadfield_matrix(cfg)
 
 currentPath = pwd;
 
-if isfield(cfg,'pathOfTempOutPut')
-    cd(cfg.pathOfTempOutPut )
+if isfield(cfg,'brainstormOutputFolder')
+    cd(cfg.brainstormOutputFolder  )
 else
-    error('Please specify the output path on the cfg structure as a string under cfg.pathOfTempOutPut ')
+    error('Please specify the output path on the cfg structure as a string under cfg.brainstormOutputFolder ')
 end
 
 % eeg

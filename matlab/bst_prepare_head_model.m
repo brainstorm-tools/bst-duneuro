@@ -27,7 +27,9 @@ if ~isfield(cfg,'saveBstFormat'); cfg.saveBstFormat = 0; end
 
 if strcmp(cfg.modality,'meg')
     % Apply the reduced volume for the MEG, this function will remove the
-    % unselected tissu from the head model
+    % unselected tissu from the head model, this could be also done for
+    % sEEG later
+    % 
     cfg = bst_selectVolumeTissu(cfg,cfg.layerToKeep);
 end
 

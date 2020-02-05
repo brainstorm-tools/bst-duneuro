@@ -8,12 +8,12 @@ function bst_write_msh_file(newnode,newelem,fname)
 
 %%
 % Check the formqt of the mesh
-[~,name,ext] = fileparts(fname);
+[filepath ,name , ext] = fileparts(fname);
 if isempty(ext) || ~strcmp(ext,'.msh')
     ext = '.msh';
 end
 % Check filenmae extention
-fname = [ name ext];
+fname = fullfile(filepath, [name, ext]);
 % ouvre ou crée un fichier
 fid = fopen(fname,'wt');
 

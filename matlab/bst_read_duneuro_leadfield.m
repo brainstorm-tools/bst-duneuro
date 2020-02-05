@@ -4,8 +4,8 @@ function cfg = bst_read_duneuro_leadfield(cfg)
 % Author :Takfarinas MEDANI, December, 2019.
 
 %% Set minimal configuration
-if ~isfield(cfg,'readDuneuroText'); cfg.readDuneuroTextMatrix = 1; end
-if ~isfield(cfg,'readDuneuroBinary'); cfg.readDuneuroBinary = 0; end
+if ~isfield(cfg,'readDuneuroText'); cfg.readDuneuroTextMatrix = 0; end
+if ~isfield(cfg,'readDuneuroBinary'); cfg.readDuneuroBinary = 1; end
 
 if cfg.BstDuneuroVersion == 1
     if cfg.readDuneuroTextMatrix == 1 % read the leadfield from the text file
@@ -27,9 +27,9 @@ if cfg.BstDuneuroVersion == 1
     end
 end
 
-if cfg.BstDuneuroVersion == 2
+if cfg.BstDuneuroVersion == 2 || cfg.BstDuneuroVersion == 3
     % Reading binary
-    if cfg.displayComment ==1;disp(['duneuro >> - Read the binary LF data from ' (fullfile(cfg.pathOfTempOutPut))]);end
+    if cfg.displayComment ==1;disp(['duneuro >> - Read the binary LF data from ' (fullfile(cfg.brainstormOutputFolder))]);end
     cfg = bst_read_binary_leadfield_matrix(cfg);
     %     cfg.fem_eeg_lf
     %     cfg.fem_meg_lf

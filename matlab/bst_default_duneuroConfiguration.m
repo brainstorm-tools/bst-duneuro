@@ -80,9 +80,9 @@ if ~isfield(cfg,'femSourceModelInitialization'); cfg.femSourceModelInitializatio
 %% 7 - subpart  [brainstorm]
 if ~isfield(cfg,'brainstormModality'); cfg.brainstormModality = cfg.modality; end % should be done from the bst as tmp folder 
 if ~isfield(cfg,'brainstormOutputFolder'); cfg.brainstormOutputFolder = pwd; end % should be done from the bst as tmp folder 
-if ~isfield(cfg,'brainstormEegSaveTransfer'); cfg.brainstormEegSaveTransfer = 'false'; end % 
-if ~isfield(cfg,'brainstormMegSaveTransfer'); cfg.brainstormEegSaveTransfer = 'false'; end % 
-if ~isfield(cfg,'brainstormMEegSaveTransfer'); cfg.brainstormMEegSaveTransfer = 'false'; end % implicite if meg and eeg ==1 , will be set from matlab
+if ~isfield(cfg,'brainstormSaveEegTransferFile'); cfg.brainstormSaveEegTransferFile = 'false'; end % 
+if ~isfield(cfg,'brainstormSaveMegTransferFile'); cfg.brainstormSaveMegTransferFile = 'false'; end % 
+if ~isfield(cfg,'brainstormSaveMEegTransferFile'); cfg.brainstormSaveMEegTransferFile = 'false'; end % implicite if meg and eeg ==1 , will be set from matlab
 if ~isfield(cfg,'brainstormEegTransferFilename'); cfg.brainstormEegTransferFilename = 'eeg_transfer.dat'; end % i
 if ~isfield(cfg,'brainstormMegTransferFilename'); cfg.brainstormMegTransferFilename = 'meg_transfer.dat'; end % 
 if ~isfield(cfg,'brainstormEegLeadfieldFilename'); cfg.brainstormEegLeadfieldFilename = 'eeg_lf.dat'; end %

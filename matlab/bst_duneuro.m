@@ -46,7 +46,6 @@ function [Gain, errMsg] = bst_duneuro(OPTIONS)
 
 % ===== Set number of cores  =====
 % TODO : check whith Duneuro team if it's possibel
-bst_progress('setimage', 'logo-duneuro.png'); % TODO : Francois : need to add the image of duneuro to folder : https://www.dropbox.com/s/9ocje2p7lqzlmmj/duneuro.png?dl=0
 bst_progress('start', 'Head modeler', 'Initialization...');
 % Intialize variables
 Dims = 3;
@@ -55,7 +54,7 @@ Gain = NaN * zeros(length(OPTIONS.Channel), Dims * nv);errMsg = '';
 % Save current folder
 curdir = pwd;
 
-solverMethod = 'duneuro'; % TODO : to change to 'duneuro' later
+solverMethod = 'duneuro'; 
 isEeg  = strcmpi(OPTIONS.EEGMethod, solverMethod )  && ~isempty(OPTIONS.iEeg);
 isMeg  = strcmpi(OPTIONS.MEGMethod, solverMethod)  && ~isempty(OPTIONS.iMeg);
 isEcog = strcmpi(OPTIONS.ECOGMethod, solverMethod) && ~isempty(OPTIONS.iEcog);
@@ -74,6 +73,7 @@ filepath = fileparts(str{1});                      % < == //                    
 
 % TODO : some of these parameters and other should be tuned from outside
 bst_progress('text', 'Duneuro: prepare the input ...');
+bst_progress('setimage', fullfile(filepath,'matlab','external', 'logo-duneuro.png')); 
 cfg = [];
 cfg.pathOfTempOutPut = TmpDir;
 cfg.pathOfDuneuroToolbox = filepath; % USE : bst_fullfile(bst_get('BrainstormUserDir'), 'bst_duneuro');
@@ -195,6 +195,4 @@ cd(curdir);
 % Remove Duneuro image
 bst_progress('removeimage');
 bst_progress('stop');
-
-% t_fem = toc
 end

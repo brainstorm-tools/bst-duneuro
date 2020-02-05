@@ -20,7 +20,7 @@ function write_duneuro_dipole_file(dipoles_pos,dipole_filename)
 if isempty(ext) || ~strcmp(ext,'.txt')
     ext = '.txt';
 end
-dipole_filename = [filepath,name,ext];
+dipole_filename =fullfile(filepath,[name,ext]);
 Nb_dipole = size(dipoles_pos, 1); 
 % generate triedre orientation for each dipole
 dipoles_pos_orie = [kron(dipoles_pos,ones(3,1)),...

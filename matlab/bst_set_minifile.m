@@ -79,14 +79,14 @@ cfg.minifile.solution.source_model.initialization = cfg.femSourceModelInitializa
 
 %% 7 - subpart  [brainstorm]
 cfg.minifile.brainstorm.modality = cfg.brainstormModality;%
-cfg.minifile.brainstorm.outputfolder = cfg.brainstormOutputFolder;%
-cfg.minifile.brainstorm.eeg_save_transfer = cfg.brainstormEegSaveTransfer;%
-cfg.minifile.brainstorm.meg_save_transfer = cfg.brainstormMegSaveTransfer;%
-cfg.minifile.brainstorm.meeg_save_transfer = cfg.brainstormMEegSaveTransfer;% implicite if meg and eeg ==1 , will be set from matlab
+cfg.minifile.brainstorm.output_folder = cfg.brainstormOutputFolder;%
+cfg.minifile.brainstorm.save_eeg_transfer_file = cfg.brainstormSaveEegTransferFile;%
+cfg.minifile.brainstorm.save_meg_transfer_file = cfg.brainstormSaveMegTransferFile;%
+cfg.minifile.brainstorm.save_meeg_transfer_file = cfg.brainstormSaveMEegTransferFile;% implicite if meg and eeg ==1 , will be set from matlab
 cfg.minifile.brainstorm.eeg_transfer_filename = cfg.brainstormEegTransferFilename;%
 cfg.minifile.brainstorm.meg_transfer_filename = cfg.brainstormMegTransferFilename;%
-cfg.minifile.brainstorm.eeg_leadfiled_filename = cfg.brainstormEegLeadfieldFilename;%
-cfg.minifile.brainstorm.meg_leadfiled_filename = cfg.brainstormMegLeadfieldFilename;%
+cfg.minifile.brainstorm.eeg_leadfield_filename = cfg.brainstormEegLeadfieldFilename;%
+cfg.minifile.brainstorm.meg_leadfield_filename = cfg.brainstormMegLeadfieldFilename;%
 
 
 % The reste is not needed... we keep it  just in case

@@ -48,7 +48,7 @@ if ~strcmp(ext,'.knw')
 end
 
 name = [name '_tensor'];
-filename = [name ext];
+filename = fullfile(filepath,[name ext]);
 
 %% Read elem
 if size(elem,2)<7

@@ -9,7 +9,7 @@ function write_duneuro_coil_file(coil_loc, coil_filename)
 if isempty(ext) || ~strcmp(ext,'.txt')
     ext = '.txt';
 end
-coil_filename = [filepath,name,ext];
+coil_filename = fullfile(filepath,[name,ext]);
 
 fid = fopen(coil_filename, 'wt+');
 fprintf(fid, '%d %d %d  \n', coil_loc');

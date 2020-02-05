@@ -36,13 +36,13 @@ if cfg.BstDuneuroVersion == 1
     end
 end
 
-if cfg.BstDuneuroVersion == 2 % refers to the new version all in one
-    %     cmd = 'bst_duneuro_meeg';
+if cfg.BstDuneuroVersion == 2 || cfg.BstDuneuroVersion == 3 % refers to the new version all in one
+    % cmd = 'bst_duneuro_meeg';
     % Use new version of name generated from juan shell file, from
     % 1/24/2020
-    str = dir('*.exe');
-    [filepath,cmd,ext] =  fileparts(str(1).name);
+    str = dir(fullfile(cfg.pathOfDuneuroToolbox,'bin','*.exe'));
+    [filepath,cmd, ext] =  fileparts(str(1).name);
 end
 
-cfg.cmd = cmd;
+cfg.cmd = fullfile(cfg.pathOfDuneuroToolbox,'bin', cmd);
 end

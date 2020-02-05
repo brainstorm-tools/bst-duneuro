@@ -11,6 +11,6 @@ function cfg = bst_prepare_minifile(cfg)
 cfg = bst_set_minifile(cfg);
 
 % Write the file
-cfg.mini_filename = [ cfg.filename '_minifile.mini' ];
-write_duneuro_minifile2(cfg);
+cfg.mini_filename = fullfile(cfg.pathOfTempOutPut, cfg.duneuro_configuration_filename );
+bst_write_duneuro_minifile(cfg);
 end

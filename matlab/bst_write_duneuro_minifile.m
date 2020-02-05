@@ -1,4 +1,4 @@
-function write_duneuro_minifile2(cfg, minifile_name)
+function bst_write_duneuro_minifile(cfg, minifile_name)
 %  write_duneuro_minifile2(cfg, minifile_name)
 %
 % This funcition write in a text file with all the confuguration (initialisation) parameters
@@ -35,7 +35,7 @@ if strcmp(cfg.minifile.solver_type,'udg')
 end
 
 % check if the extention is included
-[~,~,ext] = fileparts(minifile_name);
+[filepath,name,ext] = fileparts(minifile_name);
 if isempty(ext)
     minifile_name = [minifile_name '.mini'];
 end
@@ -45,11 +45,9 @@ fid = fopen(minifile_name, 'wt+');
 
 %% 0 - Subpart general setting
 
-if cfg.runFromBst
-    fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.name));
-else
-    fprintf(fid, '__name = %s\n\n', cfg.minifile.name);
-end
+
+fprintf(fid, '__name = %s\n\n', cfg.minifile.name);
+
 
 if strcmp(cfg.minifile.solver_type,'cg')
     fprintf(fid, 'type = %s\n',cfg.minifile.type);
@@ -65,11 +63,8 @@ fprintf(fid, 'tolerance = %d\n',cfg.minifile.tolerance);
 if strcmp(cfg.modality,'eeg') || strcmp(cfg.modality,'meeg')
     % subpart electrode : [electrodes]
     fprintf(fid, '[electrodes]\n');
-    if cfg.runFromBst
-        fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.electrode.filename));
-    else
-        fprintf(fid, 'filename  = %s\n',cfg.minifile.electrode.filename);
-    end
+    fprintf(fid, 'filename  = %s\n',cfg.minifile.electrode.filename);
+    
     fprintf(fid, 'type = %s\n',cfg.minifile.electrode.type);
 end
 
@@ -80,41 +75,31 @@ if strcmp(cfg.modality,'meg') || strcmp(cfg.modality,'meeg')
     fprintf(fid, 'type  = %s\n', cfg.minifile.meg.type); % = physical
     % subpart coils : [coils]
     fprintf(fid, '[coils]\n');
-    if cfg.runFromBst
-        fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.coil_filename));
-    else
-        fprintf(fid, 'filename  = %s\n',cfg.coil_filename);
-    end
+    
+    fprintf(fid, 'filename  = %s\n',cfg.coil_filename);
+    
     % subpart [projections]
     fprintf(fid, '[projections]\n');
-    if cfg.runFromBst
-        fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.projection_filename));
-    else
-        fprintf(fid, 'filename  = %s\n',cfg.minifile.projection_filename); % = text file
-    end
+    
+    fprintf(fid, 'filename  = %s\n',cfg.minifile.projection_filename); % = text file
+    
 end
 
 %% 2 -  subpart dipoles : [dipoles]
 fprintf(fid, '[dipoles]\n');
-if cfg.runFromBst
-    fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.dipole.filename));
-else
-    fprintf(fid, 'filename  = %s\n',cfg.minifile.dipole.filename);
-end
+
+fprintf(fid, 'filename  = %s\n',cfg.minifile.dipole.filename);
+
 %% 3 - Subpart [volume_conductor.grid]
 fprintf(fid, '[volume_conductor.grid]\n');
-if cfg.runFromBst
-    fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.volume_conductor_grid.filename));
-else
-    fprintf(fid, 'filename  = %s\n',cfg.minifile.volume_conductor_grid.filename);
-end
+
+fprintf(fid, 'filename  = %s\n',cfg.minifile.volume_conductor_grid.filename);
+
 % subpart  [volume_conductor.tensors]
 fprintf(fid, '[volume_conductor.tensors]\n');
-if cfg.runFromBst
-    fprintf(fid, 'filename  = %s\n', fullfile(cfg.pathOfTempOutPut, cfg.minifile.volume_conductor_tensors.filename));
-else
-    fprintf(fid, 'filename  = %s\n',cfg.minifile.volume_conductor_tensors.filename);
-end
+
+fprintf(fid, 'filename  = %s\n',cfg.minifile.volume_conductor_tensors.filename);
+
 %% 4 - Subpart  [solver]
 fprintf(fid, '[solver]\n');
 fprintf(fid, 'solver_type  = %s\n',cfg.minifile.solver.solver_type); % cg pour conjugate gradient et pas continious galerkin
@@ -157,14 +142,14 @@ fprintf(fid, 'initialization  = %s\n',cfg.minifile.solution.source_model.initial
 %% 7 - subpart  [brainstorm]
 fprintf(fid, '[brainstorm]\n');
 fprintf(fid, 'modality  = %s\n', cfg.minifile.brainstorm.modality ); % default is : eeg
-fprintf(fid, 'outputfolder  = %s\n', cfg.minifile.brainstorm.outputfolder  );
-fprintf(fid, 'eeg_save_transfer  = %s\n',cfg.minifile.brainstorm.eeg_save_transfer ); % true or false 
-fprintf(fid, 'meg_save_transfer  = %s\n',cfg.minifile.brainstorm.meg_save_transfer ); % true or false 
-fprintf(fid, 'meeg_save_transfer  = %s\n',cfg.minifile.brainstorm.meeg_save_transfer ); % imlicite from previous value : true or false 
+fprintf(fid, 'output_folder  = %s\n', fullfile(cfg.minifile.brainstorm.output_folder,filesep) );
+fprintf(fid, 'save_eeg_transfer_file  = %s\n',cfg.minifile.brainstorm.save_eeg_transfer_file ); % true or false
+fprintf(fid, 'save_meg_transfer_file  = %s\n',cfg.minifile.brainstorm.save_meg_transfer_file ); % true or false
+fprintf(fid, 'save_meeg_transfer_file  = %s\n',cfg.minifile.brainstorm.save_meeg_transfer_file ); % imlicite from previous value : true or false
 fprintf(fid, 'eeg_transfer_filename  = %s\n',cfg.minifile.brainstorm.eeg_transfer_filename ); %   default is : 'eeg_transfer.dat'
 fprintf(fid, 'meg_transfer_filename  = %s\n',cfg.minifile.brainstorm.meg_transfer_filename ); %  default is : 'meg_transfer.dat'
-fprintf(fid, 'eeg_leadfiled_filename  = %s\n',cfg.minifile.brainstorm.eeg_leadfiled_filename ); %  default is : 'eeg_lf.dat'
-fprintf(fid, 'meg_leadfiled_filename  = %s\n',cfg.minifile.brainstorm.meg_leadfiled_filename ); %   default is : 'meg_lf.dat'
+fprintf(fid, 'eeg_leadfield_filename  = %s\n',cfg.minifile.brainstorm.eeg_leadfield_filename ); %  default is : 'eeg_lf.dat'
+fprintf(fid, 'meg_leadfield_filename  = %s\n',cfg.minifile.brainstorm.meg_leadfield_filename ); %   default is : 'meg_lf.dat'
 
 
 % The reste is not needed... just in case for further use

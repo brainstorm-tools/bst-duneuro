@@ -9,7 +9,7 @@ function write_duneuro_electrode_file(channel_loc, electrode_filename)
 if isempty(ext) || ~strcmp(ext,'.txt')
     ext = '.txt';
 end
-electrode_filename = [filepath,name,ext];
+electrode_filename = fullfile(filepath,[name,ext]);
 
 fid = fopen(electrode_filename, 'wt+');
 fprintf(fid, '%d %d %d  \n', channel_loc');

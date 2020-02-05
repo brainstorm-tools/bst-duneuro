@@ -30,7 +30,7 @@ function cfg = bst_duneuro_interface(cfg)
 %% 0 - Initialisation 
 % Set the default parameters used in this function
 if ~isfield(cfg,'modality'); cfg.modality  = 'eeg'; end
-if ~isfield(cfg,'runFromBst'); cfg.runFromBst = 0; end                    % Works only if called from brainstorm (also if brainstorm is in the path)
+if ~isfield(cfg,'runFromBst'); cfg.runFromBst = 0; end                    % Works only if called from brainstorm 
 if ~isfield(cfg,'currentPath'); cfg.currentPath = pwd; end                 % This function will cd to a temporary file and then return here (pwd) 
 if ~isfield(cfg,'useTransferMatrix'); cfg.useTransferMatrix = 1; end % use the transfer matrix is recommended (choice 0 only for duneuroVersion 1)
 if ~isfield(cfg,'BstDuneuroVersion'); cfg.BstDuneuroVersion = 2; end                 % 1 previous with separate files, 2the new version combined eeg and meg and binary + txt output,   
@@ -38,78 +38,70 @@ if ~isfield(cfg,'isotrop'); cfg.isotrop =1; end                                 
 if ~isfield(cfg,'lfAvrgRef'); cfg.lfAvrgRef = 0; end                              %  compute average reference 1, otherwise the electrode 1 is the reference and set to 0
                                                                                                           %   in that case the for duneuro the electrod 1 is the reference and set to 0                              
 if ~isfield(cfg,'displayComment'); cfg.displayComment  = 0; end
+if ~isfield(cfg,'pathOfTempOutPut'); cfg.pathOfTempOutPut =  cfg.currentPath; end  
 
-if cfg.runFromBst == 1 
-    cfg.lfAvrgRef = 0; 
-    cfg.brainstormModality = cfg.modality; % 
-    if ~isfield(cfg,'brainstormOutputFolder') % ==> the output folder could be different from the temporary folder in the case where we want to save the transfer for example  
-        cfg.brainstormOutputFolder = cfg.pathOfTempOutPut; 
+if cfg.runFromBst == 1
+    cfg.lfAvrgRef = 0;
+    cfg.brainstormModality = cfg.modality; %
+    if ~isfield(cfg,'brainstormOutputFolder') % ==> the output folder could be different from the temporary folder in the case where we want to save the transfer for example
+        cfg.brainstormOutputFolder = cfg.pathOfTempOutPut;
     end % should be done from the bst
-
-end                                                                              
+    %%%%% UPDATES these values from here :
+    % subpart  [brainstorm]
+    % if ~isfield(cfg,'brainstormEegSaveTransfer'); cfg.brainstormEegSaveTransfer = 'false'; end %
+    % if ~isfield(cfg,'brainstormMegSaveTransfer'); cfg.brainstormMegSaveTransfer = 'false'; end %
+end
                                                                             
-%%%%% UPDATES these values from here : 
-% subpart  [brainstorm]
-% if ~isfield(cfg,'brainstormEegSaveTransfer'); cfg.brainstormEegSaveTransfer = 'false'; end % 
-% if ~isfield(cfg,'brainstormMegSaveTransfer'); cfg.brainstormEegSaveTransfer = 'false'; end % 
-% if ~isfield(cfg,'brainstormMEegSaveTransfer'); cfg.brainstormMEegSaveTransfer = 'false'; end % implicite if meg and eeg ==1 , will be set from matlab
-                                                                       
-
-cfg.displayComment = 1;
-cfg.BstDuneuroVersion = 2;
+                                                                   
+cfg.displayComment = 0;
+cfg.BstDuneuroVersion = 3;
 
 
 %% ------------- DUNEURO INTERFACE ------------- %%
 
-% % Copy the binaries output directory
-% if cfg.runFromBst == 1; bst_progress('text', ['Duneuro: copying the binaries to the  ' fullfile(cfg.pathOfTempOutPut)]); end
-% if cfg.displayComment ==1; disp(['duneruo >>0 - Changing path from ' cfg.currentPath ' to ' (fullfile(cfg.pathOfTempOutPut))]);end
-% copyfile(fullfile(cfg.pathOfDuneuroToolbox,'bin','*'),(fullfile(cfg.pathOfTempOutPut)),'f') % may be not needed ... 
-
-cd(fullfile(cfg.pathOfTempOutPut));
-%% 1- The head model : 
+% cd(fullfile(cfg.pathOfTempOutPut));
+%% 1- Prepare the head model : 
 % Write the head file according to the configuration cfg
-if cfg.runFromBst == 1; bst_progress('text', 'Duneuro:  write the head geometry file ... '); end
+if cfg.runFromBst == 1; bst_progress('text', 'Duneuro (1/7): 1- Prepare the head model ... '); end
 if cfg.displayComment ==1;disp(['duneruo >>1 - Writing the head file  to ' ((cfg.pathOfTempOutPut))]);end
-if ~isfield(cfg,'filename'); cfg.filename = 'head_model'; end  % Use the default name.
+if ~isfield(cfg,'filename');    cfg.filename = fullfile(cfg.pathOfTempOutPut,'head_model'); end  % Use the default name.
 cfg = bst_prepare_head_model(cfg);
 
-%% 2- The Source Model : Same for EEG and MEG 
+%% 2- Prepare the Source Model : Same for EEG and MEG 
 % Write the source/dipole file
-if cfg.runFromBst == 1; bst_progress('text', 'Duneuro:  write the dipoles file ... '); end
+if cfg.runFromBst == 1; bst_progress('text', 'Duneuro (2/7): 2- Prepare the Source Model ... '); end
 if cfg.displayComment ==1;disp(['duneruo >>2 - Writing the dipole file  to ' ((cfg.pathOfTempOutPut))]);end
-cfg.dipole_filename  = 'dipole_model.txt';
+cfg.dipole_filename  = fullfile(cfg.pathOfTempOutPut,'dipole_model.txt');
 write_duneuro_dipole_file(cfg.sourceSpace,cfg.dipole_filename);
 
-%% 3- The Sensor Model : 
-if cfg.runFromBst == 1; bst_progress('text', 'Duneuro:  write the sensor file ... '); end
+%% 3- Prepare the Sensor Model : 
+if cfg.runFromBst == 1; bst_progress('text','Duneuro (2/7): 3- Prepare the Sensor Model ... '); end
 if cfg.displayComment ==1;disp(['duneruo >>3 - Writing the sensor file  to ' ((cfg.pathOfTempOutPut))]);end
-cfg.dipole_filename  = 'dipole_model.txt';
 cfg = bst_prepare_sensor_model(cfg);
 
-%% 4- The Conductivity Model
-if cfg.runFromBst == 1; bst_progress('text', 'Duneuro:  write the conductivity file ... '); end
+%% 4- Prepare the Conductivity/tensor Model
+if cfg.runFromBst == 1; bst_progress('text', 'Duneuro (4/7): 4- Prepare the Conductivity/tensor Model ... '); end
 if cfg.displayComment ==1;disp(['duneruo >>4 - Writing the conductivity/tensor file  to ' ((cfg.pathOfTempOutPut))]);end
 cfg = bst_prepare_conductivity_model(cfg);
 
-%%  5- The Duneuro Configuration file / the minifile
-if cfg.runFromBst == 1; bst_progress('text', 'Duneuro:  write the configuration file ... '); end
+%%  5- Prepare the Duneuro Configuration file / the minifile
+if cfg.runFromBst == 1; bst_progress('text',  'Duneuro (5/7): 5- Prepare the Duneuro Configuration file  ... '); end
 if cfg.displayComment ==1;disp(['duneruo >>5 - Writing the duneuro configuration file  to ' ((cfg.pathOfTempOutPut))]);end
 cfg = bst_prepare_minifile(cfg);
 
-%% 6- Run the duneuro
-cd(fullfile(cfg.pathOfDuneuroToolbox,'bin'));
+%% 6- Prepapre & Run the Duneuro Application
+% cd(fullfile(cfg.pathOfDuneuroToolbox,'bin'));
 
-if cfg.runFromBst == 1; bst_progress('text', 'Duneuro:  run fem computation ... '); end
-if cfg.displayComment ==1;disp(['duneruo >>6 - Run duneuro binaries from ' (fullfile(cfg.pathOfTempOutPut))]);end
+if cfg.runFromBst == 1; bst_progress('text', 'Duneuro (6/7):  6- Prepapre & Run the Duneuro Application ... '); end
 % define the command line
 cfg = bst_set_duneuro_cmd(cfg);
-
 %%%% @@ Run Duneuro @@ %%%%%%
 tic; cfg = bst_run_duneuro_cmd(cfg); cfg.time_fem = toc;
 if cfg.displayComment ==1;disp(['duneruo >>6 - FEM computation :  ' num2str(cfg.time_fem) ' s']);end
 
-%% 7- Read the lead field matrix
+%% 7- Read the lead field matrix (EEG or/and MEG)
+if cfg.runFromBst == 1; bst_progress('text', 'Duneuro (7/7):  7- Post-process the LeadField ... '); end
+
 if cfg.displayComment ==1;disp(['duneuro >>7 - Read the leadfield from ' (fullfile(cfg.pathOfTempOutPut))]);end
 cfg = bst_read_duneuro_leadfield(cfg);
 
@@ -126,7 +118,7 @@ if cfg.deleteOutputFolder == 1
 end
 
 %% 10- Go back to the work space
-if cfg.displayComment ==1;disp(['duneruo >>10 - Going back to  ' cfg.currentPath ]);end
+if cfg.displayComment ==1;disp(['duneruo >>10 - Going back to the current folder ' cfg.currentPath ]);end
 cd(cfg.currentPath)
 if ~isfield(cfg,'writeLogFile'); cfg.writeLogFile = 0; end
 if cfg.writeLogFile == 1; diary off; end

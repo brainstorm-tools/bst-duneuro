@@ -12,7 +12,7 @@ function write_duneuro_conductivity_file(conductivity,cond_filename)
 if isempty(ext) || ~strcmp(ext,'.con')
     ext = '.con';
 end
-cond_filename = [filepath,name,ext];
+cond_filename = fullfile(filepath,[name,ext]);
 fid = fopen(cond_filename , 'w');
 fprintf(fid, '%d\t', conductivity);
 fclose(fid);
