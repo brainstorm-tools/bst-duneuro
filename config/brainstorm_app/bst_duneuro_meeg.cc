@@ -50,12 +50,12 @@ void runEEG(const Dune::ParameterTree &config)
     std::shared_ptr<duneuro::DenseMatrix<double>> transfer{nullptr};
 
     //check if transfer matrix file exists
-    if (fileExists(config["brainstorm.workingfolder"] + config["brainstorm.eeg_transfer_filename"]))
+    if (fileExists(config["brainstorm.output_folder"] + config["brainstorm.eeg_transfer_filename"]))
     {
         printf("\nThis is a known model. Load the transfer Matrix.\n");
 
         //read transfer file
-        transfer = readTransferMatrix(config["brainstorm.workingfolder"] + config["brainstorm.eeg_transfer_filename"]);
+        transfer = readTransferMatrix(config["brainstorm.output_folder"] + config["brainstorm.eeg_transfer_filename"]);
     }
     else
     {
@@ -64,7 +64,10 @@ void runEEG(const Dune::ParameterTree &config)
         transfer = driver->computeEEGTransferMatrix(config.sub("solution"));
 
         //save transfer matrix to a file
-        saveTransferMatrix(config["brainstorm.workingfolder"] + config["brainstorm.eeg_transfer_filename"], transfer);
+        if (config["brainstorm.save_eeg_transfer_file"] == std::string("true"))
+        {
+            saveTransferMatrix(config["brainstorm.output_folder"] + config["brainstorm.eeg_transfer_filename"], transfer);
+        }
     }
 
     // compute numerical solution transferred
@@ -72,8 +75,8 @@ void runEEG(const Dune::ParameterTree &config)
     std::vector<std::vector<double>> num_transfer =
         driver->applyEEGTransfer(*transfer, dipoles, config.sub("solution"));
     //save files
-    std::cout << "outputfile = " << config["brainstorm.workingfolder"] + config["brainstorm.eeg_leadfield_filename"] << std::endl;
-    saveLFfile(config["brainstorm.workingfolder"] + config["brainstorm.eeg_leadfield_filename"], num_transfer, dipoles.size(), electrodes.size());
+    // std::cout << "outputfile = " << config["brainstorm.output_folder"] + config["brainstorm.eeg_leadfield_filename"] << std::endl;
+    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.eeg_leadfield_filename"], num_transfer, dipoles.size(), electrodes.size());
 }
 
 void runMEG(const Dune::ParameterTree &config)
@@ -91,12 +94,12 @@ void runMEG(const Dune::ParameterTree &config)
     std::shared_ptr<duneuro::DenseMatrix<double>> transfer{nullptr};
 
     //check if transfer matrix file exists
-    if (fileExists(config["brainstorm.workingfolder"] + config["brainstorm.meg_transfer_filename"]))
+    if (fileExists(config["brainstorm.output_folder"] + config["brainstorm.meg_transfer_filename"]))
     {
         printf("\nThis is a known model. Load the transfer Matrix.\n");
 
         //read transfer file
-        transfer = readTransferMatrix(config["brainstorm.workingfolder"] + config["brainstorm.meg_transfer_filename"]);
+        transfer = readTransferMatrix(config["brainstorm.output_folder"] + config["brainstorm.meg_transfer_filename"]);
     }
     else
     {
@@ -105,7 +108,10 @@ void runMEG(const Dune::ParameterTree &config)
         transfer = driver->computeMEGTransferMatrix(config.sub("solution"));
 
         //save transfer matrix to a file
-        saveTransferMatrix(config["brainstorm.workingfolder"] + config["brainstorm.meg_transfer_filename"], transfer);
+        if (config["brainstorm.save_meg_transfer_file"] == std::string("true"))
+        {
+            saveTransferMatrix(config["brainstorm.output_folder"] + config["brainstorm.meg_transfer_filename"], transfer);
+        }
     }
 
     //auto solution = driver->makeDomainFunction();
@@ -115,7 +121,7 @@ void runMEG(const Dune::ParameterTree &config)
         driver->applyMEGTransfer(*transfer, dipoles, config.sub("solution"));
 
     //save files
-    saveLFfile(config["brainstorm.workingfolder"] + config["brainstorm.meg_leadfield_filename"], num_transfer, dipoles.size(), coils.size());
+    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.meg_leadfield_filename"], num_transfer, dipoles.size(), coils.size());
 }
 
 void runMEEG(const Dune::ParameterTree &config)
@@ -139,12 +145,12 @@ void runMEEG(const Dune::ParameterTree &config)
     std::shared_ptr<duneuro::DenseMatrix<double>> eeg_transfer{nullptr};
 
     //check if transfer matrix file exists
-    if (fileExists(config["brainstorm.workingfolder"] + config["brainstorm.eeg_transfer_filename"]))
+    if (fileExists(config["brainstorm.output_folder"] + config["brainstorm.eeg_transfer_filename"]))
     {
         printf("\nThis is a known EEG model. Load the EEG transfer Matrix.\n");
 
         //read transfer file
-        eeg_transfer = readTransferMatrix(config["brainstorm.workingfolder"] + config["brainstorm.eeg_transfer_filename"]);
+        eeg_transfer = readTransferMatrix(config["brainstorm.output_folder"] + config["brainstorm.eeg_transfer_filename"]);
     }
     else
     {
@@ -153,7 +159,10 @@ void runMEEG(const Dune::ParameterTree &config)
         eeg_transfer = driver->computeEEGTransferMatrix(config.sub("solution"));
 
         //save transfer matrix to a file
-        saveTransferMatrix(config["brainstorm.workingfolder"] + config["brainstorm.eeg_transfer_filename"], eeg_transfer);
+        if (config["brainstorm.save_eeg_transfer_file"] == std::string("true"))
+        {
+            saveTransferMatrix(config["brainstorm.output_folder"] + config["brainstorm.eeg_transfer_filename"], eeg_transfer);
+        }
     }
 
     // compute numerical solution transferred
@@ -161,19 +170,19 @@ void runMEEG(const Dune::ParameterTree &config)
     std::vector<std::vector<double>> eeg_num_transfer =
         driver->applyEEGTransfer(*eeg_transfer, dipoles, config.sub("solution"));
     //save files
-    saveLFfile(config["brainstorm.workingfolder"] + config["brainstorm.eeg_leadfield_filename"], eeg_num_transfer, dipoles.size(), electrodes.size());
+    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.eeg_leadfield_filename"], eeg_num_transfer, dipoles.size(), electrodes.size());
 
 
     // Process fro MEG
     std::shared_ptr<duneuro::DenseMatrix<double>> meg_transfer{nullptr};
 
     //check if transfer matrix file exists
-    if (fileExists(config["brainstorm.workingfolder"] + config["brainstorm.meg_transfer_filename"]))
+    if (fileExists(config["brainstorm.output_folder"] + config["brainstorm.meg_transfer_filename"]))
     {
         printf("\nThis is a known MEG model. Load the MEG transfer Matrix.\n");
 
         //read meg_transfer file
-        meg_transfer = readTransferMatrix(config["brainstorm.workingfolder"] + config["brainstorm.meg_transfer_filename"]);
+        meg_transfer = readTransferMatrix(config["brainstorm.output_folder"] + config["brainstorm.meg_transfer_filename"]);
     }
     else
     {
@@ -182,7 +191,10 @@ void runMEEG(const Dune::ParameterTree &config)
         meg_transfer = driver->computeMEGTransferMatrix(config.sub("solution"));
 
         //save transfer matrix to a file
-        saveTransferMatrix(config["brainstorm.workingfolder"] + config["brainstorm.meg_transfer_filename"], meg_transfer);
+        if (config["brainstorm.save_meg_transfer_file"] == std::string("true"))
+        {
+            saveTransferMatrix(config["brainstorm.output_folder"] + config["brainstorm.meg_transfer_filename"], meg_transfer);
+        }
     }
 
     //auto meg_solution = driver->makeDomainFunction();
@@ -192,57 +204,25 @@ void runMEEG(const Dune::ParameterTree &config)
         driver->applyMEGTransfer(*meg_transfer, dipoles, config.sub("solution"));
 
     //save files
-    saveLFfile(config["brainstorm.workingfolder"] + config["brainstorm.meg_leadfield_filename"], meg_num_transfer, dipoles.size(), coils.size());
+    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.meg_leadfield_filename"], meg_num_transfer, dipoles.size(), coils.size());
 }
 
 int main(int argc, char **argv)
 {
-    bool displayHelp{false};
-    bool isMEG{false};
-    bool isEEG{false};
-    bool isMEEG{false};
-
     try
     {
-        //parse inputs
+        //check for help arg inputs
         for (int i = 1; i < argc; ++i)
         {
             std::string inputParam{argv[i]};
             if (inputParam == std::string("--help") || inputParam == std::string("-h") || inputParam == std::string("--h") || inputParam == std::string("?"))
             {
-                displayHelp = true;
-                break;
-            }
-            else if (inputParam == std::string("--meg"))
-            {
-                isMEG = true;
-                isEEG = false;
-                isMEEG = false;
-                break;
-            }
-            else if (inputParam == std::string("--eeg"))
-            {
-                isMEG = false;
-                isEEG = true;
-                isMEEG = false;
-                break;
-            }
-            else if (inputParam == std::string("--meeg"))
-            {
-                isMEG = false;
-                isEEG = false;
-                isMEEG = true;
-                break;
+                print_help_msg();
+                return -1;
             }
         }
 
-        if (displayHelp)
-        {
-            print_help_msg();
-            return -1;
-        }
-
-        if (argc != 3)
+        if (argc != 2)
         {
             std::cerr << "\nPlease provide a config .ini file and the execution mode.\n";
             std::cerr << "The application needs two inputs. You can type --help for help.\n";
@@ -252,18 +232,24 @@ int main(int argc, char **argv)
 
         Dune::MPIHelper::instance(argc, argv);
         Dune::ParameterTree config;                              
-        Dune::ParameterTreeParser::readINITree(argv[1], config); 
+        Dune::ParameterTreeParser::readINITree(argv[1], config);
 
-        if (isEEG)
+        std::string modality{config["brainstorm.modality"]};
+        
+        if (modality == std::string("eeg"))
+        {
             runEEG(config);
-
-        if (isMEG)
+        } 
+        else if (modality == std::string("meg"))
+        {
             runMEG(config);
-
-        if (isMEEG)
+        }
+        else if (modality == std::string("meeg"))
+        {
             runMEEG(config);
-
+        }
         return 0;
+
     }
     catch (Dune::Exception &e)
     {
