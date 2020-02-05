@@ -13,3 +13,5 @@ src/
 #with the full path of the toolchain file no need to update that.
 config/config_release_windows.opts
 
+#ignore vscode files
+.vscode
