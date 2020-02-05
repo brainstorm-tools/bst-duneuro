@@ -13,10 +13,10 @@ function cfg = bst_set_minifile(cfg)
 % TODO : add the unfitted method and its options
 % refer to this : https://docs.google.com/spreadsheets/d/1MqURQsszn8Qj3-XRX_Z8qFFnz6Yl2-uYALkV-8pJVaM/edit#gid=0
 
-% Set the default parameters
+%% GET THE DEFAULTS VALUES IF NOT SET
 cfg = bst_default_duneuroConfiguration(cfg);
 
-%% UPDATES TO THE REAL VALUES
+%% UPDATES TO THE REAL VALUES FOR WRITTING
 %% 0 - Subpart general setting
 cfg.minifile.name = cfg.duneuro_configuration_filename;
 cfg.minifile.type  = cfg.dnFemMethodType; % 'fitted' or 'unfitted'
@@ -77,7 +77,19 @@ cfg.minifile.solution.source_model.mixedMoments = cfg.femSourceModelMixedMoments
 cfg.minifile.solution.source_model.restrict = cfg.femSourceModelRestrict;%'true';
 cfg.minifile.solution.source_model.initialization = cfg.femSourceModelInitialization;%'closest_vertex';
 
-% The reste is not needed... just in case
+%% 7 - subpart  [brainstorm]
+cfg.minifile.brainstorm.modality = cfg.brainstormModality;%
+cfg.minifile.brainstorm.outputfolder = cfg.brainstormOutputFolder;%
+cfg.minifile.brainstorm.eeg_save_transfer = cfg.brainstormEegSaveTransfer;%
+cfg.minifile.brainstorm.meg_save_transfer = cfg.brainstormMegSaveTransfer;%
+cfg.minifile.brainstorm.meeg_save_transfer = cfg.brainstormMEegSaveTransfer;% implicite if meg and eeg ==1 , will be set from matlab
+cfg.minifile.brainstorm.eeg_transfer_filename = cfg.brainstormEegTransferFilename;%
+cfg.minifile.brainstorm.meg_transfer_filename = cfg.brainstormMegTransferFilename;%
+cfg.minifile.brainstorm.eeg_leadfiled_filename = cfg.brainstormEegLeadfieldFilename;%
+cfg.minifile.brainstorm.meg_leadfiled_filename = cfg.brainstormMegLeadfieldFilename;%
+
+
+% The reste is not needed... we keep it  just in case
 % subpart [analytic_solution]
 cfg.minifile.solution.analytic_solution.radii = [1 2 3 4 ];
 cfg.minifile.solution.analytic_solution.center = [0 0 0];
