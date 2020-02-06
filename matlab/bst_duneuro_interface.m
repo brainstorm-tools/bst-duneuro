@@ -51,7 +51,7 @@ if cfg.runFromBst == 1
     if ~values.UserWrite 
         fclose('all');
         if cfg.runFromBst == 1; bst_progress('stop'); end
-        error('Duneuro can not write the output data  to this folder : %s. \nPlease change to a path with writing access ', cfg.brainstormOutputFolder);
+        error('Duneuro can not write the output data  to this folder : %s. \nPlease change to a path with writing permission', cfg.brainstormOutputFolder);
     end
     
     %%%%% UPDATES these values from here :
