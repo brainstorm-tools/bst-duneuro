@@ -45,7 +45,15 @@ if cfg.runFromBst == 1
     cfg.brainstormModality = cfg.modality; %
     if ~isfield(cfg,'brainstormOutputFolder') % ==> the output folder could be different from the temporary folder in the case where we want to save the transfer for example
         cfg.brainstormOutputFolder = cfg.pathOfTempOutPut;
-    end % should be done from the bst
+    end % should be done from the bst    
+     % check the for the user writing right 
+    [status, values] = fileattrib(cfg.brainstormOutputFolder);
+    if ~values.UserWrite 
+        fclose('all');
+        if cfg.runFromBst == 1; bst_progress('stop'); end
+        error('Duneuro can not write the output data  to this folder : %s. \nPlease change to a path with writing access ', cfg.brainstormOutputFolder);
+    end
+    
     %%%%% UPDATES these values from here :
     % subpart  [brainstorm]
     % if ~isfield(cfg,'brainstormEegSaveTransfer'); cfg.brainstormEegSaveTransfer = 'false'; end %
