@@ -5,20 +5,12 @@ function bst_help_duneuro_meeg()
 
 %% find the toolbox path
 disp(['============================== '])
-str = which('bst_dueneuro_readme.txt','-all');
+str = which('bst_unique_readme.txt','-all');
 [filepath,~,~] = fileparts(str{1});
-
-% option 1
-% if ispc
-% system([fullfile(filepath,'bst_duneuro.exe ') '--help']);
-% else
-% system([fullfile(filepath,'./bst_duneuro ') '--help']);
-% end
-% ==> fails if the full path contains a space
 
 % option 2
 currentFolder = pwd;
-cd(fullfile(filepath,'bst-duneuro','bin'))
+cd(fullfile(filepath,'bin'))
 if ispc
     system(['bst_duneuro_meeg.exe ' '--help']);
 else
