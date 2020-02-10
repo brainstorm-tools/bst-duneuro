@@ -80,7 +80,7 @@ cfg = bst_prepare_head_model(cfg);
 if cfg.runFromBst == 1; bst_progress('text', 'Duneuro (2/7): 2- Prepare the Source Model ... '); end
 if cfg.displayComment ==1;disp(['duneruo >>2 - Writing the dipole file  to ' ((cfg.pathOfTempOutPut))]);end
 cfg.dipole_filename  = fullfile(cfg.pathOfTempOutPut,'dipole_model.txt');
-write_duneuro_dipole_file(cfg.sourceSpace,cfg.dipole_filename);
+write_duneuro_dipole_file(cfg.sourceSpace, cfg.dipole_filename);
 
 %% 3- Prepare the Sensor Model : 
 if cfg.runFromBst == 1; bst_progress('text','Duneuro (2/7): 3- Prepare the Sensor Model ... '); end

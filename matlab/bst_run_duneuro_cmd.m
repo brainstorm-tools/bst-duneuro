@@ -24,7 +24,29 @@ inifpath = filepath;inifname = [name ext]; arghelp = '--h';
 % callStr5 = [ '"' bstfpath  filesep bstfname bstext '"' ' ' '"' inifpath...
 % filesep inifname '"' ' ' '"' arghelp '"'];   % Call duneuro Help 
 callStr6 = [ '"' bstfpath  filesep bstfname  '"' ' ' '"' inifpath filesep inifname '"'];
- 
+
+testing = 0;
+if testing == 1 && strcmp(cfg.modality == 'meeg')
+    %% Check the efficiency of the dual call of meeg or meg and eeg separately
+    modality = {'eeg','meg','meeg'};
+    mod = cfg.modality;
+    for ind = 1 : 3
+        disp([' Test ' modality{ind} ' : '])
+        % % - Read source.
+        content = fileread( [ inifpath filesep inifname ] ) ;
+        %  % - Update.
+        content = regexprep( content, ['modality  = ' mod], ['modality  = ' num2str(modality{ind})]) ;
+        %  % - Export update.
+        fId = fopen(  [ inifpath filesep inifname ] , 'w' ) ; fwrite( fId, content ) ; fclose( fId ) ;
+        tic;
+        [status,cmdout] = system(callStr6);
+        BinaryTime(ind) = toc;
+        disp([' Execution time ' num2str(BinaryTime(ind)) ' s '])
+        mod = modality{ind};
+        cfg.modality = mod;
+    end
+end
+
 [status,cmdout] = system(callStr6);
 
 %% 3- Check status & outputs

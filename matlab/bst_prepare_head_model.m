@@ -68,5 +68,4 @@ end
 
 %% Write the mesh model
 bst_write_mesh_model(cfg);
-
 end

@@ -200,12 +200,15 @@ if isDuneuro
     
     % TODO : The conductivities values in the case of the
     % combined model should be the same for eeg and meg    
-    % Ask for the layers to keep for the MEG computation
-    if strcmpi(OPTIONS.MEGMethod, 'duneuro')
+    %% Ask for the layers to keep for the MEG computation
+    % We can not use different volme conductor in the case of combined
+    % eeg/meg ... otherwise we need to call separately the binaries ....
+    % TODO : discuss this point with th the team.
+    if strcmpi(OPTIONS.EEGMethod, 'duneuro') && strcmpi(OPTIONS.MEGMethod, 'duneuro')
         [res, isCancel] = java_dialog('checkbox', ...
-            '<HTML>Select the layers to consider for the MEG head modeling <BR>', 'Select Volume', [], ...
-            TissueLabels, [1 zeros(1, length(TissueLabels)-1)]);
-        megLayerToKeep =  res;
+            '<HTML>Select the layers to consider for the combined MEG/EEG head modeling <BR>', 'Select Volume', [], ...
+            TissueLabels, [ones(1, length(TissueLabels))]);
+        layerToKeep =  res;
         if isCancel
             return
         end
@@ -213,12 +216,19 @@ if isDuneuro
         [res, isCancel] = java_dialog('checkbox', ...
             '<HTML>Select the layers to consider for the EEG head modeling <BR>', 'Select Volume', [], ...
             TissueLabels, [ones(1, length(TissueLabels))]);
-        eegLayerToKeep =  res;
+        layerToKeep =  res;
         if isCancel
             return
         end
-    else
-        % TODO : add similar option in the case of iEEG and sEEG
+    elseif strcmpi(OPTIONS.MEGMethod, 'duneuro')
+        [res, isCancel] = java_dialog('checkbox', ...
+            '<HTML>Select the layers to consider for the MEG head modeling <BR>', 'Select Volume', [], ...
+            TissueLabels, [1 zeros(1, length(TissueLabels)-1)]);
+        layerToKeep =  res;
+        if isCancel
+            return
+        end       
+    else    % TODO : add similar option in the case of iEEG and sEEG
     end
 end
 
@@ -241,13 +251,13 @@ cfg.tissuLabel = femhead.TissueLabels;
 % of the index on the vector.
 % [1 1 0 0 ] ==> there is four layer and here the model will keep the label
 % 1 and 2 ===> ALWAYS the  label are from inner to outer  ....
-if isEeg; cfg.eegLayerToKeep = eegLayerToKeep; end % < == situation of 1 1 1 1 1 1 <== keep all, not needed if all 1;
-if isMeg; cfg.megLayerToKeep = megLayerToKeep; end
-if isMeg; cfg.megLayerToKeep = megLayerToKeep; end
-if isEcog; cfg.eCogLayerToKeep =  eCogLayerToKeep; end
-if isSeeg; cfg.seegLayerToKeep =  seegLayerToKeep; end
+% if isEeg; cfg.eegLayerToKeep = eegLayerToKeep; end % < == situation of 1 1 1 1 1 1 <== keep all, not needed if all 1;
+% if isMeg; cfg.megLayerToKeep = megLayerToKeep; end
+% if isMeg; cfg.megLayerToKeep = megLayerToKeep; end
+% if isEcog; cfg.eCogLayerToKeep =  eCogLayerToKeep; end
+% if isSeeg; cfg.seegLayerToKeep =  seegLayerToKeep; end
 % temporary option for testing the rest of the code
-cfg.layerToKeep = cfg.eegLayerToKeep;
+cfg.layerToKeep = layerToKeep; % or may be this one should be sufficient 
 
 %% 2- Source space
 % only in the case of SimNibs or equivalent : TODO : check the input
@@ -294,8 +304,7 @@ switch (OPTIONS.HeadModelType)
             %             plotmesh(sCortex.Vertices,sCortex.Faces,'edgecolor','none','facecolor','k');hold on
             %             % check if the nodes are on the GM volume
             %             iVertOut = find(~inpolyhd([pos_source_x pos_source_y pos_source_z], ...
-            %                                                                 sCortex.Vertices, sCortex.Faces));
-            
+            %                                                                 sCortex.Vertices, sCortex.Faces));            
             % Surface: Use the cortex surface
             OPTIONS.GridLoc    = [pos_source_x pos_source_y pos_source_z];
         else
@@ -349,7 +358,7 @@ cfg = bst_duneuro_interface(cfg);
 
 %% 6- Read the lead field
 % fil the bad channel with nan (not possible within the duneuro)
-if isMeg;     Gain(OPTIONS.iMeg, :) = cfg.fem_meg_lf; end % the final value ==>  cfg.fem_meg_lf = B = Bp + Bs ? check if the case for bst
+if isMeg;     Gain(OPTIONS.iMeg, :) = cfg.fem_meg_lf; end % the final value ==>  cfg.fem_meg_lf = B = Bp + aBs ? check if the case for bst
 if isEeg;     Gain(OPTIONS.iEeg, :) = cfg.fem_eeg_lf; end
 
 %% ===== CLEANUP =====

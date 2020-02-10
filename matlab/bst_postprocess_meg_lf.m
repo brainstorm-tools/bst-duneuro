@@ -25,6 +25,8 @@ if cfg.runFromBst == 1
         wighted_B(iCh,:) = sum (BcommunChannel.*WcommunChannel,1);
     end    
     cfg.fem_meg_lf = wighted_B;
+else
+    cfg.fem_meg_lf = Bfull;   
 end
 end
 
