@@ -22,7 +22,7 @@ if ~isfield(cfg,'dnFemMethodType'); cfg.duneuro_configuration_filename = 'duneur
 if ~isfield(cfg,'dnFemMethodType'); cfg.dnFemMethodType = 'fitted'; end % 'fitted' or 'unfitted'
 if ~isfield(cfg,'dnFemSolverType'); cfg.dnFemSolverType = 'cg'; end % 'fitted' or 'unfitted'
 if ~isfield(cfg,'dnMeshElementType'); cfg.dnMeshElementType = 'tetrahedron'; end %  'tetrahedron' or  'hexahedron'
-if ~isfield(cfg,'dnGeometryAdapted'); cfg.dnGeometryAdapted = 'false'; end %  'true' or  'false'
+if ~isfield(cfg,'dnGeometryAdapted'); cfg.dnGeometryAdapted = 'false'; end %  'true' or  'false' why and  how
 if ~isfield(cfg,'dnTolerance'); cfg.dnTolerance = 1e-8; end %  
 
 %% 1 - Subpart sensors
@@ -46,7 +46,7 @@ if ~isfield(cfg,'head_filename'); cfg.head_filename ='head_model.msh'; end %  wh
 if ~isfield(cfg,'cond_filename'); cfg.dnSolverSolverType ='conductivity_model.con'; end %  what are the others 
 
 %% 4 - Subpart  [solver] ==> refers to the linear system solver ?
-if ~isfield(cfg,'dnSolverSolverType'); cfg.dnSolverSolverType ='cg'; end %  what are the others 
+if ~isfield(cfg,'dnSolverSolverType'); cfg.dnSolverSolverType ='cg'; end %  conjugate solver  what are the others 
 if ~isfield(cfg,'dnSolverPreconditionerType'); cfg.dnSolverPreconditionerType ='amg'; end %  what are the others 
 if ~isfield(cfg,'dnSolverCgSmootherType'); cfg.dnSolverCgSmootherType ='ssor'; end %  what are the others 
 if ~isfield(cfg,'dnSolverIntorderadd'); cfg.dnSolverIntorderadd =0; end %  what are the others 
