@@ -93,9 +93,9 @@ load(OPTIONS.FemFiles, 'Comment');
 if contains(Comment,'iso2mesh')
     meshMethod = 'iso2mesh';
 elseif contains(Comment,'SimNibs')
-        meshMethod = 'SimNibs';
+    meshMethod = 'SimNibs';
 else
-        meshMethod = 'others';  
+    meshMethod = 'others';
 end
 % Get the default conductivity values
 OPTIONS.Conductivity  = get_standard_conductivity((numberOfLayer));
@@ -122,69 +122,83 @@ if isDuneuro
     %% FEM solver parametrs advanced:
     [res, isCancel] =  java_dialog('question', '<HTML><B> DUNEuro Parameters <B>', ...
         'Set Duneuro Parameters', [],{'Use Default Options (recommended)', ...
-                                              'Set Advanced Options (Expert Mode)' }, ...
-                                              'Use Default Options (recommended)');
+        'Set Advanced Options (Expert Mode)' }, ...
+        'Use Default Options (recommended)');
     if isCancel ==1
         return;
     end
-   if strcmpi(res,'Use Default Options (recommended)')
+    if strcmpi(res,'Use Default Options (recommended)')
         cfg.advancedMode = 0;
     else
         cfg.advancedMode = 1;
     end
+    %% Advanced users
     if cfg.advancedMode ==1
-    %% Ask for the source FEM Method
-    dnFemMethodType = {'fitted', 'unfitted'};
-    res = java_dialog('question', '<HTML><B> DUNEuro : Select FEM Method Type (advanced) <B>', ...
-        'FEM Source Model', [], dnFemMethodType, 'fitted');
-    cfg.dnFemMethodType = res;    
-    %% Ask for the source FEM soler Type
-    dnFemSolverType = {'CG : Continious Galerkin','DG : Discontinious Galerkin'}; % Continious Galerkin and Discountinious Galerkin : Default cg,
-    res = java_dialog('question', '<HTML><B> DUNEuro : Select FEM Solver Type (advanced) <B>', ...
-        'FEM Source Model', [], dnFemSolverType, 'fitted');
-    cfg.dnFemSolverType = lower(res(1:2));
-    if strcmp(cfg.dnMeshElementType,'hexahedron')
-        cfg.dnGeometryAdapted = 'true'; % 'true, or false' ==> should be tuned ffom the panel
-        dnGeometryAdapted = {'true', 'false'};
-        res = java_dialog('question', '<HTML><B> DUNEuro : Use dnGeometryAdapted <B>', ...
-            'FEM Geometry', [], dnGeometryAdapted, 'true');
-        cfg.dnGeometryAdapted = res;
-    end
-    %% Ask for the source FEM Model
-    femSourceModel =  {'Venant','Subtraction','Partial_Integration'};
-    [res, isCancel] =  java_dialog('question', '<HTML><B> DUNEuro : Select FEM Source Model <B>', ...
-        'FEM Source Model', [],femSourceModel, 'Venant');
-    cfg.femSourceModel = res;
-    % In the case of the Venant source model
-    if strcmpi((cfg.femSourceModel),'venant')
-        % Ask Venant options
-        [res, isCancel] =  java_dialog('input', ...
-            {'Number Of Moments (1-5):', ...
-            'Reference Length (1-100):', ...
-            'Weighting Exponent (1-5):', ...
-            'Relaxation Factor (1-5):', ...
-            'Mixed Moments (true-false):', ...
-            'Restricted (true-false):'}, ...
-            'Venant Options', [], {'3', '20','1','1e-6','true','true'});
-        cfg.femSourceModelNumberOfMoments =  str2num(res{1});
-        cfg.femSourceModelReferenceLength =  str2num(res{2});
-        cfg.femSourceModelWeightingExponent =  str2num(res{3});
-        cfg.femSourceModelRelaxationFactor =  str2num(res{4});
-        cfg.femSourceModelMixedMoments = res{5};
-        cfg.femSourceModelRestrict = res{6};
-    elseif strcmpi((cfg.femSourceModel),'subtraction')
-        % todo
-    elseif strcmpi((cfg.femSourceModel),'partial_integration')
-        % todo
-    elseif strcmpi((cfg.femSourceModel),'whitney')
-        % todo
-    elseif strcmpi((cfg.femSourceModel),'other')
-        % todo
-    else
-        error('FEM source model is not defined');        
-    end
+        %% Ask for the source FEM Method
+        dnFemMethodType = {'fitted', 'unfitted'};
+        [res, isCancel] = java_dialog('question', '<HTML><B> DUNEuro : Select FEM Method Type (advanced) <B>', ...
+            'FEM Source Model', [], dnFemMethodType, 'fitted');
+        if isCancel
+            return
+        end
+        cfg.dnFemMethodType = res;
+        %% Ask for the source FEM soler Type
+        dnFemSolverType = {'CG : Continious Galerkin','DG : Discontinious Galerkin'}; % Continious Galerkin and Discountinious Galerkin : Default cg,
+        [res, isCancel] =  java_dialog('question', '<HTML><B> DUNEuro : Select FEM Solver Type (advanced) <B>', ...
+            'FEM Source Model', [], dnFemSolverType, 'fitted');
+        if isCancel
+            return
+        end
+        cfg.dnFemSolverType = lower(res(1:2));
+        % Get the meshing type from the inputs
+        if strcmp(cfg.dnMeshElementType,'hexahedron')
+            cfg.dnGeometryAdapted = 'true'; % 'true, or false' ==> should be tuned ffom the panel
+            dnGeometryAdapted = {'true', 'false'};
+            res = java_dialog('question', '<HTML><B> DUNEuro : Use dnGeometryAdapted <B>', ...
+                'FEM Geometry', [], dnGeometryAdapted, 'true');
+            cfg.dnGeometryAdapted = res;
+        end
+        %% Ask for the source FEM Model
+        femSourceModel =  {'Venant','Subtraction','Partial_Integration'};
+        [res, isCancel] =  java_dialog('question', '<HTML><B> DUNEuro : Select FEM Source Model <B>', ...
+            'FEM Source Model', [],femSourceModel, 'Venant');
+        if isCancel
+            return
+        end
+        cfg.femSourceModel = res;
+        % In the case of the Venant source model
+        if strcmpi((cfg.femSourceModel),'venant')
+            % Ask Venant options
+            [res, isCancel] =  java_dialog('input', ...
+                {'Number Of Moments (1-5):', ...
+                'Reference Length (1-100):', ...
+                'Weighting Exponent (1-5):', ...
+                'Relaxation Factor (1-5):', ...
+                'Mixed Moments (true-false):', ...
+                'Restricted (true-false):'}, ...
+                'Venant Options', [], {'3', '20','1','1e-6','true','true'});
+            if isCancel
+                return
+            end
+            cfg.femSourceModelNumberOfMoments =  str2num(res{1});
+            cfg.femSourceModelReferenceLength =  str2num(res{2});
+            cfg.femSourceModelWeightingExponent =  str2num(res{3});
+            cfg.femSourceModelRelaxationFactor =  str2num(res{4});
+            cfg.femSourceModelMixedMoments = res{5};
+            cfg.femSourceModelRestrict = res{6};
+        elseif strcmpi((cfg.femSourceModel),'subtraction')
+            % todo
+        elseif strcmpi((cfg.femSourceModel),'partial_integration')
+            % todo
+        elseif strcmpi((cfg.femSourceModel),'whitney')
+            % todo
+        elseif strcmpi((cfg.femSourceModel),'other')
+            % todo
+        else
+            error('FEM source model is not defined');
+        end
     else % regular user
-            disp('All the DUNEuro options will be set to the default values')
+        disp('All the DUNEuro options will be set to the default values')
     end
     %% Ask for the conductivity of each layer
     for ind = 1 : length(OPTIONS.Conductivity)
@@ -195,11 +209,10 @@ if isDuneuro
         return
     end
     for ind = 1 : length(OPTIONS.Conductivity)
-        OPTIONS.FemCond(ind) = str2num(res{ind});
+        OPTIONS.FemConductivity(ind) = str2num(res{ind});
     end
-    
     % TODO : The conductivities values in the case of the
-    % combined model should be the same for eeg and meg    
+    % combined model should be the same for eeg and meg
     %% Ask for the layers to keep for the MEG computation
     % We can not use different volme conductor in the case of combined
     % eeg/meg ... otherwise we need to call separately the binaries ....
@@ -208,10 +221,10 @@ if isDuneuro
         [res, isCancel] = java_dialog('checkbox', ...
             '<HTML>Select the layers to consider for the combined MEG/EEG head modeling <BR>', 'Select Volume', [], ...
             TissueLabels, [ones(1, length(TissueLabels))]);
-        layerToKeep =  res;
         if isCancel
             return
         end
+        layerToKeep =  res;
     elseif  strcmpi(OPTIONS.EEGMethod, 'duneuro')
         [res, isCancel] = java_dialog('checkbox', ...
             '<HTML>Select the layers to consider for the EEG head modeling <BR>', 'Select Volume', [], ...
@@ -224,11 +237,12 @@ if isDuneuro
         [res, isCancel] = java_dialog('checkbox', ...
             '<HTML>Select the layers to consider for the MEG head modeling <BR>', 'Select Volume', [], ...
             TissueLabels, [1 zeros(1, length(TissueLabels)-1)]);
-        layerToKeep =  res;
         if isCancel
             return
-        end       
-    else    % TODO : add similar option in the case of iEEG and sEEG
+        end
+        layerToKeep =  res;
+    else
+        % TODO : add similar option in the case of iEEG and sEEG
     end
 end
 
@@ -257,7 +271,7 @@ cfg.tissuLabel = femhead.TissueLabels;
 % if isEcog; cfg.eCogLayerToKeep =  eCogLayerToKeep; end
 % if isSeeg; cfg.seegLayerToKeep =  seegLayerToKeep; end
 % temporary option for testing the rest of the code
-cfg.layerToKeep = layerToKeep; % or may be this one should be sufficient 
+cfg.layerToKeep = layerToKeep; % or may be this one should be sufficient
 
 %% 2- Source space
 % only in the case of SimNibs or equivalent : TODO : check the input
@@ -266,14 +280,14 @@ if ~strcmp(cfg.meshMethod, 'iso2mesh')
     cfg.shrinkSourceSpace = 1;
     cfg.sourceSpaceDepth =1.5;
     if cfg.advancedMode ==1
-            res = java_dialog('input', 'Source Space depth from Pial Surface (mm)', 'FEM Source Space', [], num2str(cfg.sourceSpaceDepth));
-            cfg.sourceSpaceDepth = str2num(res);
-           if isCancel ==1
+        res = java_dialog('input', 'Source Space depth from Pial Surface (mm)', 'FEM Source Space', [], num2str(cfg.sourceSpaceDepth));
+        cfg.sourceSpaceDepth = str2num(res);
+        if isCancel ==1
             return;
         end
     end
 else
-    cfg.shrinkSourceSpace = 0;   
+    cfg.shrinkSourceSpace = 0;
 end
 
 % Source space type
@@ -304,7 +318,7 @@ switch (OPTIONS.HeadModelType)
             %             plotmesh(sCortex.Vertices,sCortex.Faces,'edgecolor','none','facecolor','k');hold on
             %             % check if the nodes are on the GM volume
             %             iVertOut = find(~inpolyhd([pos_source_x pos_source_y pos_source_z], ...
-            %                                                                 sCortex.Vertices, sCortex.Faces));            
+            %                                                                 sCortex.Vertices, sCortex.Faces));
             % Surface: Use the cortex surface
             OPTIONS.GridLoc    = [pos_source_x pos_source_y pos_source_z];
         else
@@ -346,7 +360,7 @@ end
 %% 4- Conductivity/tensor
 % TODO : Adapt this for anisotrpy // maybe could be done from outside and
 % put the tensor on OPTIONS.Conductivity or create new field OPTIONS.ConductivityTensor
-cfg.conductivity = OPTIONS.FemCond; % TODO : we can do it from here instead to modify the bst file
+cfg.conductivity = OPTIONS.FemConductivity; % TODO : we can do it from here instead to modify the bst file
 
 %% 5- Duneuro-Brainstorm interface
 %% ===== DUNEURO LEADFIELD COMPUTATION   =====
