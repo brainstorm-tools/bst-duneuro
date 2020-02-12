@@ -100,7 +100,7 @@ cfg = bst_prepare_minifile(cfg);
 %% 6- Prepapre & Run the Duneuro Application
 % cd(fullfile(cfg.pathOfDuneuroToolbox,'bin'));
 
-if cfg.runFromBst == 1; bst_progress('text', 'Duneuro (6/7):  6- Prepapre & Run the Duneuro Application ... '); end
+if cfg.runFromBst == 1; bst_progress('text', 'Duneuro (6/7):  6- Prepare & Run the Duneuro Application ... '); end
 % define the command line
 cfg = bst_set_duneuro_cmd(cfg);
 %%%% @@ Run Duneuro @@ %%%%%%

@@ -142,10 +142,10 @@ if isDuneuro
             return
         end
         cfg.dnFemMethodType = res;
-        %% Ask for the source FEM soler Type
+        %% Ask for the source FEM solver Type
         dnFemSolverType = {'CG : Continious Galerkin','DG : Discontinious Galerkin'}; % Continious Galerkin and Discountinious Galerkin : Default cg,
         [res, isCancel] =  java_dialog('question', '<HTML><B> DUNEuro : Select FEM Solver Type (advanced) <B>', ...
-            'FEM Source Model', [], dnFemSolverType, 'fitted');
+            'FEM Solver Model', [], dnFemSolverType, 'fitted');
         if isCancel
             return
         end
@@ -157,94 +157,133 @@ if isDuneuro
             res = java_dialog('question', '<HTML><B> DUNEuro : Use dnGeometryAdapted <B>', ...
                 'FEM Geometry', [], dnGeometryAdapted, 'true');
             cfg.dnGeometryAdapted = res;
+            % if yes, I think  NodeShift is set by default to 0.3
         end
         %% Ask for the source FEM Model
-        femSourceModel =  {'Venant','Subtraction','Partial_Integration'};
+        femSourceModel =  {'Venant','Subtraction','Partial Integration'};
         [res, isCancel] =  java_dialog('question', '<HTML><B> DUNEuro : Select FEM Source Model <B>', ...
             'FEM Source Model', [],femSourceModel, 'Venant');
         if isCancel
             return
         end
-        cfg.femSourceModel = res;
+        res = strsplit(res);        res = strjoin(res,'_');
+        cfg.femSourceModel = lower(res);
         % In the case of the Venant source model
         if strcmpi((cfg.femSourceModel),'venant')
             % Ask Venant options
             [res, isCancel] =  java_dialog('input', ...
-                {'Number Of Moments (1-5):', ...
-                'Reference Length (1-100):', ...
-                'Weighting Exponent (1-5):', ...
-                'Relaxation Factor (1-5):', ...
-                'Mixed Moments (true-false):', ...
-                'Restricted (true-false):'}, ...
+                {'Number Of Moments (1-5): ', ...
+                'Reference Length (1-100): ', ...
+                'Weighting Exponent (1-3): ', ...
+                'Relaxation Factor (1e-3, 1e-9): ', ...
+                'Mixed Moments (true-false): ', ...
+                'Restrict (true-false): ',...
+                }, ...
                 'Venant Options', [], {'3', '20','1','1e-6','true','true'});
             if isCancel
                 return
             end
-            cfg.femSourceModelNumberOfMoments =  str2num(res{1});
-            cfg.femSourceModelReferenceLength =  str2num(res{2});
-            cfg.femSourceModelWeightingExponent =  str2num(res{3});
-            cfg.femSourceModelRelaxationFactor =  str2num(res{4});
+            cfg.femSourceModelNumberOfMoments =  str2double(res{1});
+            cfg.femSourceModelReferenceLength =  str2double(res{2});
+            cfg.femSourceModelWeightingExponent =  str2double(res{3});
+            cfg.femSourceModelRelaxationFactor =  str2double(res{4});
             cfg.femSourceModelMixedMoments = res{5};
             cfg.femSourceModelRestrict = res{6};
         elseif strcmpi((cfg.femSourceModel),'subtraction')
-            % todo
+            % Ask Subtraction  options
+            [res, isCancel] =  java_dialog('input', ...
+                {'intorderadd (1-5): ', ...
+                'intorderadd_lb (1-5): ', ...
+                }, ...
+                'Subtraction Options', [], {'2', '2'});
+            if isCancel
+                return
+            end
+            cfg.femSourceModelIntorderadd =  str2double(res{1});
+            cfg.femSourceModelIntorderadd_lb =  str2double(res{2});
         elseif strcmpi((cfg.femSourceModel),'partial_integration')
-            % todo
+            % nothing at this time
         elseif strcmpi((cfg.femSourceModel),'whitney')
             % todo
         elseif strcmpi((cfg.femSourceModel),'other')
-            % todo
+            % todo : comming on the next version
         else
             error('FEM source model is not defined');
         end
-    else % regular user
-        disp('All the DUNEuro options will be set to the default values')
+        %% Ask for saving or not the Transfert Matrix
+        if strcmpi(OPTIONS.EEGMethod, 'duneuro') && strcmpi(OPTIONS.MEGMethod, 'duneuro')
+            modality = {'Save the EEG Transfert Matrix', ' Save the MEG Transfert Matrix'};
+            [res, isCancel] = java_dialog('checkbox', ...
+                '<HTML><B> Do you want to save the Transfer Matrix for further other source model ?<B>', 'Save Transfer Matrix', [], ...
+                modality, [zeros(1, length(modality))]);
+            if isCancel;                return;            end
+            cfg.brainstormSaveEegTransferFile = deblank(strrep(strrep(sprintf('%d ', res(1)), '1', 'true'), '0', 'false'));
+            cfg.brainstormSaveMegTransferFile =  deblank(strrep(strrep(sprintf('%d ', res(2)), '1', 'true'), '0', 'false'));
+        elseif strcmpi(OPTIONS.EEGMethod, 'duneuro')
+            modality = {'Save the EEG Transfert Matrix'};
+            [res, isCancel] = java_dialog('checkbox', ...
+                '<HTML><B> Do you want to save the Transfer Matrix for further other source model ?<B>', 'Save Transfer Matrix', [], ...
+                modality, [zeros(1, length(modality))]);
+            if isCancel;                return;            end
+            cfg.brainstormSaveEegTransferFile = deblank(strrep(strrep(sprintf('%d ', res(1)), '1', 'true'), '0', 'false'));
+        elseif strcmpi(OPTIONS.MEGMethod, 'duneuro')
+            modality = { 'Save the MEG Transfert Matrix'};
+            [res, isCancel] = java_dialog('checkbox', ...
+                '<HTML><B> Do you want to save the Transfer Matrix for further other source model ?<B>', 'Save Transfer Matrix', [], ...
+                modality, [zeros(1, length(modality))]);
+            if isCancel;                return;            end
+            cfg.brainstormSaveMegTransferFile = deblank(strrep(strrep(sprintf('%d ', res(1)), '1', 'true'), '0', 'false'));
+        end
+        
     end
-    %% Ask for the conductivity of each layer
-    for ind = 1 : length(OPTIONS.Conductivity)
-        cond{ind} = num2str(OPTIONS.Conductivity(ind));
-    end
-    [res, isCancel] = java_dialog('input', TissueLabels, 'Conductivity Values', [], cond);
+else % regular user
+    disp('All the DUNEuro options will be set to the default values')
+end   
+%% Ask for the conductivity of each layer
+for ind = 1 : length(OPTIONS.Conductivity)
+    cond{ind} = num2str(OPTIONS.Conductivity(ind));
+end
+[res, isCancel] = java_dialog('input', TissueLabels, 'Conductivity Values', [], cond);
+if isCancel
+    return
+end
+for ind = 1 : length(OPTIONS.Conductivity)
+    OPTIONS.FemConductivity(ind) = str2num(res{ind});
+end
+% TODO : The conductivities values in the case of the
+% combined model should be the same for eeg and meg
+%% Ask for the layers to keep for the MEG computation
+% We can not use different volme conductor in the case of combined
+% eeg/meg ... otherwise we need to call separately the binaries ....
+% TODO : discuss this point with th the team.
+if strcmpi(OPTIONS.EEGMethod, 'duneuro') && strcmpi(OPTIONS.MEGMethod, 'duneuro')
+    [res, isCancel] = java_dialog('checkbox', ...
+        '<HTML>Select the layers to consider for the combined MEG/EEG head modeling <BR>', 'Select Volume', [], ...
+        TissueLabels, [ones(1, length(TissueLabels))]);
     if isCancel
         return
     end
-    for ind = 1 : length(OPTIONS.Conductivity)
-        OPTIONS.FemConductivity(ind) = str2num(res{ind});
+    layerToKeep =  res;
+elseif  strcmpi(OPTIONS.EEGMethod, 'duneuro')
+    [res, isCancel] = java_dialog('checkbox', ...
+        '<HTML>Select the layers to consider for the EEG head modeling <BR>', 'Select Volume', [], ...
+        TissueLabels, [ones(1, length(TissueLabels))]);
+    layerToKeep =  res;
+    if isCancel
+        return
     end
-    % TODO : The conductivities values in the case of the
-    % combined model should be the same for eeg and meg
-    %% Ask for the layers to keep for the MEG computation
-    % We can not use different volme conductor in the case of combined
-    % eeg/meg ... otherwise we need to call separately the binaries ....
-    % TODO : discuss this point with th the team.
-    if strcmpi(OPTIONS.EEGMethod, 'duneuro') && strcmpi(OPTIONS.MEGMethod, 'duneuro')
-        [res, isCancel] = java_dialog('checkbox', ...
-            '<HTML>Select the layers to consider for the combined MEG/EEG head modeling <BR>', 'Select Volume', [], ...
-            TissueLabels, [ones(1, length(TissueLabels))]);
-        if isCancel
-            return
-        end
-        layerToKeep =  res;
-    elseif  strcmpi(OPTIONS.EEGMethod, 'duneuro')
-        [res, isCancel] = java_dialog('checkbox', ...
-            '<HTML>Select the layers to consider for the EEG head modeling <BR>', 'Select Volume', [], ...
-            TissueLabels, [ones(1, length(TissueLabels))]);
-        layerToKeep =  res;
-        if isCancel
-            return
-        end
-    elseif strcmpi(OPTIONS.MEGMethod, 'duneuro')
-        [res, isCancel] = java_dialog('checkbox', ...
-            '<HTML>Select the layers to consider for the MEG head modeling <BR>', 'Select Volume', [], ...
-            TissueLabels, [1 zeros(1, length(TissueLabels)-1)]);
-        if isCancel
-            return
-        end
-        layerToKeep =  res;
-    else
-        % TODO : add similar option in the case of iEEG and sEEG
+elseif strcmpi(OPTIONS.MEGMethod, 'duneuro')
+    [res, isCancel] = java_dialog('checkbox', ...
+        '<HTML>Select the layers to consider for the MEG head modeling <BR>', 'Select Volume', [], ...
+        TissueLabels, [1 zeros(1, length(TissueLabels)-1)]);
+    if isCancel
+        return
     end
+    layerToKeep =  res;
+else
+    % TODO : add similar option in the case of iEEG and sEEG
 end
+
 
 % Get the modality from the OPTIONS structure
 if isEeg; cfg.modality = 'eeg'; goodChannel = OPTIONS.iEeg; end
