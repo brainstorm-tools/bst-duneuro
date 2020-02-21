@@ -37,3 +37,7 @@ add function to bst FEM model to extract the FEM mesh surfaces
 - Increase the resolution simnibs headreco later....for the tetra mesh 
 
 - there is probably an error on the way to export the lf_meg ... check with Juan- work on the EEG/MEG combined method is the head is not all considered.
+
+it seems that is possibel to add the threads to the duneuro ... need checking. 
+cfg.numberOfThreads = '2';
+driver.apply_meg_transfer(transfer_matrix, dipoles, cfg);
