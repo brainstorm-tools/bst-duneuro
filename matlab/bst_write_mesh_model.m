@@ -70,4 +70,12 @@ if  isfield(cfg,'saveCauFormat')
     end
 end
 
+% dgf format for the hexahedral mesh 
+% Msh format
+if isfield(cfg,'saveDgfFormat')
+    if cfg.saveDgfFormat == 1
+        write_dgf_mesh_file(cfg.node,cfg.elem,cfg.head_filename); 
+    end
+end
+
 end

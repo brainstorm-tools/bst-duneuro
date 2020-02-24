@@ -35,7 +35,7 @@ end
 
 if strcmp(cfg.modality,'meeg')
     if sum(cfg.layerToKeep) ~= length(unique(cfg.elem(:,5)))
-        error(['THE REDUCED MEG HEAD MODEL WILL BE ALSO USED BY THE EEG'...
+        warning(['THE REDUCED MEG HEAD MODEL WILL BE ALSO USED BY THE EEG'...
                    ' >> NOT CORRECT : SEPARATE HEAD MODEL SHOULD BE USED >> NOT IMPLEMENTED YET'])
     end
 %% @@@ WARNING @@@
@@ -48,17 +48,30 @@ if strcmp(cfg.modality,'meeg')
 end
 
 %% Check the conductivity
-if cfg.isotrop == 1
+if cfg.isotrop == 1    
     if cfg.useTensor == 0
-        % Duneuro uses the msh file
-        cfg.head_filename = [cfg.filename '.msh'];
-        cfg.saveMshFormat = 1;
-    else % case cfg.useTensor =1
+        if strcmp(cfg.dnMeshElementType,'hexahedron')
+            cfg.head_filename = [cfg.filename '.dgf'];
+            cfg.saveDfgFormat =1;
+        else
+            % Duneuro uses the msh file
+            cfg.head_filename = [cfg.filename '.msh'];
+            cfg.saveMshFormat = 1;
+        end
+    else % case cfg.useTensor =1        
+        if strcmp(cfg.dnMeshElementType,'hexahedron')
+            error('Using the tensor Model with hexahedron mesh is not supported for now')
+        end
         % Duneuro uses the Cauchy files
         cfg.head_filename = [cfg.filename '.geo'];
         cfg.saveCauFormat = 1;
     end
+    
 else % otherwise it anisotrop, and for  sure the geo is used
+    if strcmp(cfg.dnMeshElementType,'hexahedron')
+        error('Using the anisotropy model with hexahedron mesh is not supported for now');
+        % TODO : Check if the geo file could be used for the hexa
+    end
     % Duneuro uses the Cauchy files
     cfg.head_filename = [cfg.filename '.geo'];
     cfg.saveCauFormat = 1;

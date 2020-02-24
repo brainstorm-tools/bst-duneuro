@@ -238,17 +238,27 @@ if isDuneuro
     end
 else % regular user
     disp('All the DUNEuro options will be set to the default values')
-end   
+end
 %% Ask for the conductivity of each layer
-for ind = 1 : length(OPTIONS.Conductivity)
-    cond{ind} = num2str(OPTIONS.Conductivity(ind));
+%%%%% !!!! There is an error when we use only one layer, this is the reason
+%%%%% of the if condition here 
+if length(OPTIONS.Conductivity) == 1
+    cond = num2str(OPTIONS.Conductivity(1));
+    TissueName = TissueLabels{1};
+else
+    for ind = 1 : length(OPTIONS.Conductivity)
+        cond{ind} = num2str(OPTIONS.Conductivity(ind));
+    end
+    TissueName = TissueLabels;
 end
-[res, isCancel] = java_dialog('input', TissueLabels, 'Conductivity Values', [], cond);
-if isCancel
-    return
-end
-for ind = 1 : length(OPTIONS.Conductivity)
-    OPTIONS.FemConductivity(ind) = str2num(res{ind});
+[res, isCancel] = java_dialog('input', TissueName, 'Conductivity Values', [], cond);
+if isCancel;     return; end
+if length(OPTIONS.Conductivity) == 1
+    OPTIONS.FemConductivity(1) =  str2num(res(1));
+else
+    for ind = 1 : length(OPTIONS.Conductivity)
+        OPTIONS.FemConductivity(ind) = str2num(res{ind});
+    end
 end
 % TODO : The conductivities values in the case of the
 % combined model should be the same for eeg and meg
