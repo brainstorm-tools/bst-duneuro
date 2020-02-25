@@ -1,21 +1,24 @@
+
 - Add the bst header to all the files 
   and a help or quick discription 
-- Adapt the mini file according to the modality eeg, meg, ....
-- Use only the duneuro-bst binaries 
-- test the process on the linux machine
-- test MEG
+- test MEG on sphere model
 - add plot of the electric field
 
-- recompile the duneuro cpp with the release opts
-- parrallelisation of the computation // use multi thread
+- add way to display and/or load DTI data
 
-- segmentqtion with fieltrip pipline ==> interessant et rapide
-- MEG computation
+
+- parrallelisation of the computation // use multi thread
+it seems that is possibel to add the threads to the duneuro ... need checking. 
+cfg.numberOfThreads = '2';
+driver.apply_meg_transfer(transfer_matrix, dipoles, cfg);
+
+- segmentation with fieltrip pipline ==> interessant et rapide
 
 - generate hexa mesh
 - write the hexa files for duneruo 
 - display hexa mesh
-check why the hexa are not connected with A0206
+check why the hexa are not connected with A0206 :
+it seems that the hexa mesh, the whole are accepted ... I'm not sure why 
 
 gmsh -h  : 
 check the option of refining the mesh and how to gmesh for tetra meshand hexa meshing
@@ -25,11 +28,10 @@ http://gmsh.info/doc/texinfo/
 http://gmsh.info/doc/texinfo/#Specifying-mesh-element-sizes
 - which model is better ... tetra or hexamodel
 
-add function to bst FEM model to extract the FEM mesh surfaces
 
 - Mix between the roast segmentation and johannes hexamesh generator
 - convert tetra to hexa et visversa
--add header and help for all functions
+- add header and help for all functions
 
 - Check the MEG with and witout outer layers.
 
@@ -37,7 +39,3 @@ add function to bst FEM model to extract the FEM mesh surfaces
 - Increase the resolution simnibs headreco later....for the tetra mesh 
 
 - there is probably an error on the way to export the lf_meg ... check with Juan- work on the EEG/MEG combined method is the head is not all considered.
-
-it seems that is possibel to add the threads to the duneuro ... need checking. 
-cfg.numberOfThreads = '2';
-driver.apply_meg_transfer(transfer_matrix, dipoles, cfg);
