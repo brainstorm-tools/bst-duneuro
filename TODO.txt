@@ -39,3 +39,8 @@ http://gmsh.info/doc/texinfo/#Specifying-mesh-element-sizes
 - Increase the resolution simnibs headreco later....for the tetra mesh 
 
 - there is probably an error on the way to export the lf_meg ... check with Juan- work on the EEG/MEG combined method is the head is not all considered.
+
+- ask martin about the dti used for the ICBM
+read this : https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2967146/pdf/ci109023.pdf
+
+update and correct the function process_generate_fem

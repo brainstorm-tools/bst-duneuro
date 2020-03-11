@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>register_files_affine</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link href="matlab-highlighter-1.55.css" rel="stylesheet" type="text/css">
+    <script>
+      (function(){var g=function(a){if(a&&a.stopPropagation)a.stopPropagation();else window.event.cancelBubble=true;var b=a?a:window.event;b.preventDefault&&b.preventDefault()},d=function(a,c,b){if(a.addEventListener)a.addEventListener(c,b,false);else a.attachEvent&&a.attachEvent("on"+c,b)},a=function(c,a){var b=new RegExp("(^| )"+a+"( |$)");return b.test(c.className)?true:false},j=function(b,c,d){if(!a(b,c))if(b.className=="")b.className=c;else if(d)b.className=c+" "+b.className;else b.className+=" "+c},h=function(a,b){var c=new RegExp("(^| )"+b+"( |$)");a.className=a.className.replace(c,"$1");a.className=a.className.replace(/ $/,"")},e=function(){var b=window.location.pathname;if(b.indexOf("/")!=-1)b=b.split("/");var a=b[b.length-1]||"root";if(a.indexOf(".")!=-1)a=a.substring(0,a.indexOf("."));if(a>20)a=a.substring(a.length-19);return a},c="mi"+e(),b=function(b,a){this.g(b,a)};b.prototype={h:function(){var b=new RegExp(c+this.a+"=(\\d+)"),a=document.cookie.match(b);return a?a[1]:this.i()},i:function(){for(var b=0,c=this.b.length;b<c;b++)if(a(this.b[b].parentNode,"selected"))return b;return 0},j:function(b,d){var c=document.getElementById(b.TargetId);if(!c)return;this.l(c);for(var a=0;a<this.b.length;a++)if(this.b[a]==b){j(b.parentNode,"selected");d&&this.d&&this.k(this.a,a)}else h(this.b[a].parentNode,"selected")},k:function(a,b){document.cookie=c+a+"="+b+"; path=/"},l:function(b){for(var a=0;a<this.c.length;a++)this.c[a].style.display=this.c[a].id==b.id?"block":"none"},m:function(){this.c=[];for(var c=this,a=0;a<this.b.length;a++){var b=document.getElementById(this.b[a].TargetId);if(b){this.c.push(b);d(this.b[a],"click",function(b){var a=this;if(a===window)a=window.event.srcElement;c.j(a,1);g(b);return false})}}},g:function(f,h){this.a=h;this.b=[];for(var e=f.getElementsByTagName("a"),i=/#([^?]+)/,a,b,c=0;c<e.length;c++){b=e[c];a=b.getAttribute("href");if(a.indexOf("#")==-1)continue;else{var d=a.match(i);if(d){a=d[1];b.TargetId=a;this.b.push(b)}else continue}}var g=f.getAttribute("data-persist")||"";this.d=g.toLowerCase()=="true"?1:0;this.m();this.n()},n:function(){var a=this.d?parseInt(this.h()):this.i();if(a>=this.b.length)a=0;this.j(this.b[a],0)}};var k=[],i=function(e){var b=false;function a(){if(b)return;b=true;setTimeout(e,4)}if(document.addEventListener)document.addEventListener("DOMContentLoaded",a,false);else if(document.attachEvent){try{var f=window.frameElement!=null}catch(g){}if(document.documentElement.doScroll&&!f){function c(){if(b)return;try{document.documentElement.doScroll("left");a()}catch(d){setTimeout(c,10)}}c()}document.attachEvent("onreadystatechange",function(){document.readyState==="complete"&&a()})}d(window,"load",a)},f=function(){for(var d=document.getElementsByTagName("ul"),c=0,e=d.length;c<e;c++)a(d[c],"tabs")&&k.push(new b(d[c],c))};i(f);return{}})()
+</script>
+<script>
+function highlightMATLABCode(d){function g(i){return(i>="A"&&i<="Z")||(i>="a"&&i<="z")||(i==")")}function m(r,j,i){var s=j.index,t;while(s>=i){t=r.charAt(--s);if(t=="\n"){break}if(t=="'"){continue}else{return !g(t)}}return true}function a(i){var j=i.length-1,r;while(j>0){r=i.charAt(--j);if(r=="\n"){return true}if(r=="%"){return false}}return true}function n(t){var s,u=0,r,v=/(\'[^\'\n]*\')/gi,j=[];while(s=v.exec(t)){if(m(t,s,u)){var w=t.slice(u,s.index);for(var i=j.length-2;i>=0;i-=2){if(w.indexOf("\n")>-1){break}w=w.concat(j[i])}if(a(w)){r=s.index+s[1].length;j.push(t.slice(u,s.index));j.push(t.slice(s.index,r));u=r}}}j.push(t.slice(u));return j}function b(u,j){var w='<span class="',v="</span>";if(j){return[w,'matlab-string">',u,v].join("")}else{var t=[{r:/\b('|break|case|catch|classdef|continue|else|elseif|end|for|function|global|if|otherwise|parfor|persistent|return|spmd|switch|try|while|')\b/gi,s:"keyword"},{r:/\b([0-9]+)\b/gi,s:"number"},{r:/([(){}\[\]]+)/gi,s:"bracket"},{r:/(%[^\n]*)/gi,s:"comment"}];for(var r=0,s=t.length;r<s;r++){u=u.replace(t[r].r,[w,"matlab-",t[r].s,'">$1',v].join(""))}return u}}function q(u){var w=[],s=[];if(typeof u==="undefined"){u={tagPre:true,tagCode:false,className:"matlab-code"}}if(typeof u!=="object"){w.push(document.getElementById(u))}else{if(u.tagCode){s.push("code")}if(u.tagPre){s.push("pre")}for(var t=0;t<s.length;t++){var x=document.getElementsByTagName(s[t]);for(var r=0,v=x.length;r<v;r++){if((u.className=="")||((x[r].className.toString().length>0)&&((" "+x[r].className+" ").indexOf(" "+u.className+" ")>-1))){w.push(x[r])}}}}return w}var p=q(d);for(var f=0,o=p.length;f<o;f++){var c=n(p[f].innerHTML.toString().replace(/<br\s*\/?>/mg,"\n")),h=[],l="&nbsp;";for(var e=0,k=c.length;e<k;e++){h.push(b(c[e],e%2))}p[f].innerHTML=h.join("").replace(/^[ ]/gm,l).replace(/\n/gm,"<br>").replace(/\t/gm,l+l)}}; /*"*/
+</script>
+    <style>	
+      ul.tabs{padding:14px 0 8px;margin:0;font-size:0;list-style-type:none;text-align:left;background:#DDDDE3;border:1px solid #CCC;border-bottom:none;border-radius:2px 2px 0 0}
+      ul.tabs li{display:inline;margin:0;margin-right:2px;font:normal 12px Verdana}
+      ul.tabs li a{text-decoration:none;position:relative;padding:8px 22px;color:#000;border-radius:3px 3px 0 0;outline:none;font-size:105%;}
+      ul.tabs li a:hover{text-decoration:underline;color:#000}
+      ul.tabs li.selected a{position:relative;top:0;font-weight:700;font-size:120%;background:#FFF;border:1px solid #AAA;border-bottom:1px solid #FFF;color:#000}
+      ul.tabs li.selected a:hover,ul.tabs li.selected a:hover{text-decoration:none}
+      div.tabcontents{border:1px solid #CCC;padding:30px;border-top-color:#AAA;background-color:#FFF;border-radius:0 0 2px 2px}
+      tt,code,pre,li.code{font-family:Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif; color:#800;}
+      code{padding:4px 12px 4px 12px; margin:0px; display: block; background-color: #F4F5F7;}
+      code.matlab-code{color: #000;}
+      tt{ background-color: #FFFFD7;}
+      pre {margin:0 0; border:1px dashed #CCC;padding:12px;display: block;background-color: #F4F5F7;overflow: auto;white-space: pre;overflow: auto; width: auto;}
+      div.footer{font-size:70%;margin:10px 0 5px 0;text-align:center}
+      pre .matlab-keyword, code .matlab-keyword {color: #008; font-weight: bold;}
+      pre .matlab-string,  code .matlab-string  {color: #880;}
+      pre .matlab-number,  code .matlab-number  {color: #800;}
+      pre .matlab-bracket, code .matlab-bracket {color: #808;}
+      pre .matlab-comment, code .matlab-comment {color: #080;}
+      pre .matlab-comment span, code .matlab-comment span {color: #080; font-weight: normal;}
+    </style>
+  </head>
+  <body style="background:#F6F9FC; font-family:Arial;"  onload="highlightMATLABCode({tagCode: true, tagPre: true, className: 'matlab-code'});">
+    <div style="width: 68%; margin: 0 auto; padding: 20px 0 30px;">
+      <h1>register_files_affine</h1>
+      <ul class="tabs" data-persist="true">
+        <li><a href="#doc">Documentation</a></li>
+        <li><a href="#license">License</a></li>
+        <li><a href="#ack">About</a></li>
+      </ul>
+      <div class="tabcontents">
+
+
+
+
+
+
+
+<div id="doc">
+  <h1>Affine registration for 3D images</h1>
+  <p><b><tt>register_files_affine</tt></b> can be used for various rigid and affine registration of 3D volumes. It supports several similarity measures and allows flexible options. It is useful for co-registration of inter- and intra-modal medical images. Please see referenced papers for mathematical details of the algorithms. The estimated transformation can also be <a href="#transform_data"> applied to other volumes/surfaces</a>.
+</p> 
+
+<h3>Terms of use</h3>
+<tt>register_files_affine</tt> is made available under a <b>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</b> (see license tab for full details). Please cite following papers if you use this software tool or its derivatives in your own work.
+<ol>
+  <li><p><u>C Bhushan</u>, JP Haldar, S Choi, AA Joshi, DW Shattuck, RM Leahy, <i>"Co-registration and distortion correction of diffusion and anatomical images based on inverse contrast normalization"</i>, NeuroImage, 2015. doi: <a href="http://dx.doi.org/10.1016/j.neuroimage.2015.03.050">10.1016/j.neuroimage.2015.03.050</a></p></li>
+  <li><p><u>C Bhushan</u>, JP Haldar, AA Joshi, DW Shattuck, RM Leahy, <i>"INVERSION: A robust method for co-registration of MPRAGE and diffusion MRI images"</i>, Joint Annual Meeting ISMRM-ESMRMB, Milan, Italy, 2014, p. 2583.<br/> <a href="http://neuroimage.usc.edu/~chitresh/papers/bhushan_2014_INVERSION_ISMRM.pdf">Abstract</a> &nbsp; <a href="http://neuroimage.usc.edu/~chitresh/papers/bhushan_2014_INVERSION_ISMRM_poster.pdf">Poster</a></p></li>	    
+</ol>
+
+<h1>Installation</h1>
+<p><tt>register_files_affine</tt> is a Matlab function and can be used with any Matlab script/function. It is tested with Matlab version R2012a, but should also work with later releases. To use <tt>register_files_affine</tt> extract the content of the downloaded zip to a directory and then add the directory to the Matlab path by runnning following in Matlab command:</p>
+<code class="matlab-code">% Assuming that files are extracted to C:\Users\myname\Documents\register_files_affine
+addpath('C:\Users\myname\Documents\register_files_affine')
+</code>
+
+<h3>Supported file-format</h3>
+<p><tt>register_files_affine</tt> only supports <a href="http://nifti.nimh.nih.gov/nifti-1">NifTI-1 datasets</a> as input files (<tt>.nii</tt>/<tt>.nii.gz</tt> only. <tt>.img</tt>/<tt>.hdr</tt> files are NOT supported). It uses NifTI-1 header information to correctly orient the 3D volumes. Other filetypes may work, however results could be unreliable. All output files are zipped and saved as <tt>.nii.gz</tt>.</p>
+
+<h1>Usage</h1>
+  <p>Following syntax should be used call <tt>register_files_affine</tt>:</p>
+  <code class="matlab-code">register_files_affine(moving_filename, static_filename, output_filename, opts);</code>
+  <p>where, <tt>static_filename</tt> is the filename (with full-path) of the volume used as registration template, <tt>moving_filename</tt> is the filename (with full-path) of the volume which will be registered to <tt>static_filename</tt> and <tt>output_filename</tt> is the filename (with full-path) with which registered output will be saved. Estimated registration parameters are also saved in a <tt>.mat</tt> file. <tt>opts</tt> is a matlab structure decscribing all the options.</p>
+
+  <p><tt>opts.similarity</tt> is the only mandatory option which sets the similarity measure to be used for the registration. When other options are not specified, their respective default value (described later) is used. <tt>opts.similarity</tt> can be set to following values: 
+<ul>
+<li><tt>'sd'</tt> - Sum of Squared difference. Useful for images with same or very-similar contrast.</li>
+<li><tt>'mi'</tt> - Normalized mutual information (Studholme et al. 1999). Useful for images with different contrast.</li>
+<li><tt>'cr'</tt> - Correlation ratio (Roche et al. 1998). Useful for images with different contrast.</li>
+<li><tt>'inversion'</tt> - INVERSION method (Bhushan et al. 2014). Useful for images with approximately inverted contrast. Static image is inverted.</li>
+<li><tt>'bdp'</tt> - INVERSION followed by normalized mutual-information based refinement.</li>
+</ul></p>
+
+<p><tt>opts.dof</tt> can be used to specify degrees of freedom (dof) or number of parameters for registration. <tt>opts.dof</tt> can take following values.
+<ul>
+<li><tt>1</tt> : Only translation along one axis, see notes below
+<li><tt>2</tt>  : Only translation along two axis, see notes below
+<li><tt>3</tt>  : Only translation along three axis, see notes below
+<li><tt>6</tt>  : Rigid registration - Translation and rotation 
+<li><tt>12</tt> : Full affine -  Translation, rotation, shear 
+</ul>
+
+When dof<=3, it is implicitly assumed that translation axis matches the image acquition axis (& NOT world coordinate axis). For dof<=3, resolution and orientation information from  header is used. (Orientation information is used to re-orient volume, in orthogonal sense). Translation axis is defined by vector <tt>opts.axis_translation</tt> of appropriate length for dof<=2 (length of 2 for dof=2 & likewise; no need to define for dof=3).</p>
+
+<p> Following matlab code describes all the options and their respective default values:</p>
+<pre><code class="matlab-code">defaultoptions = struct( ...
+   'similarity', '', ...  See comments above
+   'dof', 6, ...          See comments above
+   'axis_translation', [],  ... 1/2/3, defines the translation axes when dof<=2
+   'intensity_norm', '',... histeq/sigmoid/none - intensity normalization prior to registration, when empty sets appropriately based on similarity
+   'static_mask', [], ... filename of mask of static_filename
+   'moving_mask', [], ... filename of mask of moving_filename
+   'BST_masks', true, ... Interpret mask-files as masks saved by BrainSuite
+   'mask_op', [],     ... 'and'/'or'; Use intersection or union of the masks for similarity measure. When empty sets appropriately depending on similarity
+   'pngout', false,   ... save additional overlay images in png format
+   'reg_res', 1.8,    ... Resampling resolution in mm (isotropic) used during registration
+   'verbose', false,  ... Show optimization/processing details
+   'nbins', 128,      ... Number of bins for histeq and MI based registration
+   'parzen_width', 8, ... Width of parzen window (in bins) for histogram estimation
+   'step_size', [],   ... Step size for cost optimization, when empty sets appropriately depending on similarity
+   'nthreads', 6,    ... Number of (possible) parallel threads to use
+   'init_opts', struct('init_method', 'search', 'search_range',[60 60 60], ...
+                       'search_delta',[15 15 15], 'search_imres',5) ...
+   );</code></pre>
+
+<p><tt>'opts.init_opts'</tt> (last option above) is a matlab structure which sets the initialization method for registration. When <tt>init_method</tt> is set to <tt>'none'</tt>, it assumes that images are already approximately aligned and skips any initialization - This can be helpful for refinement of alignment in images which are already coarsly aligned. <tt>'search'</tt> methods performs coarse search over rotational parameters to find a good initial alignment. <tt>'mask'</tt> method aligns the masks of the images to find an initial estimate - This can be helpful with when masks are 'good enough' and the mask-shape has useful information, specially with <tt>'mi'</tt> and <tt>'cr'</tt> similarity measures. Following matlab code describes the default values:<p>
+<pre><code class="matlab-code">opts.init_opts = struct(...
+   'init_method', 'search', ... none/search/mask -- method of finding initial estimate of parameters
+   'search_range', [60 60 60], ... in degrees, defaults to -60 to 60
+   'search_delta', [15 15 15], ... search step in degrees
+   'search_imres', 5 ... approx. isotropic image resolution in mm for search
+);</code></pre>
+
+<h2>Helpful Tips</h2>
+<ul>
+  <li><b>Masks:</b> Mask option can be used to define the region of interest for the registration process and can have substantial effect on the quality and run-time of the registration. For example, if only brainstem needs to be registered in a study then both image masks should only include brainstem region in the respective masks. Anatomical information in region outside the mask is not used during registration. Masks can be created using <a href="http://brainsuite.org/delineation/roi/masking/">BrainSuite masking tool</a>. Note that as the registration is affine/rigid in nature, the masks need not be highly accurate. Small errors of about 5-10% in the volume of region of interest should not drastically affect the alignment. It is usually better to use tighter masks than to include large regions which are not part of the region of interest. When no mask is defined in the options <tt>register_files_affine</tt> tries to estimate foreground voxels in the image based on intensity distribution and uses it as the image mask.<br/><br/> </li>
+  <li><b>Resampling resolution:</b> <tt>register_files_affine</tt> can register images acquired with different resolutions. During registration process resolution of the images are first matched and then re-sampled with isotropic resolution defined by <tt>opts.reg_res</tt>. A small value of <tt>opts.reg_res</tt> will capture more anatomical information for registration but will increase the run-time. It should generally be set to a value similar to the resolution (in mm) of the image with lowest resolution.<br/><br/> </li>
+  <li><b>Negative values:</b> Images with negative values can also be used for coregistration. Image masks must be specified for such images for correct definition of region of interest.</li>
+</ul>
+
+<h1><a id="transform_data">Transform other volumes/surfaces:</a></h1>
+<p>The affine transformation estimated by <tt>register_files_affine</tt> can also be applied to other volumes and surfaces by using included <b><tt>transform_data_affine</tt></b>. It can transform data (volumes/surfaces) across static and moving files' space.</p> 
+
+<p>Following syntax should be used call <tt>transform_data_affine</tt>:</p>
+  <code class="matlab-code">transform_data_affine(data_file, data_coord, output_file, reg_moving_file, reg_static_file, reg_mat_file, method);</code> <p>where, 
+<ul>
+<li><tt>data_file</tt>: The filename of the data file to be transformed. It could be a volume (.nii/.nii.gz) or surface (.dfs/.dfs.gz). The function will automatically detect file-type and perform appropriate operations.</li>
+<li><tt>data_coord</tt>: Indicates the coordinate-space of the <tt>data_file</tt>, which is used to define direction of the transformation applied. Possible values are <tt>'moving'</tt>, <tt>'m'</tt>, <tt>'static'</tt> or <tt>'s'</tt>. A value of <tt>'moving'</tt> or <tt>'m'</tt> represents that the <tt>data_file</tt> is in the same coordinate space as the <tt>reg_moving_file</tt> and it is transformed to the space of <tt>reg_static_file</tt>. Similarly, <tt>'static'</tt> or <tt>'s'</tt> transforms the <tt>data_file</tt> from the space of <tt>reg_static_file</tt> to the space of <tt>reg_moving_file</tt>.</li>
+<li><tt>output_file</tt> - The filename of the target output. Use appropriate extension corresponding to <tt>data_file</tt>. Existing files are overwritten without any warning - Use your discretion.</li>
+<li><tt>reg_moving_file</tt> - The filename of the moving file used during registration. </li>
+<li><tt>reg_static_file</tt> - The filename of the static file used during registration. </li>
+<li><tt>reg_mat_file</tt> - The filenme of the mat-file saved as output after the affine regitration. </li>
+<li><tt>method</tt> - (Optional) Specifies the volumetric interpolation method. Possible methods are <tt>'nearest'</tt>, <tt>'linear'</tt> (default), <tt>'spline'</tt> and <tt>'cubic'</tt>. It is ignored when used with surface (.dfs) files as no interpolation is required to transform surface. </li>
+</ul>
+</p>
+
+
+  <h1>Example matlab code:</h1>
+<pre><code class="matlab-code">moving_filename = '7_2014.bfc.nii.gz';
+static_filename = '7_2014.dwi.nii.gz';
+output_filename = '7_2014.bfc.rigid_reg.nii.gz';
+opts = struct( ...
+   'similarity', 'bdp', ...
+   'dof', 6, ... 
+   'static_mask', '7_2014.bfc.mask.nii.gz', ... 
+   'moving_mask', '7_2014.dwi.mask.nii.gz', ... 
+   'pngout', true, ... Write overlay images in png format
+   'reg_res', 2.8, ... Resampling resolution in mm 
+   'nthreads', 12 ... Number of (possible) parallel threads to use
+   );
+register_files_affine(moving_filename, static_filename, output_filename, opts);
+
+% Transform moving file using cubic interpolation
+transform_data_affine(moving_filename, 'moving', '7_2014.bfc.rigid_reg.cubic.nii.gz', ...
+  moving_filename, static_filename, ...
+  '7_2014.bfc.rigid_reg.rigid_registration_result.mat', 'cubic');
+</code></pre>
+
+  <p><b>Output at matlab prompt on running above code:</b></p>
+<pre><code class="matlab-code">
+Reading input data...
+Found 4D static volume: 7_2014.dwi.nii.gz
+BDP will use first volume for registration.
+
+Setting/generating masks...
+Matching centroids (approx. align)...
+Matching resolution of the images...
+Normalizing intensity of images... 
+Saved approx. aligned overlay PNG files.
+Performing affine registration with 6 degrees of freedom...
+Search-based initialization... 
+Scale 1 of 6 running...
+Scale 2 of 6 running...
+Scale 3 of 6 running...
+Scale 4 of 6 running...
+Scale 5 of 6 running...
+Scale 6 of 6 running...
+
+Refine: Scale 1 of 2 running...
+Refine: Scale 2 of 2 running...
+Saving output files...
+Saved output overlay PNG files.
+
+Finished transformation. Saved file to disk: 7_2014.bfc.rigid_reg.cubic.nii.gz
+</code></pre>
+
+
+
+</div>
+
+
+
+<div id="license">
+	  <h2>Copyright notice</h2>
+	  <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title"><b>register_files_affine</b></span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. Please cite [1] and [2] if you use <b>register_files_affine</b> or its derivatives in your own work.</p>
+
+	  <ol>
+	    <li><p><u>C Bhushan</u>, JP Haldar, S Choi, AA Joshi, DW Shattuck, RM Leahy, <i>"Co-registration and distortion correction of diffusion and anatomical images based on inverse contrast normalization"</i>, NeuroImage, 2015. doi: <a href="http://dx.doi.org/10.1016/j.neuroimage.2015.03.050">10.1016/j.neuroimage.2015.03.050</a></p></li>
+	    <li><p><u>C Bhushan</u>, JP Haldar, AA Joshi, DW Shattuck, RM Leahy, <i>"INVERSION: A robust method for co-registration of MPRAGE and diffusion MRI images"</i>, Joint Annual Meeting ISMRM-ESMRMB, Milan, Italy, 2014, p. 2583.<br/> <a href="http://neuroimage.usc.edu/~chitresh/papers/bhushan_2014_INVERSION_ISMRM.pdf">Abstract</a> &nbsp; <a href="http://neuroimage.usc.edu/~chitresh/papers/bhushan_2014_INVERSION_ISMRM_poster.pdf">Poster</a></p></li>	    
+	  </ol>
+
+	  <p>In no event shall the University of Southern California, the University of California, the Authors, or the Distributors be liable to any party for direct, indirect, special, incidental, or consequential damages, including lost profits, arising out of the use of this software, its documentation, or any derivatives thereof, even if the authors have been advised of the possibility of such damage. </p>
+
+	  <p>The University of Southern California, the University of California, the Authors, and the Distributors specifically disclaim any warranties, including, but not limited to, the implied warranties of merchantability, fitness for a particular purpose, and non-infringement. This software is provided on an "as is" basis, and the authors and distributors have no obligation to provide maintenance, support, updates, enhancements, or modifications. This software is for research purposes only and has not been approved for clinical use. </p>
+
+
+<pre>
+Attribution-NonCommercial-ShareAlike 4.0 International
+
+=======================================================================
+
+Creative Commons Corporation ("Creative Commons") is not a law firm and
+does not provide legal services or legal advice. Distribution of
+Creative Commons public licenses does not create a lawyer-client or
+other relationship. Creative Commons makes its licenses and related
+information available on an "as-is" basis. Creative Commons gives no
+warranties regarding its licenses, any material licensed under their
+terms and conditions, or any related information. Creative Commons
+disclaims all liability for damages resulting from their use to the
+fullest extent possible.
+
+Using Creative Commons Public Licenses
+
+Creative Commons public licenses provide a standard set of terms and
+conditions that creators and other rights holders may use to share
+original works of authorship and other material subject to copyright
+and certain other rights specified in the public license below. The
+following considerations are for informational purposes only, are not
+exhaustive, and do not form part of our licenses.
+
+     Considerations for licensors: Our public licenses are
+     intended for use by those authorized to give the public
+     permission to use material in ways otherwise restricted by
+     copyright and certain other rights. Our licenses are
+     irrevocable. Licensors should read and understand the terms
+     and conditions of the license they choose before applying it.
+     Licensors should also secure all rights necessary before
+     applying our licenses so that the public can reuse the
+     material as expected. Licensors should clearly mark any
+     material not subject to the license. This includes other CC-
+     licensed material, or material used under an exception or
+     limitation to copyright. More considerations for licensors:
+	wiki.creativecommons.org/Considerations_for_licensors
+
+     Considerations for the public: By using one of our public
+     licenses, a licensor grants the public permission to use the
+     licensed material under specified terms and conditions. If
+     the licensor's permission is not necessary for any reason--for
+     example, because of any applicable exception or limitation to
+     copyright--then that use is not regulated by the license. Our
+     licenses grant only permissions under copyright and certain
+     other rights that a licensor has authority to grant. Use of
+     the licensed material may still be restricted for other
+     reasons, including because others have copyright or other
+     rights in the material. A licensor may make special requests,
+     such as asking that all changes be marked or described.
+     Although not required by our licenses, you are encouraged to
+     respect those requests where reasonable. More_considerations
+     for the public: 
+	wiki.creativecommons.org/Considerations_for_licensees
+
+=======================================================================
+
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+Public License
+
+By exercising the Licensed Rights (defined below), You accept and agree
+to be bound by the terms and conditions of this Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International Public License
+("Public License"). To the extent this Public License may be
+interpreted as a contract, You are granted the Licensed Rights in
+consideration of Your acceptance of these terms and conditions, and the
+Licensor grants You such rights in consideration of benefits the
+Licensor receives from making the Licensed Material available under
+these terms and conditions.
+
+
+Section 1 -- Definitions.
+
+  a. Adapted Material means material subject to Copyright and Similar
+     Rights that is derived from or based upon the Licensed Material
+     and in which the Licensed Material is translated, altered,
+     arranged, transformed, or otherwise modified in a manner requiring
+     permission under the Copyright and Similar Rights held by the
+     Licensor. For purposes of this Public License, where the Licensed
+     Material is a musical work, performance, or sound recording,
+     Adapted Material is always produced where the Licensed Material is
+     synched in timed relation with a moving image.
+
+  b. Adapter's License means the license You apply to Your Copyright
+     and Similar Rights in Your contributions to Adapted Material in
+     accordance with the terms and conditions of this Public License.
+
+  c. BY-NC-SA Compatible License means a license listed at
+     creativecommons.org/compatiblelicenses, approved by Creative
+     Commons as essentially the equivalent of this Public License.
+
+  d. Copyright and Similar Rights means copyright and/or similar rights
+     closely related to copyright including, without limitation,
+     performance, broadcast, sound recording, and Sui Generis Database
+     Rights, without regard to how the rights are labeled or
+     categorized. For purposes of this Public License, the rights
+     specified in Section 2(b)(1)-(2) are not Copyright and Similar
+     Rights.
+
+  e. Effective Technological Measures means those measures that, in the
+     absence of proper authority, may not be circumvented under laws
+     fulfilling obligations under Article 11 of the WIPO Copyright
+     Treaty adopted on December 20, 1996, and/or similar international
+     agreements.
+
+  f. Exceptions and Limitations means fair use, fair dealing, and/or
+     any other exception or limitation to Copyright and Similar Rights
+     that applies to Your use of the Licensed Material.
+
+  g. License Elements means the license attributes listed in the name
+     of a Creative Commons Public License. The License Elements of this
+     Public License are Attribution, NonCommercial, and ShareAlike.
+
+  h. Licensed Material means the artistic or literary work, database,
+     or other material to which the Licensor applied this Public
+     License.
+
+  i. Licensed Rights means the rights granted to You subject to the
+     terms and conditions of this Public License, which are limited to
+     all Copyright and Similar Rights that apply to Your use of the
+     Licensed Material and that the Licensor has authority to license.
+
+  j. Licensor means the individual(s) or entity(ies) granting rights
+     under this Public License.
+
+  k. NonCommercial means not primarily intended for or directed towards
+     commercial advantage or monetary compensation. For purposes of
+     this Public License, the exchange of the Licensed Material for
+     other material subject to Copyright and Similar Rights by digital
+     file-sharing or similar means is NonCommercial provided there is
+     no payment of monetary compensation in connection with the
+     exchange.
+
+  l. Share means to provide material to the public by any means or
+     process that requires permission under the Licensed Rights, such
+     as reproduction, public display, public performance, distribution,
+     dissemination, communication, or importation, and to make material
+     available to the public including in ways that members of the
+     public may access the material from a place and at a time
+     individually chosen by them.
+
+  m. Sui Generis Database Rights means rights other than copyright
+     resulting from Directive 96/9/EC of the European Parliament and of
+     the Council of 11 March 1996 on the legal protection of databases,
+     as amended and/or succeeded, as well as other essentially
+     equivalent rights anywhere in the world.
+
+  n. You means the individual or entity exercising the Licensed Rights
+     under this Public License. Your has a corresponding meaning.
+
+
+Section 2 -- Scope.
+
+  a. License grant.
+
+       1. Subject to the terms and conditions of this Public License,
+          the Licensor hereby grants You a worldwide, royalty-free,
+          non-sublicensable, non-exclusive, irrevocable license to
+          exercise the Licensed Rights in the Licensed Material to:
+
+            a. reproduce and Share the Licensed Material, in whole or
+               in part, for NonCommercial purposes only; and
+
+            b. produce, reproduce, and Share Adapted Material for
+               NonCommercial purposes only.
+
+       2. Exceptions and Limitations. For the avoidance of doubt, where
+          Exceptions and Limitations apply to Your use, this Public
+          License does not apply, and You do not need to comply with
+          its terms and conditions.
+
+       3. Term. The term of this Public License is specified in Section
+          6(a).
+
+       4. Media and formats; technical modifications allowed. The
+          Licensor authorizes You to exercise the Licensed Rights in
+          all media and formats whether now known or hereafter created,
+          and to make technical modifications necessary to do so. The
+          Licensor waives and/or agrees not to assert any right or
+          authority to forbid You from making technical modifications
+          necessary to exercise the Licensed Rights, including
+          technical modifications necessary to circumvent Effective
+          Technological Measures. For purposes of this Public License,
+          simply making modifications authorized by this Section 2(a)
+          (4) never produces Adapted Material.
+
+       5. Downstream recipients.
+
+            a. Offer from the Licensor -- Licensed Material. Every
+               recipient of the Licensed Material automatically
+               receives an offer from the Licensor to exercise the
+               Licensed Rights under the terms and conditions of this
+               Public License.
+
+            b. Additional offer from the Licensor -- Adapted Material.
+               Every recipient of Adapted Material from You
+               automatically receives an offer from the Licensor to
+               exercise the Licensed Rights in the Adapted Material
+               under the conditions of the Adapter's License You apply.
+
+            c. No downstream restrictions. You may not offer or impose
+               any additional or different terms or conditions on, or
+               apply any Effective Technological Measures to, the
+               Licensed Material if doing so restricts exercise of the
+               Licensed Rights by any recipient of the Licensed
+               Material.
+
+       6. No endorsement. Nothing in this Public License constitutes or
+          may be construed as permission to assert or imply that You
+          are, or that Your use of the Licensed Material is, connected
+          with, or sponsored, endorsed, or granted official status by,
+          the Licensor or others designated to receive attribution as
+          provided in Section 3(a)(1)(A)(i).
+
+  b. Other rights.
+
+       1. Moral rights, such as the right of integrity, are not
+          licensed under this Public License, nor are publicity,
+          privacy, and/or other similar personality rights; however, to
+          the extent possible, the Licensor waives and/or agrees not to
+          assert any such rights held by the Licensor to the limited
+          extent necessary to allow You to exercise the Licensed
+          Rights, but not otherwise.
+
+       2. Patent and trademark rights are not licensed under this
+          Public License.
+
+       3. To the extent possible, the Licensor waives any right to
+          collect royalties from You for the exercise of the Licensed
+          Rights, whether directly or through a collecting society
+          under any voluntary or waivable statutory or compulsory
+          licensing scheme. In all other cases the Licensor expressly
+          reserves any right to collect such royalties, including when
+          the Licensed Material is used other than for NonCommercial
+          purposes.
+
+
+Section 3 -- License Conditions.
+
+Your exercise of the Licensed Rights is expressly made subject to the
+following conditions.
+
+  a. Attribution.
+
+       1. If You Share the Licensed Material (including in modified
+          form), You must:
+
+            a. retain the following if it is supplied by the Licensor
+               with the Licensed Material:
+
+                 i. identification of the creator(s) of the Licensed
+                    Material and any others designated to receive
+                    attribution, in any reasonable manner requested by
+                    the Licensor (including by pseudonym if
+                    designated);
+
+                ii. a copyright notice;
+
+               iii. a notice that refers to this Public License;
+
+                iv. a notice that refers to the disclaimer of
+                    warranties;
+
+                 v. a URI or hyperlink to the Licensed Material to the
+                    extent reasonably practicable;
+
+            b. indicate if You modified the Licensed Material and
+               retain an indication of any previous modifications; and
+
+            c. indicate the Licensed Material is licensed under this
+               Public License, and include the text of, or the URI or
+               hyperlink to, this Public License.
+
+       2. You may satisfy the conditions in Section 3(a)(1) in any
+          reasonable manner based on the medium, means, and context in
+          which You Share the Licensed Material. For example, it may be
+          reasonable to satisfy the conditions by providing a URI or
+          hyperlink to a resource that includes the required
+          information.
+       3. If requested by the Licensor, You must remove any of the
+          information required by Section 3(a)(1)(A) to the extent
+          reasonably practicable.
+
+  b. ShareAlike.
+
+     In addition to the conditions in Section 3(a), if You Share
+     Adapted Material You produce, the following conditions also apply.
+
+       1. The Adapter's License You apply must be a Creative Commons
+          license with the same License Elements, this version or
+          later, or a BY-NC-SA Compatible License.
+
+       2. You must include the text of, or the URI or hyperlink to, the
+          Adapter's License You apply. You may satisfy this condition
+          in any reasonable manner based on the medium, means, and
+          context in which You Share Adapted Material.
+
+       3. You may not offer or impose any additional or different terms
+          or conditions on, or apply any Effective Technological
+          Measures to, Adapted Material that restrict exercise of the
+          rights granted under the Adapter's License You apply.
+
+
+Section 4 -- Sui Generis Database Rights.
+
+Where the Licensed Rights include Sui Generis Database Rights that
+apply to Your use of the Licensed Material:
+
+  a. for the avoidance of doubt, Section 2(a)(1) grants You the right
+     to extract, reuse, reproduce, and Share all or a substantial
+     portion of the contents of the database for NonCommercial purposes
+     only;
+
+  b. if You include all or a substantial portion of the database
+     contents in a database in which You have Sui Generis Database
+     Rights, then the database in which You have Sui Generis Database
+     Rights (but not its individual contents) is Adapted Material,
+     including for purposes of Section 3(b); and
+
+  c. You must comply with the conditions in Section 3(a) if You Share
+     all or a substantial portion of the contents of the database.
+
+For the avoidance of doubt, this Section 4 supplements and does not
+replace Your obligations under this Public License where the Licensed
+Rights include other Copyright and Similar Rights.
+
+
+Section 5 -- Disclaimer of Warranties and Limitation of Liability.
+
+  a. UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+     EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+     AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+     ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+     IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+     WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+     PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+     ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+     KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+     ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+  b. TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+     TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+     NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+     INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+     COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+     USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+     ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+     DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+     IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+  c. The disclaimer of warranties and limitation of liability provided
+     above shall be interpreted in a manner that, to the extent
+     possible, most closely approximates an absolute disclaimer and
+     waiver of all liability.
+
+
+Section 6 -- Term and Termination.
+
+  a. This Public License applies for the term of the Copyright and
+     Similar Rights licensed here. However, if You fail to comply with
+     this Public License, then Your rights under this Public License
+     terminate automatically.
+
+  b. Where Your right to use the Licensed Material has terminated under
+     Section 6(a), it reinstates:
+
+       1. automatically as of the date the violation is cured, provided
+          it is cured within 30 days of Your discovery of the
+          violation; or
+
+       2. upon express reinstatement by the Licensor.
+
+     For the avoidance of doubt, this Section 6(b) does not affect any
+     right the Licensor may have to seek remedies for Your violations
+     of this Public License.
+
+  c. For the avoidance of doubt, the Licensor may also offer the
+     Licensed Material under separate terms or conditions or stop
+     distributing the Licensed Material at any time; however, doing so
+     will not terminate this Public License.
+
+  d. Sections 1, 5, 6, 7, and 8 survive termination of this Public
+     License.
+
+
+Section 7 -- Other Terms and Conditions.
+
+  a. The Licensor shall not be bound by any additional or different
+     terms or conditions communicated by You unless expressly agreed.
+
+  b. Any arrangements, understandings, or agreements regarding the
+     Licensed Material not stated herein are separate from and
+     independent of the terms and conditions of this Public License.
+
+
+Section 8 -- Interpretation.
+
+  a. For the avoidance of doubt, this Public License does not, and
+     shall not be interpreted to, reduce, limit, restrict, or impose
+     conditions on any use of the Licensed Material that could lawfully
+     be made without permission under this Public License.
+
+  b. To the extent possible, if any provision of this Public License is
+     deemed unenforceable, it shall be automatically reformed to the
+     minimum extent necessary to make it enforceable. If the provision
+     cannot be reformed, it shall be severed from this Public License
+     without affecting the enforceability of the remaining terms and
+     conditions.
+
+  c. No term or condition of this Public License will be waived and no
+     failure to comply consented to unless expressly agreed to by the
+     Licensor.
+
+  d. Nothing in this Public License constitutes or may be interpreted
+     as a limitation upon, or waiver of, any privileges and immunities
+     that apply to the Licensor or You, including from the legal
+     processes of any jurisdiction or authority.
+
+=======================================================================
+
+Creative Commons is not a party to its public licenses.
+Notwithstanding, Creative Commons may elect to apply one of its public
+licenses to material it publishes and in those instances will be
+considered the "Licensor." Except for the limited purpose of indicating
+that material is shared under a Creative Commons public license or as
+otherwise permitted by the Creative Commons policies published at
+creativecommons.org/policies, Creative Commons does not authorize the
+use of the trademark "Creative Commons" or any other trademark or logo
+of Creative Commons without its prior written consent including,
+without limitation, in connection with any unauthorized modifications
+to any of its public licenses or any other arrangements,
+understandings, or agreements concerning use of licensed material. For
+the avoidance of doubt, this paragraph does not form part of the public
+licenses.
+
+Creative Commons may be contacted at creativecommons.org.
+</pre>
+           
+        </div>
+        <div id="ack">
+<p><b>register_files_affine</b> is a general puropose affine registration tool for 3D images. It could be useful for data processing along with <a href="http://brainsuite.org/processing/diffusion/">BrainSuite Diffusion Pipeline (BDP)</a>. Similar other useful utilities are available from <a href="http://neuroimage.usc.edu/neuro/Resources/BDPAddons">http://neuroimage.usc.edu/neuro/Resources/BDPAddons</a>.</p>
+
+<p><b>Author</b>: <a href="http://www-scf.usc.edu/~cbhushan/">Chitresh Bhushan</a></p>
+
+<p><b>register_files_affine</b> makes use of components from the following software libraries/tools:</p>
+
+<pre>
+ Tools for NIfTI and ANALYZE image
+ (Code covered by the BSD License)
+ http://www.mathworks.com/matlabcentral/fileexchange/8797
+
+ Copyright (c) 2009, Jimmy Shen
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the distribution
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ ________________________________________________________________________________
+
+
+ multimodality non-rigid demon algorithm image registration
+ (Code covered by the BSD License)
+ http://www.mathworks.com/matlabcentral/fileexchange/21451-multimodality-non-rigid-demon-algorithm-image-registration
+
+ Copyright (c) 2009, Dirk-Jan Kroon
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the distribution
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ ________________________________________________________________________________
+
+
+ B-spline Grid, Image and Point based Registration
+ (Code covered by the BSD License)
+ http://www.mathworks.com/matlabcentral/fileexchange/20057-b-spline-grid-image-and-point-based-registration
+
+ Copyright (c) 2009, Dirk-Jan Kroon
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the distribution
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ ________________________________________________________________________________
+
+
+ ConsoleProgressBar
+ (Code covered by the BSD License)
+ http://www.mathworks.com/matlabcentral/fileexchange/30297-consoleprogressbar
+
+ Copyright (c) 2011, Evgeny Pr
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the distribution
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ ________________________________________________________________________________
+
+
+ Line-wrap a string
+ (Code covered by the BSD License)
+ http://www.mathworks.com/matlabcentral/fileexchange/9909-line-wrap-a-string
+
+ Copyright (c) 2009, The MathWorks, Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the distribution
+   * Neither the name of the The MathWorks, Inc. nor the names
+     of its contributors may be used to endorse or promote products derived
+     from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ ________________________________________________________________________________
+
+
+ STRJOIN
+ (Code covered by the BSD License)
+ http://www.mathworks.com/matlabcentral/fileexchange/31862-strjoin
+
+ Copyright (c) 2011, Kota Yamaguchi
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the distribution
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ ________________________________________________________________________________
+
+
+ STRSPLIT
+ (Code covered by the BSD License)
+ http://www.mathworks.com/matlabcentral/fileexchange/21710-string-toolkits/content/strings/strsplit.m
+
+ Copyright (c) 2009, Dahua Lin
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the distribution
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ ________________________________________________________________________________
+
+
+ xml2struct
+ struct2xml
+ (Code covered by the BSD License)
+ http://www.mathworks.com/matlabcentral/fileexchange/28518-xml2struct
+ http://www.mathworks.com/matlabcentral/fileexchange/28639-struct2xml
+
+ Copyright (c) 2010, Wouter Falkena
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without 
+ modification, are permitted provided that the following conditions are 
+ met:
+
+   * Redistributions of source code must retain the above copyright 
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright 
+     notice, this list of conditions and the following disclaimer in 
+     the documentation and/or other materials provided with the distribution
+ 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ POSSIBILITY OF SUCH DAMAGE.
+ ________________________________________________________________________________
+
+ imdisp
+ (Code covered by the BSD License)
+ http://www.mathworks.com/matlabcentral/fileexchange/22387-imdisp
+
+ Copyright (c) 2010, Oliver Woodford
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the distribution
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+
+ ______________________________________________________________________________
+
+ catstruct
+ (Code covered by the BSD License)
+ Copyright (c) 2013, Jos van der Geest
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the distribution
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+
+ ________________________________________________________________________________
+ 
+ Tabbed html theme 
+ http://www.menucool.com/tabbed-content Free to use. Version 2013.7.6
+
+ ________________________________________________________________________________
+
+ MATLAB Highlighter 1.55, 
+ a small and lightweight JavaScript library for colorizing your MATLAB syntax.
+ http://matlabtricks.com/matlab-highlighter
+ Licensed under the MIT license
+ Copyright (c) 2013, Zoltan Fegyver
+	  </pre>
+        </div>
+      </div>
+
+
+      <div class="footer">
+	Last modified: Jun 2, 2015
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<!--git tag--> BDP-addons-v12
+      </div>
+
+
+    </div>
+  </body>
+</html>
