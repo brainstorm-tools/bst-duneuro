@@ -7,7 +7,7 @@ build*
 src/
 
 #windwos/ google drive files
-/*.ini
+desktop.ini
 
 #config_release_windows.opts file is updated during installation
 #with the full path of the toolchain file no need to update that.
