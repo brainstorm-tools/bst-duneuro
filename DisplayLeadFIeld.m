@@ -1,6 +1,6 @@
 function DisplayLeadFIeld(bstNodes)
 
-
+% http://www.bem.fi/book/11/11x/1119x.htm
 % Display lead field as vectors ... Jonh Mosher Lead field representation
 % discuss with him for the cas of the MEG and the notion of the reference
 % and target electrode ... does it make sens for MEG ?
@@ -90,7 +90,7 @@ end
 %% Get Channel index and location per modalities:
 % assuming that all the data has the same size (GAIN), the n we can fixe
 % indFile = 1, 
-hotindFile =1;
+indFile =1;
 %% Load only one file for source and sensor
 channelModelData{indFile}  = load(ChannelFile{indFile});
 cortexModelData{indFile}  = load(CortexModelFile{indFile});
