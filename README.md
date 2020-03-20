@@ -57,6 +57,12 @@ setup_bst_duneuro.sh rebuild all duneuro-matlab
 ```
 to rebuild both linux and window's applications.
 
+### Mac version
+
+For Mac x64 version all you need to do is clone the repository, install dpkg-config and gcc compiler, then use the same command as you would use for linux. 
+
+So ```setup_bst_duneuro.sh build linux``` the resulting app will be copied as usual to the ```test/``` folder. Typically that app can be manually renamed as a mac64 version binary and copied to the ```bin/``` folder.
+
 #### Comments on Matlab and mex file implementation. 
 If you have Matlab installed in your linux version and you plan to use Brainstorm in this system, you can take advantage of the possibility of building the application as a mex file which will decrease execution times and allow for more interaction between Matlab and duneuro.
 
