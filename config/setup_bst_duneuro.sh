@@ -46,7 +46,6 @@ doDownload () {
       echo -e "\nThere was a problem downloading the code."
       echo -e "\nUnpacking source vault -> src/"
   fi
-
 }
 
 doConfigure () {
@@ -63,8 +62,13 @@ doConfigure () {
 
   # Modify CMakeLists file
   if ! grep -Fxq "brainstorm_app" src/duneuro-matlab/CMakeLists.txt ; then
+    ENVIRONMENT=$(uname -s)
+    if [[ $ENVIRONMENT == Darwin ]]; then
+      sed -i '' $'s#add_subdirectory("cmake/modules")#add_subdirectory("cmake/modules")\\\nadd_subdirectory("brainstorm_app")#g' src/duneuro-matlab/CMakeLists.txt
+    else
+      sed -i 's#add_subdirectory("cmake/modules")#add_subdirectory("cmake/modules")\nadd_subdirectory("brainstorm_app")#g' src/duneuro-matlab/CMakeLists.txt
+    fi
     echo -e "\nAdding subdirectory brainstorm_app to cmake lists file.\n"
-    sed -i 's#add_subdirectory("cmake/modules")#add_subdirectory("cmake/modules")\nadd_subdirectory("brainstorm_app")#g' src/duneuro-matlab/CMakeLists.txt
   fi
 
   # Modify full path to toolchain file in windows opts file.
