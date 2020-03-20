@@ -65,7 +65,7 @@ inline int powInt(int x, int y)
 inline size_t parseInt(std::vector<int> &v)
 {
     size_t sum{0};
-    int len{v.size()};
+    int len{static_cast<int>(v.size())};
     for (int i; i < len; i++)
     {
         int n{v.at(len - (i + 1)) - '0'};
@@ -139,8 +139,7 @@ std::shared_ptr<duneuro::DenseMatrix<double>> readTransferMatrix(const std::stri
     //printf("\nnumber of cols: %d\n", nCols);
 
     //now read the data
-    std::shared_ptr<duneuro::DenseMatrix<double>>
-    matrixTransfer(new duneuro::DenseMatrix<double>(nRows, nCols, 0.));
+    static std::shared_ptr<duneuro::DenseMatrix<double>> matrixTransfer(new duneuro::DenseMatrix<double>(nRows, nCols, 0.));
     fin.read(reinterpret_cast<char *>(matrixTransfer->data()), nRows * nCols * sizeof(matrixTransfer->data()[0]));
     fin.close();
     return matrixTransfer;
