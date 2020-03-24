@@ -59,7 +59,7 @@ to rebuild both linux and window's applications.
 
 ### Mac version
 
-For Mac x64 version all you need to do is clone the repository, install dpkg-config and gcc compiler, then use the same command as you would use for linux. 
+For Mac x64 version all you need to do is clone the repository, install dpkg-config and gcc compiler, then use the same command as you would use for linux. Beware this is a intel-mac version, not a powerPc, thus, Mac earlier than 2006 will not run.
 
 So ```setup_bst_duneuro.sh build linux``` the resulting app will be copied as usual to the ```test/``` folder. Typically that app can be manually renamed as a mac64 version binary and copied to the ```bin/``` folder.
 
