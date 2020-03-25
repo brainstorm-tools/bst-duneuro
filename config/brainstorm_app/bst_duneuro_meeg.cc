@@ -76,7 +76,12 @@ void runEEG(const Dune::ParameterTree &config)
         driver->applyEEGTransfer(*transfer, dipoles, config.sub("solution"));
     //save files
     // std::cout << "outputfile = " << config["brainstorm.output_folder"] + config["brainstorm.eeg_leadfield_filename"] << std::endl;
-    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.eeg_leadfield_filename"], num_transfer, dipoles.size(), electrodes.size());
+    bool saveAsText{true};
+    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.eeg_leadfield_filename"], 
+                num_transfer, 
+                dipoles.size(), 
+                electrodes.size(),
+                saveAsText);
 }
 
 void runMEG(const Dune::ParameterTree &config)
@@ -121,7 +126,12 @@ void runMEG(const Dune::ParameterTree &config)
         driver->applyMEGTransfer(*transfer, dipoles, config.sub("solution"));
 
     //save files
-    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.meg_leadfield_filename"], num_transfer, dipoles.size(), coils.size());
+    bool saveAsText{false};
+    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.meg_leadfield_filename"], 
+                num_transfer,
+                dipoles.size(),
+                coils.size(),
+                saveAsText);
 }
 
 void runMEEG(const Dune::ParameterTree &config)
@@ -170,7 +180,12 @@ void runMEEG(const Dune::ParameterTree &config)
     std::vector<std::vector<double>> eeg_num_transfer =
         driver->applyEEGTransfer(*eeg_transfer, dipoles, config.sub("solution"));
     //save files
-    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.eeg_leadfield_filename"], eeg_num_transfer, dipoles.size(), electrodes.size());
+    bool saveAsText{false};
+    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.eeg_leadfield_filename"],
+                eeg_num_transfer,
+                dipoles.size(),
+                electrodes.size(),
+                saveAsText);
 
 
     // Process fro MEG
@@ -204,7 +219,11 @@ void runMEEG(const Dune::ParameterTree &config)
         driver->applyMEGTransfer(*meg_transfer, dipoles, config.sub("solution"));
 
     //save files
-    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.meg_leadfield_filename"], meg_num_transfer, dipoles.size(), coils.size());
+    saveLFfile(config["brainstorm.output_folder"] + config["brainstorm.meg_leadfield_filename"],
+                meg_num_transfer,
+                dipoles.size(),
+                coils.size(),
+                saveAsText);
 }
 
 int main(int argc, char **argv)
