@@ -9,12 +9,10 @@ inline void print_help_msg()
     std::printf("\n    Created initially by the Duneuro team.");
     std::printf("\n    Adapted and modified by Takfarinas Medani and Juan Garcia-Prieto");
     std::printf("\n    ");
-    std::printf("\n    Usage: bst_duneuro_meeg config_file.ini --mode");
+    std::printf("\n    Usage: bst_duneuro_meeg config_file.ini");
     std::printf("\n    ");
     std::printf("\n        - config_file.ini");
     std::printf("\n          Configuration file containing the parmeters of the forward model to compute.");
-    std::printf("\n    ");
-    std::printf("\n        - mode: {eeg, meg, meeg}");
     std::printf("\n    ");
     std::printf("\n    This application computes the MEG, MEG and combined MEG/EEG transfer matrix and the final leadfields solution");
 	std::printf("\n    If the source/sensor models are not modified, the application will search for a previously computed transfer");
@@ -27,11 +25,7 @@ inline void print_help_msg()
     std::printf("\n    ");
     std::printf("\n        - bst_duneuro --help                                 Will print this help.");
     std::printf("\n    ");
-    std::printf("\n        - bst_duneuro eeg_config_file.mini --eeg             Will compute solution for eeg.");
-    std::printf("\n    ");
-    std::printf("\n        - bst_duneuro meg_config_file.mini --meg             Will compute solution for meg.");
-    std::printf("\n    ");
-    std::printf("\n        - bst_duneuro meeg_config_file.mini --meeg           Will compute solution for both/combined meg and eeg.");
+    std::printf("\n        - bst_duneuro eeg_config_file.mini             Will compute solution for eeg.");
     std::printf("\n    ");
     std::printf("\n    ");
     std::printf("\n=============================================================================");
