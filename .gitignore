@@ -15,3 +15,9 @@ config/config_release_windows.opts
 
 #ignore vscode files
 .vscode
+
+
+.DS_Store
+
+test/.DS_Store
+test/dgfparser.log
