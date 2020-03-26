@@ -18,9 +18,16 @@ Distribution within Brainstorm:
 - It can be downloaded directly with the URL: https://neuroimage.usc.edu/bst/getupdate.php?d=bst_duneuro_200110.zip
 - To get the current online version of the package (to know whether it should be updated in Brainstorm): https://neuroimage.usc.edu/bst/getversion_duneuro.php
 
+## Release version
+In the release version, this is, the version that will be downloaded by a Brainstorm Toolbox user, only the ```bin/``` and the ```matlab/``` folders will be saved. All other files and folders will be discarded since they are oriented towards development of the tool.
+
 ## Development
 
-Duneuro is based on Dune project, developed in C++, in a linux based OS. Thus, there is no windows version directly available. Windows binary application is built by cross-compiling with cygwin. In order to compile the application you will need a linux OS and follow these steps:
+Duneuro is based on Dune project, developed in C++, in a linux based OS. Thus, there is no windows version directly available. Windows binary application is built by cross-compiling with cygwin. Mac version is compiled with g++ in a MacOS. 
+
+During a typical compilation process, first the code will be downloaded from the Duneuro gitlab server. If the download fails, there is an arhchived copy of the code inside the ```config/``` folder. The downloaded code will be saved in a newly created ```src/``` folder. After some small modifications to the code are done, the building process will start and the result will be saved in another new folder named ```build_release_TARGET_OS``` where "TARGET_OS" will be "linux" or "windows". Finally, if the compilation went ok, the result binary application will be saved to the ```test/``` folder with the date and time included in the name of the file. If the tests are good, you can manually copy the results to the ```bin/``` folder and push updates to the repo.
+
+In order to compile the application you will need a linux OS and follow these steps:
 
 1. Before starting, make sure your system is updated ```sudo apt-get update```. Then install the necessary tools/packages for the compilation chain to work. In a new 18.04 lts ubuntu you will need the following packages:
 ```
@@ -59,9 +66,9 @@ to rebuild both linux and window's applications.
 
 ### Mac version
 
-For Mac x64 version all you need to do is clone the repository, install dpkg-config and gcc compiler, then use the same command as you would use for linux. Beware this is a intel-mac version, not a powerPc, thus, Mac earlier than 2006 will not run.
+For Mac x64 version all you need to do is clone the repository, install dpkg-config and gcc compiler, then use the same command as you would use for linux. Beware this is a intel-mac version, not a powerPc, thus, Mac earlier than 2006 will not run. Depending on your Mac installation you might have to install additional packages, like ```pyenv``` or ```pkg-config```. Sometimes, you might have to install additional python packages, i.e. ```pip install virtualenv```, but generally you will be able to follow instructions given by the Dune environment. 
 
-So ```setup_bst_duneuro.sh build linux``` the resulting app will be copied as usual to the ```test/``` folder. Typically that app can be manually renamed as a mac64 version binary and copied to the ```bin/``` folder.
+In a mac envoronment, the compiling instruction is ```setup_bst_duneuro.sh build linux```, yes ```linux```. Since the linux code builds more or less directly in the mac envoronment, the same instruction is kept to avoid further complexity. The resulting app will be copied as usual to the ```test/``` folder. Typically that app can be manually renamed as a mac64 version binary and copied to the ```bin/``` folder.
 
 #### Comments on Matlab and mex file implementation. 
 If you have Matlab installed in your linux version and you plan to use Brainstorm in this system, you can take advantage of the possibility of building the application as a mex file which will decrease execution times and allow for more interaction between Matlab and duneuro.
