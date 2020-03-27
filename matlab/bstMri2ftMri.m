@@ -1,5 +1,5 @@
 function ftMri = bstMri2ftMri(bstMri, vox2ras)
-% Convert the brainstorm MRI file to Filedtrip MRI file (compatibel with ft_read_mri)
+% basic convertion from the brainstorm MRI file to Filedtrip MRI file (compatibel with ft_read_mri)
 % ftMri = bstMri2ftMri(bstMri) 
 % ftMri = bstMri2ftMri(bstMri, vox2ras) 
 % input bstMri : MRI struvture in the brainstorm format
@@ -16,5 +16,5 @@ ftMri.dim = size(bstMri.Cube);
 ftMri.anatomy = bstMri.Cube;
 ftMri.hdr = bstMri.Header;
 ftMri.transform = vox2ras;
-ftMri.unit = 'mm'; % we assume that milimiter are used
+ftMri.unit = 'mm'; % we assume that milimiters are used
 end
