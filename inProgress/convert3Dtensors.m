@@ -2,10 +2,12 @@ function  [V1rot,V2rot,V3rot, L1a, L2a, L3a ]=convert3Dtensors(sMriMask, femHead
 % Takfarinas & Anand
 
 %% Extract the EigenValue and vector for each voxel
+wmIndex = 1;
+% much faster to use only the nisotrpu parts
 % apply the anand model
 [Vertices_ras, Transf] = cs_convert(sMriMask,  'scs',  'voxel', femHead.Vertices);
 % extract only the wm ... faster and only wm is needed
-cfg2.elem_wm = [femHead.Elements(femHead.Tissue == 1, :) femHead.Tissue(femHead.Tissue==1)];
+cfg2.elem_wm = [femHead.Elements(femHead.Tissue == 1, :) femHead.Tissue(femHead.Tissue==wmIndex)];
 cfg2.node = Vertices_ras;
 elem_centroide_wm = bst_generate_centroide_on_elem(cfg2.node,cfg2.elem_wm);
 cfg2.elem_centroide_wm = elem_centroide_wm;
@@ -22,7 +24,7 @@ cfg2.elem_centroide_wm = elem_centroide_wm;
 
 % SZ=size(DTI{1}.anatomy);
 res=DTI{1}.hdr.dim.pixdim(2:4);
-
+% Interpolate the results on the centroides of the WM elements
 Vertices_ras = elem_centroide_wm;
 clear V1a;
 V1a(:,1) = interpn(DTI{1}.anatomy(:,:,:,1), Vertices_ras(:,1)/res(1),Vertices_ras(:,2)/res(2),Vertices_ras(:,3)/res(3));
