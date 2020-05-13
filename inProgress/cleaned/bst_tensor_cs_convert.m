@@ -1,4 +1,4 @@
-function  [V1rot,V2rot,V3rot, L1a, L2a, L3a ] = bst_tensor_cs_convert(sMriMask, femHead, DTI)
+function  [V1rot,V2rot,V3rot, L1a, L2a, L3a ] = bst_tensor_cs_convert(sMriMask, femHead, DTI, anisoTissueIndex)
 
 % This function convert the tensors from the voxel space to the scs
 % coordinate system and interpolate theire value to the centroide of the
@@ -7,14 +7,14 @@ function  [V1rot,V2rot,V3rot, L1a, L2a, L3a ] = bst_tensor_cs_convert(sMriMask, 
 % Takfarinas & Anand
 
 % input 
-wmIndex = 1;
+% anisoTissueIndex = 1;
 
 % much faster to use only the anisotrop tissues
 % apply the anand model
 [Vertices_vox, Transf] = cs_convert(sMriMask,  'scs',  'voxel', femHead.Vertices);
 
 % extract only the wm ... faster and only wm is needed
-elem_wm = [femHead.Elements(femHead.Tissue == 1, :) femHead.Tissue(femHead.Tissue==wmIndex)];
+elem_wm = [femHead.Elements(femHead.Tissue == 1, :) femHead.Tissue(femHead.Tissue==anisoTissueIndex)];
 elem_centroide_wm = bst_generate_centroide_on_elem(Vertices_vox,elem_wm);
 
 %% Interplate the tensors to the centroides of the anisotropic tissue 

@@ -1,4 +1,4 @@
-function [aniso_conductivity, anisotropicTensor ] = bst_compute_anisotropy_tensors(femHead,  default_iso_conductivity, IsotropicTensor, L1a,L2a,L3a,V1rot,V2rot,V3rot,options)
+function [aniso_conductivity, anisotropicTensor,param ] = bst_compute_anisotropy_tensors(femHead,  default_iso_conductivity, IsotropicTensor, L1a,L2a,L3a,V1rot,V2rot,V3rot,options)
 % Compute or convert the DTI tensors to anisotropic conductivity tensors.
 % Input :
 % femHead : FEM mesh within brainstorm format
@@ -44,7 +44,7 @@ end
 iso_conductivity = default_iso_conductivity(aniso_tissu_index);  % get this value from the input
 max_conductivity = default_iso_conductivity(ref_tissu_index);  %should be the CSF
 
-%% 1- Ensure that all the eigen values are positives 
+%% 1- Ensure that all the eigen values are positives
 L1a = abs(L1a); L2a = abs(L2a); L3a = abs(L3a);
 % The tensors will be symetric by construction
 % ensures that all conductivity tensors are positive definite
@@ -65,13 +65,18 @@ maxL1 = max(L1a); minL1 =  min(L1a);  meanL1 =  mean(L1a);
 maxL2 = max(L2a); minL2 =  min(L2a);  meanL2 =  mean(L2a);
 maxL3 = max(L3a); minL3 =  min(L3a);  meanL3 =  mean(L3a);
 
+% initialization for method 7;
+sumProductEigenValue = 0;
+counter = 0;
+g_index = [];
+l_index = [];
 
 for globalIndex = 1 : length(femHead.Tissue)
     % Check if the tissue ID if it's belonging to the anisotropy tissue
     if femHead.Tissue(globalIndex) == aniso_tissu_index % 1 is the label of the wm
         L1 = L1a(ind);
         L2 = L2a(ind);
-        L3 = L3a(ind);              
+        L3 = L3a(ind);
         L = diag([L1, L2, L3]);
         %% Ensure maximal ratio of 10 between the  largest and smallest conductivity eigenvalues
         largest_ratio = 10;
@@ -84,11 +89,10 @@ for globalIndex = 1 : length(femHead.Tissue)
                 L1 = L(1,1);L2 = L(2,2);L1 = L(3,3);
             end
         end
-        % Construct the DTI tensors 
+        % Construct the DTI basis
         V = [V1rot(ind,:)', V2rot(ind,:)', V3rot(ind,:)'];
-        T = V*L*V'; % the dti tensor      
         
-        %% Assigne the tensors for each element 
+        %% Assigne the tensors for each element
         if sum(sum(L)) == 0 % useful in the case where BDP fails or it's not part of the wm mask
             % in this case the isotropic model is used will be used
             %             disp('case 1 : sum(L) = 0')
@@ -108,7 +112,7 @@ for globalIndex = 1 : length(femHead.Tissue)
             isIsotrope = [isIsotrope ind];
             aniso_conductivity(:,:,ind) = diag([iso_conductivity,iso_conductivity,iso_conductivity]);
             eigen.eigen_vector{ind} = IsotropicTensor.eigen_vector{globalIndex};
-            eigen.eigen_value{ind} =  IsotropicTensor.eigen_value{globalIndex};            
+            eigen.eigen_value{ind} =  IsotropicTensor.eigen_value{globalIndex};
         else %% APPLY the transformation from DTI tensors to conductivity tensors
             %disp('case 4 : anisotrop ')
             if L2 == 0
@@ -131,7 +135,7 @@ for globalIndex = 1 : length(femHead.Tissue)
                 eigen.eigen_vector{ind} = V;
                 eigen.eigen_value{ind} = diag([lm1 lm2 lm3]);
                 
-                 meanConductivity = [meanConductivity mean([lm1 lm2 lm3]) ];
+                meanConductivity = [meanConductivity mean([lm1 lm2 lm3]) ];
             end
             %% METHOD 2 : direct transformation approcah with volume constraint  [Güllmar et al NeuroImage 2010]
             if aniso_method == 2
@@ -153,9 +157,9 @@ for globalIndex = 1 : length(femHead.Tissue)
                 % The output
                 aniso_conductivity(:,:,ind) = V* diag([lm1n, lm2n,lm3n])*V';
                 eigen.eigen_vector{ind} = V;
-                eigen.eigen_value{ind} = diag([lm1n lm2n lm3n]);                
+                eigen.eigen_value{ind} = diag([lm1n lm2n lm3n]);
                 meanConductivity = [meanConductivity mean([lm1 lm2 lm3])];
-            end            
+            end
             %% METHOD 3 : Artificial anisotropy with volume constraint [Güllmar et al NeuroImage 2010]
             if aniso_method == 4
                 % compute the new eigen value
@@ -174,7 +178,7 @@ for globalIndex = 1 : length(femHead.Tissue)
                 % The output
                 aniso_conductivity(:,:,ind) =  V* diag([lm1, lm2,lm3])*V';
                 eigen.eigen_vector{ind} = V;
-                eigen.eigen_value{ind} = diag([lm1 lm2 lm3]);                
+                eigen.eigen_value{ind} = diag([lm1 lm2 lm3]);
                 meanConductivity = [meanConductivity mean([lm1 lm2 lm3]) ];
             end
             %% METHOD 4 : The volume normalized approcah  [Won Hee Lee et all  IEEE 2015]
@@ -190,7 +194,7 @@ for globalIndex = 1 : length(femHead.Tissue)
                 end
                 aniso_conductivity(:,:,ind) =  V * diag([lm1, lm2,lm3]) * V';
                 eigen.eigen_vector{ind} = V;
-                eigen.eigen_value{ind} = diag([lm1 lm2 lm3]);                
+                eigen.eigen_value{ind} = diag([lm1 lm2 lm3]);
                 meanConductivity = [meanConductivity mean([lm1 lm2 lm3])];
             end
             
@@ -215,7 +219,7 @@ for globalIndex = 1 : length(femHead.Tissue)
                 lm3 = lm2;
                 aniso_conductivity(:,:,ind) =  V* diag([lm1, lm2 , lm3])*V';
                 eigen.eigen_vector{ind} = V;
-                eigen.eigen_value{ind} = diag([lm1 lm2 lm3]);                
+                eigen.eigen_value{ind} = diag([lm1 lm2 lm3]);
                 meanConductivity = [meanConductivity mean([lm1 lm2 lm3]) ];
             end
             
@@ -240,13 +244,13 @@ for globalIndex = 1 : length(femHead.Tissue)
                 lm3 = lm2;
                 aniso_conductivity(:,:,ind) =  V* diag([lm1, lm2 , lm3])*V';
                 eigen.eigen_vector{ind} = V;
-                eigen.eigen_value{ind} = diag([lm1 lm2 lm3]);                
+                eigen.eigen_value{ind} = diag([lm1 lm2 lm3]);
                 meanConductivity = [meanConductivity mean([lm1 lm2 lm3]) ];
             end
             
             %% METHOD 7 : As SimBio toolbox  [Rullmann et al 2008 / Vorwerk et al 2014 ]
             %% PART 1 : compute the scaling factor 's'
-            if aniso_method == 7 % SimBio implementation
+            if aniso_method == 7 % as simbio 
                 % initialization
                 if ind == 1
                     sumProductEigenValue = 0;
@@ -255,9 +259,9 @@ for globalIndex = 1 : length(femHead.Tissue)
                     l_index = [];
                 end
                 % compute dcomp
-                productEigenValue = L1 * L2 * L3;
-                sumProductEigenValue = sumProductEigenValue + productEigenValue;
                 counter = counter + 1;
+                productEigenValue(counter) = L1 * L2 * L3;
+                sumProductEigenValue = sumProductEigenValue +  productEigenValue(counter);
                 g_index = [g_index,  globalIndex]; % indexes for the whole head,global index
                 l_index = [l_index,  ind]; % index for only the isotropic tissue or local index
                 
@@ -280,15 +284,25 @@ end
 %%% PART 2 : Assigne the tensors
 if aniso_method == 7
     meanDiffusity =  (sumProductEigenValue / counter)^(1/3);
-    scalingFactor = iso_conductivity / meanDiffusity;        
+    scalingFactor = iso_conductivity / meanDiffusity;
+    
+    param.meanDiffusity  =  meanDiffusity;
+    param.scalingFactor  =  scalingFactor;
     %% 1 - Apply the Tuch process Sigm = sD
-    isNan = [];
-    meanConductivity =[];
+    isNan = [ ];
+    meanConductivity =[ ];
+    count = 0;
     for gind = l_index % the last value of l_index is not belonging to anistropic tissue
+        
         if femHead.Tissue(gind) == aniso_tissu_index % 1 is the label of the wm
+            count = count + 1;
             try
                 L = diag([L1a(gind), L2a(gind), L3a(gind)]);
                 V = [V1rot(gind,:)', V2rot(gind,:)', V3rot(gind,:)'];
+                
+                maxEig(count) = max([L1a(gind), L2a(gind), L3a(gind)]);
+                minEig(count) = min([L1a(gind), L2a(gind), L3a(gind)]);
+                prodEig(count) = prod([L1a(gind), L2a(gind), L3a(gind)]);
             catch ME
                 disp(ME)
             end
@@ -309,7 +323,7 @@ if aniso_method == 7
         %% 2 - Apply the normalized volume
         lm1n = iso_conductivity * (lm1/((lm1*lm2*lm3)^(1/3)));
         lm2n = iso_conductivity * (lm2/((lm1*lm2*lm3)^(1/3)));
-        lm3n = iso_conductivity * (lm3/((lm1*lm2*lm3)^(1/3)));        
+        lm3n = iso_conductivity * (lm3/((lm1*lm2*lm3)^(1/3)));
         % Check
         if (iso_conductivity*iso_conductivity*iso_conductivity) == (lm1n*lm2n*lm3n)
             disp('Volume is conserved');
@@ -319,7 +333,7 @@ if aniso_method == 7
             lm1 = lm1n;
             lm2 = lm2n;
             lm3 = lm3n;
-        end        
+        end
         % check : the max value of the conductivity should not be larger
         % thant the SCF or the reference value
         % a maximal conductivity of CSF
@@ -328,6 +342,10 @@ if aniso_method == 7
         if lm3>max_conductivity; lm3 = max_conductivity; end
         
         meanConductivity = [meanConductivity mean([lm1 lm2 lm3]) ];
+        
+        meanCond(count) = mean([lm1 lm2 lm3]);
+        maxCond(count) = max(([lm1 lm2 lm3]));
+        
         isNan = [ isNan isnan(aniso_conductivity(1,1,gind)) ];
         
         % final output
@@ -336,14 +354,37 @@ if aniso_method == 7
         anisotropicTensor.eigen_value{gind} = diag([lm1 lm2 lm3]);
     end
     % check the values for debugging
-    [iso_conductivity max(meanConductivity)            mean(meanConductivity)    min(meanConductivity)]    ;      
-    %% Scale the isotropic WM(others) tensors within the anisotropic tissue by the mean of the computed value 
+    [iso_conductivity max(meanConductivity)            mean(meanConductivity)    min(meanConductivity)]    ;
+    
+    param.meanConductivity =  mean(meanConductivity);
+    param.stdConductivity =  std(meanConductivity);
+    
+    %% Scale the isotropic WM(others) tensors within the anisotropic tissue by the mean of the computed value
     %%from the Wolter approach
-    for ind = isIsotrope     
-            aniso_conductivity(:,:,ind) = diag([mean(meanConductivity),mean(meanConductivity),mean(meanConductivity)]);
-            eigen.eigen_value{ind} =  aniso_conductivity(:,:,ind) ;
-    end    
+    for ind = isIsotrope
+        aniso_conductivity(:,:,ind) = diag([mean(meanConductivity),mean(meanConductivity),mean(meanConductivity)]);
+        eigen.eigen_value{ind} =  aniso_conductivity(:,:,ind) ;
+    end
+    
+    
+%     figure,
+%     subplot 231
+%     h = histogram(maxCond);
+%     title('maximum of conductivity tensor')
+%     subplot 232
+%     h1 = histogram(maxEig);
+%     title('maximum eigen value of conductivity tensor')
+%     subplot 233
+%     h2 = histogram(minEig);
+%     title('minimum eigen value of conductivity tensor')
+%     subplot 234
+%     h3 = histogram(prodEig);
+% %     productEigenValue
+%     title('product eigen value of conductivity tensor')
+%     subplot 235
+%     h4 = histogram(meanCond);
+%     title('mean value of conductivity tensor')
+%     mean(meanCond)    
+    
 end
-
-
 end

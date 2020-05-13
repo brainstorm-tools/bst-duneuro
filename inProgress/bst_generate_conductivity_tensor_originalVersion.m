@@ -1,4 +1,4 @@
-function  errMsg = bst_generate_conductivity_tensor(iSubject, iAnatomy)
+function  errMsg = bst_generate_conductivity_tensor_originalVersion(iSubject, iAnatomy)
 
 % tree_callbacks.m  10227  gui_component('MenuItem', jPopup, [], 'Generate FEM conductivity tensor', IconLoader.ICON_FEM, [], @(h,ev)generate_conductivity_tensor(iSubject, iAnatomy));
 
@@ -189,10 +189,11 @@ fields = whos('-file',FemFiles);
 % Get number of  layers
 ivar = find(strcmpi({fields.name}, 'TissueLabels'));
 numberOfLayer =  max(fields(ivar).size);
-if ~length(mri_segmented.anatomylabel) == numberOfLayer
-    Msg = 'It seems that the mesh do not overlay the mask';
-    bst_error(['The mask does not overlay the selected mesh.' 10 'Check the Matlab command window for additional information.' 10], 'Generate FEM tensor', 0);
-end
+% if ~length(mri_segmented.anatomylabel) == numberOfLayer
+%     Msg = 'It seems that the mesh do not overlay the mask';
+%     
+% %     bst_error(['The mask does not overlay the selected mesh.' 10 'Check the Matlab command window for additional information.' 10], 'Generate FEM tensor', 0);
+% end
 % Get mesh element type
 ivar = find(strcmpi({fields.name}, 'Elements'));
 numberOfEdges =  (fields(ivar).size(2));
@@ -219,10 +220,6 @@ end
 %% Build the tensor for the isotropic tissues
 cfg = [];
 default_iso_conductivity = get_standard_conductivity((numberOfLayer)) ;
-% default_iso_conductivity = (default_iso_conductivity/max(default_iso_conductivity))/1000;
-conversion_m2mm = 1000;
-default_iso_conductivity = default_iso_conductivity/conversion_m2mm;
-
 cfg.elem = [femHead.Elements femHead.Tissue];
 cfg.node = femHead.Vertices;
 cfg.conductivity = default_iso_conductivity;
@@ -232,7 +229,7 @@ cfg.IsotropicTensor = cfg.eigen;
 IsotropicTensor = cfg.eigen;
 cfg.eigen = IsotropicTensor;
 % Display the tensors 
-cfg.indElem = 1:50000:length(cfg.elem);
+cfg.indElem = 1:10000:length(cfg.elem);
 cfg.ellipse = 1;
 cfg.arrow = 0;
 bst_display_tensor_as_ellipse(cfg)
@@ -294,16 +291,16 @@ plotmesh(cfg.node, cfg.elem)
 %     end
 % end
 
-[aniso_conductivity, anisotropicTensor ] = bst_compute_anisotropy_tensors(femHead, default_iso_conductivity, IsotropicTensor, L1a,L2a,L3a,V1rot,V2rot,V3rot);
+[aniso_conductivity, anisotropicTensor,param ] = bst_compute_anisotropy_tensors(femHead, default_iso_conductivity, IsotropicTensor, L1a,L2a,L3a,V1rot,V2rot,V3rot);
 
 % check and display
 % cfg.conductivity_tensor3x3 = aniso_conductivity/display_factor;
 cfg.indElem = find(cfg.elem(cfg.indElem ,end)==1);
-cfg.indElem = 1:500:length(cfg.elem);
+cfg.indElem = 1:1000:length(cfg.elem);
 % cfg.indElem = cfg.indElem (1:10000:end);
 cfg.eigen = anisotropicTensor;
 cfg.noCsf  = 1; % do not display CSF
-cfg.ellipse = 0;
+cfg.ellipse = 1;
 cfg.arrow = 0;
 cfg.plotMesh = 1;
 bst_display_tensor_as_ellipse(cfg)
@@ -441,8 +438,13 @@ if 0
             [condcell, s, fail] = sb_calcTensorCond_tuch(cfg,mri_segmented,DTI{1},DTI{2},DTI{3},DTI{4},DTI{5},DTI{6});
         else
             [condcell, s, fail] = sb_calcTensorCond_tuch_wm(cfg,mri_segmented,DTI{1},DTI{2},DTI{3},DTI{4},DTI{5},DTI{6});
+            
         end
     end
+    
+[condtensor, maxCond] = sb_assiTensorCond_check_hist(mask,nodes,elements,condcell)
+
+%     [condtensor, maxCond] = sb_assiTensorCond_mcp(mask,nodes,elem,condcell)
     % Check the value of the the tensor
     wmVoxels = find(mri_segmented.anatomy == wmIndex);
     OtherVoxels = find(mri_segmented.anatomy ~= wmIndex);
