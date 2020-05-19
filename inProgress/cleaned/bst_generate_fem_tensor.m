@@ -161,7 +161,7 @@ if isAnisotropic == 1
         %         maskFile = file_fullpath(sSubject.Anatomy(iMaskTissue).FileName);
         sEigDti =  in_mri_bst(eigenFile);
         sMask =  in_mri_bst(maskFile);
-        
+        % temporary argument...  need to be changed
         DTI = {};
         DTI{1}.hdr.dim.pixdim = sMask.Header.dim.pixdim;
         DTI{1}.anatomy = sEigDti.Cube(:,:,:,1:3);

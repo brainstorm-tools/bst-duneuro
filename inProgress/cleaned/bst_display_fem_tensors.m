@@ -30,14 +30,16 @@ for i = 1 : length(cfg.elemid)
     disp( [ num2str(i) ' / ' num2str(length(cfg.elemid)) ...
         ' | tissue : '  num2str(cfg.elem(cfg.elemid(i),5))...
         ' | volume : '  num2str(prod([l(1,1),l(2,2),l(3,3)]))]);
-
+    
+    conversion_m2mm = 1000; % 1000;
+    factor = 4; % 4 is the optimal value for the SCS coordinates
+    factor = factor/conversion_m2mm; % this is done because the conductivity is on S/meter, otherwise the size of the ellipse is bigger than the head
+    
     % generate the grid
     if cfg.ellipse == 1
         hold on
         meshResolution = 10;
-        conversion_m2mm = 1000; % 1000;
-        factor = 4; % 4 is the optimal value for the SCS coordinates
-        factor = factor/conversion_m2mm; % this is done because the conductivity is on S/meter, otherwise the size of the ellipse is bigger than the head
+ 
         [X,Y,Z] = ellipsoid(0,0,0,factor*norm(l(1,1)),factor*norm(l(2,2)),factor*norm(l(3,3)),meshResolution);
         % figure; surf(X,Y,Z); xlabel('X'); ylabel('Y'); zlabel('Z');
         % rotation
@@ -68,7 +70,7 @@ for i = 1 : length(cfg.elemid)
     
     if cfg.arrow == 1
         hold on
-        quiver3(xc,yc,zc,v(1,1)*l(1,1),v(2,1)*l(1,1),v(3,1)*l(1,1),5,'LineWidth', 1, 'Color',abs([v(2,1) v(1,1)  v(3,1)]));
+        quiver3(xc,yc,zc,factor*v(1,1)*l(1,1),factor*v(2,1)*l(1,1),factor*v(3,1)*l(1,1),1,'LineWidth', 1, 'Color',abs([v(2,1) v(1,1)  v(3,1)]));
         plot3(xc,yc,zc,'k.')
     end
     hold on;
@@ -105,7 +107,7 @@ if  cfg.plotMesh == 1
     end    
     %     hold on; plotmesh(tetraNode,[tetraElem, tetraLabel],'y>0','facealpha',0.1,'edgecolor','none','facecolor',[0.9 0.9 0.9]);
     hold on; plotmesh(tetraNode,[tetraElem, tetraLabel],'y>0','facealpha',0.3,'edgecolor','none');
-    view([90 0 0])
+    view([0 90 0])
     % hold on;plotmesh(cfg.elem_centroide(elemid,:),'k.')
     %     hold on; plotmesh(tetraNode,[tetraElem, tetraLabel],'x>50'); % hold on;plotmesh(cfg.elem_centroide(elemid,:),'k.')
 end

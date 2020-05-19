@@ -1,13 +1,12 @@
 function bst_view_tensor(iSubject)
 
 %% SECTION 1 : Get the data
-disp('Generate fem tensors')
+disp('view fem tensors')
 
 %% Get the input data
 % get the mesh
 % get the EIG-DTI
 % get the isotropic conductivity
-% if anisotrop as for the method to use
 % Get Protocol information
 ProtocolInfo     = bst_get('ProtocolInfo');
 ProtocolSubjects = bst_get('ProtocolSubjects');
@@ -28,6 +27,8 @@ femHead=  load(FemFiles);
 numberOfLayer = length(femHead.TissueLabels);
 
 %% Display the tensore within a mesh slice : defined by a plan
+isQmeshcut = 0;
+if isQmeshcut == 1
 % define the cutting plan
 z0 = mean(femHead.Vertices(:,3)); % range(femHead.Vertices(:,3))
 z0 = 0.038;
@@ -51,13 +52,35 @@ plane = [min(femHead.Vertices(:,1)) min(femHead.Vertices(:,2)) (z0 + z0/2)
 
 [cutpos, cutvalue, facedata,elemid] = ...
                     qmeshcut(femHead.Elements,femHead.Vertices,zeros(length(femHead.Vertices),1),plane);
+end
 
-figure;
-plotmesh(femHead.Vertices,[femHead.Elements femHead.Tissue], 'facealpha', 0.3,'edgecolor','none');
-hold on
-plotmesh(femHead.Vertices,[femHead.Elements(elemid,:) femHead.Tissue(elemid,:)]);
-view([0 90 0])
-title('Slice of mesh where the tensor will be displayed')
+isGibbon = 1;
+if isGibbon == 1
+    
+n=[0 0 0]; %Normal direction to plane
+[res, isCancel] = java_dialog('radio', '<HTML><B> Direction of the plan where to cut <B>', ...
+        'Select cur direction', [],{'x','y','z'}, 3);
+if isCancel;         return;    end
+n(res) = 1;
+
+
+P=mean(femHead.Vertices,1); %Point on plane
+[logicAt,logicAbove,logicBelow]=bst_meshCleave(femHead.Elements,femHead.Vertices,P,n);
+% inclusiveSwitch=[1 1 ];
+% [logicAt,logicAbove,logicBelow]=meshCleave(femHead.Elements,femHead.Vertices,P,n,inclusiveSwitch);
+% figure, plotmesh(femHead.Vertices,[femHead.Elements(logicAt,:) femHead.Tissue(logicAt,:)])                
+elemid =  find(logicAt);  
+end
+
+
+    
+
+% figure;
+% plotmesh(femHead.Vertices,[femHead.Elements femHead.Tissue], 'facealpha', 0.2,'edgecolor','none');
+% hold on
+% plotmesh(femHead.Vertices,[femHead.Elements(elemid,:) femHead.Tissue(elemid,:)]);
+% view([0 0 90])
+% title('Slice of mesh where the tensor will be displayed')
 
 %% Display intererface
 % 1- ask user which tissue to include
@@ -119,12 +142,15 @@ bst_display_fem_tensors(cfg) % the displaying function
 
 % 
 % view([0 -90 0])
-% axis([ -0.063 0.095 ...
-%     min(cfg.node(:,2))  max(cfg.node(:,2)) ...
-%     -0.02  0.105])
+axis([ min(cfg.node(:,1))  max(cfg.node(:,1)) ...
+    min(cfg.node(:,2))  max(cfg.node(:,2)) ...
+    0  max(cfg.node(:,3))])
 % hold on
-% plotmesh(femHead.Vertices,femHead.Elements(elemid,:),'facealpha',0.2,'edgecolor','k');
-% view([0 90 0])
+% plotmesh(femHead.Vertices,femHead.Elements(cfg.elemid,:),'facealpha',0.2,'edgecolor','none');
+% plotmesh(femHead.Vertices,femHead.Elements(cfg.elemid,:),'facealpha',0.2,'edgecolor', [0.5 0.5 0.5]);
+% plotmesh(femHead.Vertices,[femHead.Elements femHead.Tissue],'facealpha',0.2,'edgecolor', [0.5 0.5 0.5]);
+
+% view([90 0 0])
 % 
 % hold on
 % plotmesh(femHead.Vertices,femHead.Elements(:,:),'facealpha',0.2);
