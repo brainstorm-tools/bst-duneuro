@@ -38,10 +38,15 @@ for ind = 1 : length(sSubject.Anatomy)
 end
 iEigenTissue = find(temp1);
 iMaskTissue = find(temp2);
+if isempty(iMaskTissue) % just to avoi the error for simulated tenosr
+    iMaskTissue = 1;
+    iEigenTissue = 1;
+end
 
-eigenFile = file_fullpath(sSubject.Anatomy(iEigenTissue).FileName);
-maskFile = file_fullpath(sSubject.Anatomy(iMaskTissue).FileName);
-
+if ~isempty(sSubject.Anatomy)
+    eigenFile = file_fullpath(sSubject.Anatomy(iEigenTissue).FileName);
+    maskFile = file_fullpath(sSubject.Anatomy(iMaskTissue).FileName);
+end
 
 % Get the scalar conductivity values
 default_iso_conductivity = get_standard_conductivity(numberOfLayer) ;
@@ -178,7 +183,7 @@ if isAnisotropic == 1
         %% Convert diffusion to conductivity tensors
         
         % Call the main function : bst_compute_anisotropy_tensors
-        % METHOD 1 : direct transformation approach [Güllmar et al   NeuroImage 2010]
+        % METHOD 1 : direct transformation approach [Güllmar et al   NeuroImage 2010 & Tuch]
         % METHOD 2 : direct transformation approcah with volume constraint  [Güllmar et al NeuroImage 2010]
         % METHOD 3 : Artificial anisotropy with volume constraint [Güllmar et al NeuroImage 2010]
         % METHOD 4 : The volume normalized approcah  [Won Hee Lee et all  IEEE 2015]

@@ -1,0 +1,6 @@
+Begining error logging at 
+Sat May 23 14:37:46 2020
+error at src/mesh/mesh.isct.tpp, line #1063: Ran out of tries to perturb the mesh
+Ending error logging at 
+Sat May 23 14:37:46 2020
+

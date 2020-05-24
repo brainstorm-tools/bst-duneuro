@@ -59,7 +59,7 @@ if isGibbon == 1
     
 n=[0 0 0]; %Normal direction to plane
 [res, isCancel] = java_dialog('radio', '<HTML><B> Direction of the plan where to cut <B>', ...
-        'Select cur direction', [],{'x','y','z'}, 3);
+        'Select cut direction', [],{'x','y','z'}, 3);
 if isCancel;         return;    end
 n(res) = 1;
 
@@ -71,14 +71,12 @@ P=mean(femHead.Vertices,1); %Point on plane
 % figure, plotmesh(femHead.Vertices,[femHead.Elements(logicAt,:) femHead.Tissue(logicAt,:)])                
 elemid =  find(logicAt);  
 end
-
-
     
 
 % figure;
 % plotmesh(femHead.Vertices,[femHead.Elements femHead.Tissue], 'facealpha', 0.2,'edgecolor','none');
 % hold on
-% plotmesh(femHead.Vertices,[femHead.Elements(elemid,:) femHead.Tissue(elemid,:)]);
+%   ;
 % view([0 0 90])
 % title('Slice of mesh where the tensor will be displayed')
 
@@ -114,7 +112,7 @@ end
 
 % display the tensors
 [res, isCancel] = java_dialog('radio', '<HTML><B> Display the tenosr as <B>', ...
-        'Select tensor view', [],{'Ellipse','Arrow (main eigen vector, useful only on anistropic case) '}, 1);
+        'Select tensor view', [],{'Ellipse','Arrow (main eigen vector, useful only with anistropic case) '}, 1);
 if isCancel;         return;    end
 if res == 1
     displayAsEllipse = 1;
@@ -137,6 +135,7 @@ cfg.elem_centroide = femHead.tensors.position; % the centoride of the element
 cfg.ellipse = displayAsEllipse; % display as an ellipse
 cfg.arrow = displayAsArrow; % display as an arrow
 cfg.plotMesh = displayHeadModel; % plot the head model
+cfg.conversion_m2mm = 1000;
 bst_display_fem_tensors(cfg) % the displaying function
 
 

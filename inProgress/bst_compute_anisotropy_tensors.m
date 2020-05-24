@@ -293,7 +293,7 @@ if aniso_method == 7
     meanConductivity =[ ];
     count = 0;
     for gind = l_index % the last value of l_index is not belonging to anistropic tissue
-        
+%         eigen.eigen_value{gind}
         if femHead.Tissue(gind) == aniso_tissu_index % 1 is the label of the wm
             count = count + 1;
             try
@@ -306,7 +306,10 @@ if aniso_method == 7
             catch ME
                 disp(ME)
             end
-        else
+        elseif isnan(eigen.eigen_value{gind}) % in the case where is nan is recorded             
+            aniso_conductivity(:,:,gind) = IsotropicTensor.eigen_vector{gind}*IsotropicTensor.eigen_value{gind}*IsotropicTensor.eigen_vector{gind}';
+            eigen.eigen_vector{gind} = IsotropicTensor.eigen_vector{gind};
+            eigen.eigen_value{gind} = IsotropicTensor.eigen_value{gind};
             continue
         end
         

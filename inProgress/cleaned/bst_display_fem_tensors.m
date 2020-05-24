@@ -12,7 +12,14 @@ end
 if ~isfield(cfg,'ellipse') && ~isfield(cfg,'arrow')
     cfg.ellipse = 1;
 end
+
+if  ~isfield(cfg,'conversion_m2mm') 
+ cfg.conversion_m2mm = 1000;
+ conversion_m2mm = cfg.conversion_m2mm;
+end
+
 tissueColor = {'y','k','b','g','r'};
+
 
 % display
 figure
@@ -31,9 +38,9 @@ for i = 1 : length(cfg.elemid)
         ' | tissue : '  num2str(cfg.elem(cfg.elemid(i),5))...
         ' | volume : '  num2str(prod([l(1,1),l(2,2),l(3,3)]))]);
     
-    conversion_m2mm = 1000; % 1000;
+%     conversion_m2mm = 1; % 1000;
     factor = 4; % 4 is the optimal value for the SCS coordinates
-    factor = factor/conversion_m2mm; % this is done because the conductivity is on S/meter, otherwise the size of the ellipse is bigger than the head
+    factor = factor/cfg.conversion_m2mm; % this is done because the conductivity is on S/meter, otherwise the size of the ellipse is bigger than the head
     
     % generate the grid
     if cfg.ellipse == 1
@@ -106,8 +113,13 @@ if  cfg.plotMesh == 1
         tetraLabel = cfg.elem(:,end);
     end    
     %     hold on; plotmesh(tetraNode,[tetraElem, tetraLabel],'y>0','facealpha',0.1,'edgecolor','none','facecolor',[0.9 0.9 0.9]);
-    hold on; plotmesh(tetraNode,[tetraElem, tetraLabel],'y>0','facealpha',0.3,'edgecolor','none');
-    view([0 90 0])
+    disp('Press keyboard to dsiplay the head model')
+    pause
+    hold on; plotmesh(tetraNode,[tetraElem, tetraLabel],'y>0','facealpha',0.1,'edgecolor','none');
+    disp('Press keyboard to dsiplay the mesh of the aniso tissue')
+%     pause
+%     hold on; plotmesh(tetraNode,[tetraElem(cfg.elemid,:) tetraElem(cfg.elemid,:)],'facealpha',0.4)
+%     view([0 90 0])
     % hold on;plotmesh(cfg.elem_centroide(elemid,:),'k.')
     %     hold on; plotmesh(tetraNode,[tetraElem, tetraLabel],'x>50'); % hold on;plotmesh(cfg.elem_centroide(elemid,:),'k.')
 end
