@@ -130,9 +130,27 @@ cfg.elemid = elemid;
 cfg.elemid = elemid(find(sum((femHead.Tissue(elemid) == includedTissueIndex'),2))); % reduced to the element to display
 
 cfg.elemid = cfg.elemid(1:regularStep:end); % reduced to the element to display    find(cfg.elem(cfg.elemid,5) ==3)
-cfg.eigen = femHead.tensors; % thei eigen data  
-cfg.elem_centroide = femHead.tensors.position; % the centoride of the element
-cfg.ellipse = displayAsEllipse; % display as an ellipse
+
+if isfield(femHead,'tensors')
+    cfg.eigen = femHead.tensors; % thei eigen data  
+    cfg.elem_centroide = femHead.tensors.position; % the centoride of the element
+
+end
+
+
+if isfield(femHead,'Tensors')
+    cfg.tensors = femHead.Tensors;
+    % bst_progress('text', 'Computing elements centroids...');
+        nElem = size(femHead.Elements, 1);
+        nMesh = size(femHead.Elements, 2);
+        ElemCenter = zeros(nElem, 3);
+        for i = 1:3
+            ElemCenter(:,i) = sum(reshape(femHead.Vertices(femHead.Elements,i), nElem, nMesh)')' / nMesh;
+        end
+    cfg.elem_centroide = ElemCenter;
+end
+
+cfg.ellipse = displayAsEllipse; % display as an ellipse 
 cfg.arrow = displayAsArrow; % display as an arrow
 cfg.plotMesh = displayHeadModel; % plot the head model
 cfg.conversion_m2mm = 1000;

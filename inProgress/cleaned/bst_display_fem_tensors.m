@@ -31,8 +31,15 @@ for i = 1 : length(cfg.elemid)
     zc = cfg.elem_centroide(cfg.elemid(i),3);
     
     % get the eigen data
-    v = cfg.eigen.eigen_vector{cfg.elemid(i)} ; % vector 
-    l = cfg.eigen.eigen_value{cfg.elemid(i)};   % value
+    if isfield(cfg,'eigen')
+        v = cfg.eigen.eigen_vector{cfg.elemid(i)} ; % vector 
+        l = cfg.eigen.eigen_value{cfg.elemid(i)};   % value
+    end
+    if isfield(cfg,'tensors')
+        temp = reshape(cfg.tensors(cfg.elemid(i),:),3,[]);
+        v = temp(:,1:3);
+        l =  diag(temp(:,4));
+    end
     
     disp( [ num2str(i) ' / ' num2str(length(cfg.elemid)) ...
         ' | tissue : '  num2str(cfg.elem(cfg.elemid(i),5))...
@@ -113,8 +120,8 @@ if  cfg.plotMesh == 1
         tetraLabel = cfg.elem(:,end);
     end    
     %     hold on; plotmesh(tetraNode,[tetraElem, tetraLabel],'y>0','facealpha',0.1,'edgecolor','none','facecolor',[0.9 0.9 0.9]);
-    disp('Press keyboard to dsiplay the head model')
-    pause
+%     disp('Press keyboard to dsiplay the head model')
+%     pause
     hold on; plotmesh(tetraNode,[tetraElem, tetraLabel],'y>0','facealpha',0.1,'edgecolor','none');
     disp('Press keyboard to dsiplay the mesh of the aniso tissue')
 %     pause
