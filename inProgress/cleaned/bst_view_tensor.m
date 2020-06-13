@@ -23,6 +23,7 @@ end
 FemFiles = file_fullpath(sSubject.Surface(sSubject.iFEM).FileName);
 % Get name and the number of  layers
 % Load the mesh
+disp('load  the fem tensors')
 femHead=  load(FemFiles);
 numberOfLayer = length(femHead.TissueLabels);
 
@@ -131,14 +132,12 @@ cfg.elemid = elemid(find(sum((femHead.Tissue(elemid) == includedTissueIndex'),2)
 
 cfg.elemid = cfg.elemid(1:regularStep:end); % reduced to the element to display    find(cfg.elem(cfg.elemid,5) ==3)
 
-if isfield(femHead,'tensors')
+m='t';  
+if isfield(femHead,'tensors') && m == 't'
     cfg.eigen = femHead.tensors; % thei eigen data  
     cfg.elem_centroide = femHead.tensors.position; % the centoride of the element
 
-end
-
-
-if isfield(femHead,'Tensors')
+elseif isfield(femHead,'Tensors') && m=='f'
     cfg.tensors = femHead.Tensors;
     % bst_progress('text', 'Computing elements centroids...');
         nElem = size(femHead.Elements, 1);
@@ -148,7 +147,11 @@ if isfield(femHead,'Tensors')
             ElemCenter(:,i) = sum(reshape(femHead.Vertices(femHead.Elements,i), nElem, nMesh)')' / nMesh;
         end
     cfg.elem_centroide = ElemCenter;
+
+else
+    error('no tensor available ...')
 end
+
 
 cfg.ellipse = displayAsEllipse; % display as an ellipse 
 cfg.arrow = displayAsArrow; % display as an arrow

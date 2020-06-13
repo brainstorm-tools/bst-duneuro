@@ -31,13 +31,13 @@ for ind = 1 : 10000%length(centers)
     end    
     % translation
     temp = temp+ centers(ind,:);
-    
+    % merge
     bemMerge = cat(2, bemMerge, temp, face);
 end
 disp('Merging...')
 [newnode, newelem] = mergemesh(bemMerge{:});
 disp('Plotting...')
-figure; h = plotmesh(newnode,newelem(:,1:3),'edgecolor','none','facecolor','k');
+figure; h = plotmesh(newnode,newelem);
 
 
 [newnode,newelem]=mergemesh(node,face,node1,face,node2,face);
