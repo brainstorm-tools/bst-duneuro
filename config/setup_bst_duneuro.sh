@@ -167,7 +167,7 @@ doSetVariables () {
   if [[ $OS == windows ]]; then
     EXTENSION=".exe"
   elif [[ $OS == linux ]]; then
-    EXTENSION=""
+    EXTENSION=".app"
   fi
 }
 
