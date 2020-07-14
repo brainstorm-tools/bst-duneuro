@@ -66,7 +66,7 @@ to rebuild both linux and window's applications.
 
 ### Mac version
 
-For Mac x64 version all you need to do is clone the repository, install dpkg-config and gcc compiler, then use the same command as you would use for linux. Beware this is a intel-mac version, not a powerPc, thus, Mac earlier than 2006 will not run. Depending on your Mac installation you might have to install additional packages, like ```pyenv``` or ```pkg-config```. Sometimes, you might have to install additional python packages, i.e. ```pip install virtualenv```, but generally you will be able to follow instructions given by the Dune environment. 
+For Mac x64 version all you need to do is clone the repository, install boost, dpkg-config and gcc compiler, then use the same command as you would use for linux. Beware this is a intel-mac version, not a powerPc, thus, Mac earlier than 2006 will not run. Depending on your Mac installation you might have to install additional packages, like ```pyenv``` or ```pkg-config```. Sometimes, you might have to install additional python packages, i.e. ```pip install virtualenv```, but generally you will be able to follow instructions given by the Dune environment. 
 
 In a mac envoronment, the compiling instruction is ```setup_bst_duneuro.sh build linux```, yes ```linux```. Since the linux code builds more or less directly in the mac envoronment, the same instruction is kept to avoid further complexity. The resulting app will be copied as usual to the ```test/``` folder. Typically that app can be manually renamed as a mac64 version binary and copied to the ```bin/``` folder.
 
