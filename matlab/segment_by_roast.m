@@ -3,26 +3,18 @@ function segment_by_roast(fullPathToT1,fullPathToT2)
 % This function uses roast implementation to segment the mri into 6 tissus
 % {WM, GM, CSF, Skull, Scalp}
 % and save the masks in the path of the T1 specified in the arguments.
-% The roast toolbox is needed to run this function 
+% The roast toolbox is needed to run this function
 
 % File created on December, Takfarinas MEDANI
-% Adapted from Roast toolbox.
+% Adapted from Roast toolbox to brainstoem call.
 
 %% Lookfor the roast toolbox and add it to the path
-%  find the bst_duneuro_toolbox path
-str = which('roast','-all'); % 
-if ~isempty(str)
-[filepath,~,~] = fileparts(str{1});    
-% add to the path
-addpath(genpath(filepath));
-end
-% read the input 
 subjRSPD = fullPathToT1;
 % you can either add a T2 image in order to improve the mesh
 T2 = fullPathToT2;
-
 [dirname,baseFilenameRSPD] = fileparts(subjRSPD);
 
+% The rest of the function is as it is from the original function
 %%  STEP 1 : SEGMENT THE MRI...
 % step 1  : segmentation using spm ... goo deeper in order to have more
 % details about this function

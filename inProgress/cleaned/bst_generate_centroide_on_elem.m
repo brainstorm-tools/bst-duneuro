@@ -24,7 +24,7 @@ end
 if 1 % this is faster than the others
     % calculate the centroid for each element
     hex = elem(:,1:end-1);
-    centroids = zeros(size(hex, 1), 3);
+    elem_centroide = zeros(size(hex, 1), 3);
     tic;
     for l = 1:3
         elem_centroide(:, l) = sum(reshape(node(hex(:, :), l), size(hex, 1), size(hex, 2))')'/size(hex, 2);
