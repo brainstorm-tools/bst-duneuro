@@ -1,17 +1,19 @@
 #!/bin/bash
 
+# bail on errors
+set -e
+
 doClean () {
   echo -e "\nDeleting previous builds.\n"
   rm -rf build*
-  # echo -e "\nDeleting previously downloaded code.\n"
-  # rm -rf src
 }
 
 doDownload () {
   echo -e "\nDeleting previously downloaded code.\n"
   rm -rf src
   mkdir src
-  cd src
+
+  pushd src
 
   #core modules
   git clone --branch releases/2.6 https://gitlab.dune-project.org/core/dune-common.git
@@ -23,21 +25,14 @@ doDownload () {
   git clone --branch releases/2.6 https://gitlab.dune-project.org/staging/dune-typetree.git
   git clone --branch releases/2.6 https://gitlab.dune-project.org/staging/dune-uggrid.git
   #extension functions module
-  git clone https://gitlab.dune-project.org/staging/dune-functions.git
-  cd dune-functions
-  git checkout bd847eb9f6617b116f5d6cb4930e5417d7b6e9a7
-  git checkout -b c-interface
-  cd ..
+  git clone --branch releases/2.6 https://gitlab.dune-project.org/staging/dune-functions.git
   #pdelab and  required
   git clone --branch releases/2.6 https://gitlab.dune-project.org/pdelab/dune-pdelab.git
   #duneuro 
   git clone --branch releases/2.6 https://gitlab.dune-project.org/duneuro/duneuro.git 
-  git clone --branch feature/c-interface https://gitlab.dune-project.org/duneuro/duneuro-matlab.git
+  git clone --branch master https://gitlab.dune-project.org/duneuro/brainstorm/duneuro-bst.git
   
-  #git clone --branch 2.6-changes https://gitlab.dune-project.org/duneuro/duneuro-tests.git
-  #git clone --branch releases/2.6 https://gitlab.dune-project.org/quality/dune-testtools.git
-  
-  cd ..
+  popd
 
   if [[ -f "src/dune-common/bin/dunecontrol" ]]; then
       echo -e "\nSource download OK."
@@ -49,27 +44,9 @@ doDownload () {
 }
 
 doConfigure () {
-
   # Fortran patch
   echo -e "\n\n#####################################################\n\n               Patching fortran issue!!\n\n#####################################################\n"
   sed -i 's/workaround_9220(Fortran Fortran_Works)/if(ENABLE_Fortran)\n    workaround_9220(Fortran Fortran_Works)\n  endif()/g' src/dune-common/cmake/modules/DuneMacros.cmake 
-
-  # Copy C++ files to duneuro-matlab
-  echo -e "\nSetting links between brainstorm_app source files and duneuro-matlab source files.\n"
-  #cp -r config/brainstorm_app src/duneuro-matlab
-  mkdir src/duneuro-matlab/brainstorm_app
-  ln config/brainstorm_app/* src/duneuro-matlab/brainstorm_app/
-
-  # Modify CMakeLists file
-  if ! grep -Fxq "brainstorm_app" src/duneuro-matlab/CMakeLists.txt ; then
-    ENVIRONMENT=$(uname -s)
-    if [[ $ENVIRONMENT == Darwin ]]; then
-      sed -i '' $'s#add_subdirectory("cmake/modules")#add_subdirectory("cmake/modules")\\\nadd_subdirectory("brainstorm_app")#g' src/duneuro-matlab/CMakeLists.txt
-    else
-      sed -i 's#add_subdirectory("cmake/modules")#add_subdirectory("cmake/modules")\nadd_subdirectory("brainstorm_app")#g' src/duneuro-matlab/CMakeLists.txt
-    fi
-    echo -e "\nAdding subdirectory brainstorm_app to cmake lists file.\n"
-  fi
 
   # Modify full path to toolchain file in windows opts file.
   echo -e "\nAdding full path to toolchain file.\n"
@@ -235,4 +212,3 @@ else
 fi
 
 exit 0 #SUCCESS
-
