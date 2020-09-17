@@ -38,8 +38,10 @@ doDownload () {
       echo -e "\nSource download OK."
   else
       tar -xzf config/src_vault.tar.gz
+      echo -e "\n#############  WARNING  ###################"
       echo -e "\nThere was a problem downloading the code."
       echo -e "\nUnpacking source vault -> src/"
+      echo -e "\n###########################################"
   fi
 }
 
