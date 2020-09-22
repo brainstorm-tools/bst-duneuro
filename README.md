@@ -45,9 +45,10 @@ The setup script is designed to go through the compilation steps even when the u
 
 This whole chain has proven to work on a fresh/new Ubuntu instance, so we hope you don't find problems with your system, although we are not sure of how previous configurations with MINGW or other sw might possibly interact with this whole build process.
 
-In order to download, configure, compile and copy the binary application files into ```bin/``` execute
+So, in order to do everything in a single command (download, configure, compile and copy the binary application files into ```bin/```), execute:
 ```
-setup_bst_duneuro.sh all
+cd config/
+./setup_bst_duneuro.sh all
 ```
 
 In case further development has to be made, you can delete previous builds with ```setup_bst_duneuro.sh clean``` or download the newest source code version before compiling with ```setup_bst_duneuro.sh download```. You can also compile only one operating system by calling ```setup_bst_duneuro.sh build windows``` or ```setup_bst_duneuro.sh build linux```. 
@@ -74,5 +75,13 @@ In a mac envoronment, the compiling instruction is ```setup_bst_duneuro.sh build
 If you have Matlab installed in your linux version and you plan to use Brainstorm in this system, you can take advantage of the possibility of building the application as a mex file which will decrease execution times and allow for more interaction between Matlab and duneuro.
 
 In order to do this modify Matlab's path in ```config/config_release_linux.opts``` and modify ```src/duneuro-matlab/toto/CMakeLists.txt``` file in order to add a separate mex application.
+
+#### Troubleshooting
+
+Sometimes, depending on each linux installation, some of the libraries needed to run the application will be missing. In order to try to solve these issues, try installing: 
+
+```bash
+sudo apt-get install libdune-common-dev libdune-geometry-dev libdune-grid-dev libdune-localfunctions-dev libdune-istl-dev libdune-typetree-dev libdune-uggrid-dev libdune-functions-dev libdune-pdelab-dev
+```
 
 
